@@ -7,16 +7,34 @@ export default class LobbyScene extends Phaser.Scene {
     constructor() {
         super("LobbyScene")
     }
+
+    destroy(){
+        if(this.playersContainers.length > 0){
+            this.playersContainers.forEach(playerContainer =>playerContainer.destroy())
+        }
+    }
+
     create(){
+        this.destroy()
         this.add.rectangle(600,300,1000,550, 0x000000, 0.5)
         this.add.rectangle(600,300,950,500, 0x000000, 0.7)
         let imageBotaoX = this.add.image(1040,80,'botao_x').setScale(0.7).setInteractive({useHandCursor:true})
         let imageBotaoVoltar = this.add.image(400,500,'botao_voltar').setScale(0.7).setInteractive({useHandCursor:true})
         let imageBotaoComecar = this.add.image(800,500,'botao_comecar').setScale(0.7).setInteractive({useHandCursor:true})
         
-        Object.keys(playerCOLORS).forEach(color =>{
-            this.playersContainers.push(new PlayerContainer(color,100,100,this))
+        let counter = 0
+        Object.values(playerCOLORS).splice(0,6).forEach((key:string, index) =>{
+            this.playersContainers.push(
+                new PlayerContainer(
+                    playerCOLORS[key],
+                    260 + (400 * (counter % 2)),
+                    100 + (120 * (Math.floor(counter / 2))),
+                    this
+                )
+            )
+            counter++;
         })
+
         
         imageBotaoX.on('pointerdown',()=>{
             this.scene.start("MenuScene")
