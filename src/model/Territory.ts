@@ -29,6 +29,7 @@ export class Territory extends Phaser.GameObjects.Container {
         let territoryText = new Phaser.GameObjects.BitmapText(scene, textX - 20, textY - 20, 'pressstart', name, 10, Phaser.GameObjects.BitmapText.ALIGN_LEFT)
         .setDepth(10).setTintFill(0x000)
         super(scene, x, y, [spriteTerritory, armiesText, territoryText]);
+        this.setScale(0.8).setX(x+200)
         this.setInteractive(new Phaser.Geom.Circle(textX, textY, 45), Phaser.Geom.Circle.Contains)
         this.spriteTerritory = spriteTerritory;
         this.armiesText = armiesText;

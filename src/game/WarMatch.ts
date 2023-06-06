@@ -152,7 +152,7 @@ export class WarMatch{
         // player.placeble.all = Math.max(Math.floor(general/2), 3)
     }
 
-    getCurrentPlayer(){
+    getCurrentPlayer():GamePlayer {
         return this.turn.getCurrentPlayer(this.players)
     }
 

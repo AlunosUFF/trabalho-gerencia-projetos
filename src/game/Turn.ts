@@ -40,7 +40,7 @@ export class Turn{
         return this.playersOrders[this.currentPlayer]
     }
 
-    getCurrentPlayer(players:GamePlayer[]){
+    getCurrentPlayer(players:GamePlayer[]):GamePlayer{
         return players.find(player =>{
             return player.id === this.getCurrentPlayerId()
         })

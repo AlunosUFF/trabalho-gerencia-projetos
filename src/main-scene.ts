@@ -7,6 +7,7 @@ import { Territory } from "./model/Territory";
 import { Board } from "./game/Board";
 import eventsCenter from "./services/EventsCenter";
 import PlayerType from "./model/Player";
+import ContadorExercitos from "./view/ContadorExercitos";
 import InitGameScene from "./scenes/InitGameScene";
 import Util from "./services/Util";
 import Objective from "./model/Objective";
@@ -26,9 +27,9 @@ export class MainGameScene extends Phaser.Scene {
 
     public warMatch!: WarMatch;
     public inputKeys: object;
-    continentsData: any;
-    cardsData: any;
-    objectiveCardsData: any;
+    public continentsData: any;
+    public cardsData: any;
+    public objectiveCardsData: any;
     constructor() {
         super('MainGameScene');
         
@@ -38,9 +39,7 @@ export class MainGameScene extends Phaser.Scene {
         this.continentsData = this.cache.json.get('continents').continents;
         this.cardsData = this.cache.json.get('cards').cards;
         this.objectiveCardsData = this.cache.json.get('objectives').objectives
-  
         this.warMatch = new WarMatch(new Board(), new Turn(), this);
-       
         this.add.bitmapText(10,10,'pressstart','WAR')
 
 
@@ -135,8 +134,10 @@ export class MainGameScene extends Phaser.Scene {
         // eventsCenter.emit('init', players);
 
         if(this.warMatch.init(players)){
-            this.scene.run("ShowUIScene",{warMatch: this.warMatch})
+            // this.scene.run("ShowUIScene",{warMatch: this.warMatch})
+            this.scene.run("DisplayScene",{warMatch: this.warMatch})
         }
+
         
     }
 
