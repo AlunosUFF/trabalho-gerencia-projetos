@@ -33,7 +33,6 @@ export class GamePlayer extends Player{
     public totalArmies: number;
     public totalTerritories: number;
     public playerText: Phaser.GameObjects.Text;
-<<<<<<< HEAD
     public armies;
     public destroyed = false;
     public placed: Placeble = {
@@ -59,8 +58,7 @@ export class GamePlayer extends Player{
     public objective: Objective;
     public aimer: GamePlayer;
 
-=======  
->>>>>>> ticket-46
+
     // public ia: boolean;
     constructor(data:PlayerType, color: number, warMatch: WarMatch, ia: boolean) {
         super(data);
