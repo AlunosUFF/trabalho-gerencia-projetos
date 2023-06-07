@@ -33,24 +33,24 @@ export class MainGameScene extends Phaser.Scene {
     }
 
     preload():void{
-        //Carregando os territórios
-        let territorios = this.load.aseprite('territorios', 
-        '../assets/images/mapa_war.png',
-        '../assets/images/mapa_war.json')    
+        // //Carregando os territórios
+        // let territorios = this.load.aseprite('territorios', 
+        // '../assets/images/mapa_war.png',
+        // '../assets/images/mapa_war.json')    
 
-        //Carregando a fonte
-        this.load.bitmapFont('pressstart', 'assets/fonts/pressstart.png','assets/fonts/pressstart.fnt') 
+        // //Carregando a fonte
+        // this.load.bitmapFont('pressstart', 'assets/fonts/pressstart.png','assets/fonts/pressstart.fnt') 
         
-        // //Carregando dados do mapa
-        this.load.json('frame', 'assets/images/mapa_war.json');
-        this.load.json('territories', 'assets/data/territories.json');
+        // // //Carregando dados do mapa
+        // this.load.json('frame', 'assets/images/mapa_war.json');
+        // this.load.json('territories', 'assets/data/territories.json');
         
     }
     
     create(): void {
 
         this.warMatch = new WarMatch(new Board(), new Turn(), this);
-        
+        // console.log(this.warMatch)
         // this.warMatch.shufflePlayerInBoard()
         
         // this.warMatch.getPlayerTotalTerritories(this.warMatch.players[0])
@@ -112,13 +112,15 @@ export class MainGameScene extends Phaser.Scene {
 
 
         //Eventos
+        //Busca o evento dos novos jogadores no jogo
         eventsCenter.on("init", (players: PlayerType[]) => {
             if(this.warMatch.init(players)){
                 console.log(players)
-                this.scene.stop("InitGameScene")
-                this.scene.run("ShowUIScene",{warMatch: this.warMatch})
+                // this.scene.stop("InitGameScene")
+                // this.scene.run("ShowUIScene",{warMatch: this.warMatch})
+                this.scene.run("DisplayScene", {warMatch: this.warMatch})
             }else{
-                this.scene.launch("InitGameScene")
+                this.scene.launch("LobbyScene")
             }
         })
 
@@ -126,12 +128,8 @@ export class MainGameScene extends Phaser.Scene {
             this.scene.restart()
         })
 
-        eventsCenter.on("showModal", (msg:string) => {
-            console.log(msg)
-        })
-
         this.input.keyboard.on("keydown-Q",()=>{
-            this.scene.launch("ShowUIScene",{warMatch: this.warMatch})
+            this.scene.launch("DisplayScene",{warMatch: this.warMatch})
         })
 
         eventsCenter.on(this.warMatch.turn.phasesNames[Phases.MOBILIZAR],(msg: any)=>{
@@ -158,37 +156,6 @@ export class MainGameScene extends Phaser.Scene {
                 this.warMatch.board.checkAttackCondition(
                     territory, this.warMatch.getCurrentPlayer()
                 )
-                // this.warMatch.board.checkAttackCondition(
-                //     territory, this.warMatch.getCurrentPlayer()
-                // )
-                // console.log(this.warMatch.getCurrentPlayer(), territory)
-
-                // if(territory.owner.id === this.warMatch.turn.getCurrentPlayerId()){
-                //     console.log("É o seu terrtório")
-                //     territory.select()
-                //     territory.highlightNeighbours(this.warMatch.board.territories);
-                // }
-                // if (!this.warMatch.board.hasSelectedTerritory()){
-                //     this.warMatch.board.clearBoard()
-                //     territory.select()
-                //     territory.highlightNeighbours(this.warMatch.board.territories);
-                //     return
-                // }else if(territory.isSelected){
-                //     territory.unselect()
-                //     territory.unhighlightNeighbours(this.warMatch.board.territories);
-                //     return
-                // }else if(territory.isHighlighted && this.warMatch.board.getSelected()){
-                //     const selectedTerritory = this.warMatch.board.getSelected()
-                //     if(territory.isNeighbour(selectedTerritory)){
-                //         alert(`${selectedTerritory.owner?.name} está atacando com ${selectedTerritory.name} o território ${territory.name} de ${territory.owner?.name}`)
-                //         selectedTerritory.attack(territory)
-                //         return
-                //     }
-                //     console.log(territory.isNeighbour(selectedTerritory))
-                //     return
-                // }else {
-                //     alert("Movimento inválido")
-                // }
             }
         })
 
@@ -211,6 +178,8 @@ export class MainGameScene extends Phaser.Scene {
         if(this.warMatch.init(players)){
             // this.scene.run("ShowUIScene",{warMatch: this.warMatch})
             this.scene.run("DisplayScene",{warMatch: this.warMatch})
+        }else{
+            alert("Jogo nao inicializado")
         }
 
         

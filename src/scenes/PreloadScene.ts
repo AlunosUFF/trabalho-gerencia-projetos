@@ -5,9 +5,9 @@ export default class PreloadScene extends Phaser.Scene{
 
     preload(){
         //Carregando os territórios
-        // let territorios = this.load.aseprite('territorios', 
-        // '../assets/images/mapa_war.png',
-        // '../assets/images/mapa_war.json')
+        let territorios = this.load.aseprite('territorios', 
+        '../assets/images/mapa_war.png',
+        '../assets/images/mapa_war.json')
 
         //Carregando a fonte
         this.load.bitmapFont('pressstart', 'assets/fonts/pressstart.png','assets/fonts/pressstart.fnt') 
@@ -27,7 +27,7 @@ export default class PreloadScene extends Phaser.Scene{
         this.load.image('objetivo', 'assets/images/icon_objetivo.png');
         this.load.image('retangulo_pequeno', 'assets/images/icon_retangulo_pequeno.png');
         this.load.image('sair', 'assets/images/icon_sair.png');
-        this.load.image('seguranca', 'assets/images/icon_seguranCa.png');
+        this.load.image('seguranca', 'assets/images/icon_seguranca.png');
         this.load.image('volume', 'assets/images/icon_volume.png');
         this.load.image('retangulo_arredondado', 'assets/images/retangulo_arredondado.png');
         this.load.image('retangulo_branco', 'assets/images/Retangulo_branco.png');
