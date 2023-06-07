@@ -6,7 +6,7 @@ import StatusJogador from "../view/StatusJogador";
 import ObjetivoJogador from "../view/ObjetivoJogador";
 import IconeCarta from "../view/IconeCarta";
 import { playerCOLORS } from "../model/GamePlayer";
-import { ObjetiveCard } from "../model/ObjectiveCard";
+import { ObjetiveCard } from "../view/ObjectiveCard";
 export default class ShowUIScene extends Phaser.Scene {
     public warMatch: WarMatch;
     public isOpen: boolean = false;

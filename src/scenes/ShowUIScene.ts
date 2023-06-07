@@ -1,5 +1,5 @@
 import { WarMatch } from "../game/WarMatch";
-import { Card } from "../model/Card";
+import { Card } from "../view/Card";
 import { playerCOLORS } from "../model/GamePlayer";
 import eventsCenter from "../services/EventsCenter";
 export default class ShowUIScene extends Phaser.Scene {

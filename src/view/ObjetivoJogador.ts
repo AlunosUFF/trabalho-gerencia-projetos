@@ -1,6 +1,6 @@
 import { GamePlayer } from "../model/GamePlayer";
 import Objective from "../model/Objective";
-import { ObjetiveCard } from "../model/ObjectiveCard";
+import { ObjetiveCard } from "./ObjectiveCard";
 
 export default class ObjetivoJogador extends Phaser.GameObjects.Container {
     // public spriteFundo: Phaser.GameObjects.Sprite;

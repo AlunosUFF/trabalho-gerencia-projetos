@@ -1,4 +1,4 @@
-import { Card } from "../model/Card";
+import { Card } from "../view/Card";
 import { GamePlayer, playerCOLORS } from "../model/GamePlayer";
 import Objective from "../model/Objective";
 import { Territory } from "../model/Territory";
