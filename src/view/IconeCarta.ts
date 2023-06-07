@@ -16,14 +16,16 @@ export default class IconeCarta extends Phaser.GameObjects.Container {
 
         super(scene,x,y ,[spriteElipseCarta,spriteCarta]);
         spriteCarta.on("pointerover", (pointer, objeto)=>{
-            spriteCarta.on("pointerdown", (pointer, objeto)=>{
-                //evento do click
-            })
-            spriteCarta.setAlpha(0.7);
-            
+            spriteCarta.setAlpha(0.7);  
         })
         spriteCarta.on("pointerout", (pointer, objeto)=>{
             spriteCarta.setAlpha(1);
+        })
+        spriteCarta.on("pointerdown", (pointer, objeto)=>{
+           this.scene.sys.displayList.list.find(o=>o.constructor.name==='DeckCartas').setVisible(true);
+           this.scene.sys.displayList.list.filter(o=>o.constructor.name!=='DeckCartas').forEach(object=>{
+            object.setVisible(false);
+           })
         })
         this.scene.add.existing(this);
 

@@ -7,6 +7,7 @@ import ObjetivoJogador from "../view/ObjetivoJogador";
 import IconeCarta from "../view/IconeCarta";
 import { playerCOLORS } from "../model/GamePlayer";
 import { ObjetiveCard } from "../view/ObjectiveCard";
+import DeckCartas from "../view/DeckCartas";
 export default class ShowUIScene extends Phaser.Scene {
     public warMatch: WarMatch;
     public isOpen: boolean = false;
@@ -20,6 +21,7 @@ export default class ShowUIScene extends Phaser.Scene {
     objetivo: any;
     iconCarta: any;
     objetivoCard: ObjetiveCard;
+    deckCartas: DeckCartas;
 
 
     constructor() {
@@ -48,6 +50,13 @@ export default class ShowUIScene extends Phaser.Scene {
         if(this.objetivo){
             this.objetivo.destroy();
         }
+        if(this.iconCarta){
+            this.iconCarta.destroy();
+        }
+        if(this.deckCartas){
+            this.deckCartas.destroy();
+        }
+
     }
 
     refresh(){
@@ -98,6 +107,16 @@ export default class ShowUIScene extends Phaser.Scene {
             fundo: 'carta',
           
         });
+
+        this.deckCartas = new DeckCartas({
+            scene:this,
+            x: 250,
+            y: 500,
+            fundo: 'barra_azul',
+            warMatch: this.warMatch,
+            color: this.warMatch.getCurrentPlayer().color
+          
+        }).setVisible(false);
 
     }
 
