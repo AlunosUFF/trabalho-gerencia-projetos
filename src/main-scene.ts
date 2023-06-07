@@ -138,6 +138,12 @@ export class MainGameScene extends Phaser.Scene {
             this.scene.run("DisplayScene",{warMatch: this.warMatch})
         }
 
+        // this.scene.scene.on("pointerdown",(pointer)=>{
+            // })
+        // this.input.on("pointerdown",(pointer)=>{
+        //     alert(pointer.x +"-"+pointer.y)
+        // })
+
         
     }
 
