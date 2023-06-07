@@ -12,7 +12,7 @@ export default class IconeCarta extends Phaser.GameObjects.Container {
         let spriteCarta = new Phaser.GameObjects.Sprite(scene, 670, 30, 'carta').setOrigin(0);
         
       
-        spriteCarta.setInteractive()
+        spriteCarta.setInteractive({useHandCursor: true})
 
         super(scene,x,y ,[spriteElipseCarta,spriteCarta]);
         spriteCarta.on("pointerover", (pointer, objeto)=>{

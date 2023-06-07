@@ -24,7 +24,7 @@ export default class ObjetivoJogador extends Phaser.GameObjects.Container {
         }).setVisible(false);
 
 
-        spriteObjetivo.setInteractive()
+        spriteObjetivo.setInteractive({useHandCursor: true})
 
         super(scene,x,y ,[spriteObjetivo,spriteIconBjetivo,objetivoCard]);
 

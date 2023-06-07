@@ -16,22 +16,25 @@ export default class DeckCartas extends Phaser.GameObjects.Container {
         let { scene, x,y,fundo, warMatch, color} = data;
         let spriteFundoAzul = new Phaser.GameObjects.Sprite(scene, 0 ,0, fundo).setOrigin(0).setTintFill(color);
         let spriteElipseFechar = new Phaser.GameObjects.Sprite(scene, 640,10, 'ellipse').setOrigin(0);
+        let textFechar = new Phaser.GameObjects.Text(scene,677,45,"❌",{fontSize:"28px", testString: '❌'});
         let spriteElipseTrocar = new Phaser.GameObjects.Sprite(scene, 10,10, 'ellipse').setOrigin(0);
+        let textTrocar = new Phaser.GameObjects.Text(scene,45,45,"✔️",{fontSize:"28px", testString: '✔️'}).setTintFill(0x55dd55);
         let retangulos:Phaser.GameObjects.Rectangle[]=[];
 
         for(let i = 0; i<5;i++){
             retangulos.push(new Phaser.GameObjects.Rectangle(scene,180+(i*100),60,90,110,0x8794a5));
         }
 
-        super(scene,x,y ,[spriteFundoAzul,spriteElipseFechar,spriteElipseTrocar]);
+        super(scene,x,y ,[spriteFundoAzul,spriteElipseFechar,spriteElipseTrocar, textFechar, textTrocar]);
         retangulos.forEach(retangulo=>{
             this.add(retangulo);
         })
         
-        this.setInteractive();
+        // this.setInteractive();
         this.warMatch = warMatch
         this.showHand();
-        spriteElipseFechar.setInteractive();
+        spriteElipseFechar.setInteractive({useHandCursor: true});
+        spriteElipseTrocar.setInteractive({useHandCursor: true})
 
 
         spriteElipseFechar.on("pointerdown", (pointer, objeto)=>{
@@ -40,6 +43,10 @@ export default class DeckCartas extends Phaser.GameObjects.Container {
              object.setVisible(true);
  
             })
+        })
+
+        spriteElipseTrocar.on("pointerdown", () =>{
+            alert("Trocando cartas!")
         })
         
         this.scene.add.existing(this);

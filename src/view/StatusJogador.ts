@@ -38,7 +38,7 @@ export default class StatusJogador extends Phaser.GameObjects.Container {
         // console.log(scene,x,y,fundo)
         super(scene,x,y ,[spriteFundoAzul,spriteElipseTurno,spriteElipseSeguranca,spriteBotaoFinalizar,spriteSeguranca,textTurnoJogador,textBotaoFinalizar,spriteLinhaertical, textSinalMaisSeguranca, textQuantidadeSeguranca, textSinalMenosSeguranca, spriteLocalizador ]);
         this.warMatch = warMatch
-        spriteBotaoFinalizar.setInteractive()
+        spriteBotaoFinalizar.setInteractive({useHandCursor: true})
          
         spriteBotaoFinalizar.on("pointerover", (pointer, objeto)=>{
             spriteBotaoFinalizar.setTint(0x13a95b);
