@@ -21,14 +21,16 @@ export class Territory extends Phaser.GameObjects.Container {
     constructor(data: any) {
         let {id, name, slug, armies, scene, x, y, spriteSource, neighbors, continent, card} = data;
         let spriteTerritory = new Phaser.GameObjects.Sprite(scene, 0, 0, 'territorios', slug).setOrigin(0)
-        .setDepth(-1).setAlpha(0.85)
+        .setDepth(-1)
         let textX = spriteSource['x'] + spriteSource['w']/2
         let textY = spriteSource['y'] + spriteSource['h']/2
         let armiesText = new Phaser.GameObjects.BitmapText(scene, textX, textY, 'pressstart', armies, 16, Phaser.GameObjects.BitmapText.ALIGN_CENTER)
         .setDepth(100)
         let territoryText = new Phaser.GameObjects.BitmapText(scene, textX - 20, textY - 20, 'pressstart', name, 10, Phaser.GameObjects.BitmapText.ALIGN_LEFT)
         .setDepth(10).setTintFill(0x000)
+
         super(scene, x, y, [spriteTerritory, armiesText, territoryText]);
+
         this.setScale(0.8).setX(x+200)
         this.setInteractive(new Phaser.Geom.Circle(textX, textY, 45), Phaser.Geom.Circle.Contains)
         this.spriteTerritory = spriteTerritory;
@@ -42,7 +44,8 @@ export class Territory extends Phaser.GameObjects.Container {
         this.scene = scene;
         this.card = card;
         this.scene.add.existing(this);
-        this.on("pointerdown", ()=>{
+        this.on("pointerdown", (pointer)=>{
+            
             eventsCenter.emit("territory-clicked", this)
         });
         this.on("pointerover", this.hoverIn)

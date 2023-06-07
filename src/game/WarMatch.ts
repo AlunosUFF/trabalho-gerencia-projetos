@@ -130,7 +130,7 @@ export class WarMatch{
         this.getCurrentPlayer()?.hand.push(Math.round(Math.random()*41)+1)
         this.getCurrentPlayer()?.hand.push(Math.round(Math.random()*41)+1)
         this.getCurrentPlayer()?.hand.push(Math.round(Math.random()*41)+1)
-        console.log(this.getCurrentPlayer().hand)
+        // console.log(this.getCurrentPlayer().hand)
 
         eventsCenter.emit(this.turn.phasesNames[Phases.MOBILIZAR],this.turn.phasesNames[Phases.MOBILIZAR])
         return true

@@ -1,23 +1,19 @@
-import { Turn } from "../game/Turn";
-import { GamePlayer } from "../model/GamePlayer";
-import { Player } from "../model/Player";
-import eventsCenter from "../services/EventsCenter";
 import { WarMatch } from "../game/WarMatch";
+import LocalizadorContinente from "./LocalizadorContinente";
 
 export default class StatusJogador extends Phaser.GameObjects.Container {
     // public spriteFundo: Phaser.GameObjects.Sprite;
-    public slug: string;
     public warMatch: WarMatch;
     // cardname: any;
     // textName: Phaser.GameObjects.BitmapText;
 
-    constructor(data: { scene: any; x: number; y: number; fundo: any; warMatch: WarMatch}) {
+    constructor(data: { scene: Phaser.Scene; x: number; y: number; fundo: any; warMatch: WarMatch}) {
         let { scene, x,y,fundo, warMatch} = data;
         let spriteFundoAzul = new Phaser.GameObjects.Sprite(scene, 0 ,0, fundo).setOrigin(0).setAlpha(0.3);
         let spriteElipseTurno = new Phaser.GameObjects.Sprite(scene, 140,10, 'ellipse').setOrigin(0);
         let spriteElipseSeguranca = new Phaser.GameObjects.Sprite(scene, 10,10, 'ellipse').setOrigin(0);
         let spriteBotaoFinalizar = new Phaser.GameObjects.Sprite(scene, 270,10, 'ellipse').setOrigin(0);
-        let spriteLocalizador = new Phaser.GameObjects.Sprite(scene, 270,-150, 'localizador').setOrigin(0);
+        // le = new Phaser.GameObjects.Sprite(scene, 270,-150, 'localizador').setOrigin(0);
         let spriteSeguranca = new Phaser.GameObjects.Sprite(scene, 45,30, 'seguranca').setOrigin(0);
         let textTurnoJogador = new Phaser.GameObjects.BitmapText(scene,160,55,'pressstart', `${warMatch.turn.getCurrentPhaseName()}`, 12, Phaser.GameObjects.BitmapText.ALIGN_CENTER);
         textTurnoJogador.setTint(0)
@@ -36,8 +32,13 @@ export default class StatusJogador extends Phaser.GameObjects.Container {
         let spriteLinhaertical = new Phaser.GameObjects.Sprite(scene, 450,5, 'linha_vertical').setOrigin(0);
         
         // console.log(scene,x,y,fundo)
-        super(scene,x,y ,[spriteFundoAzul,spriteElipseTurno,spriteElipseSeguranca,spriteBotaoFinalizar,spriteSeguranca,textTurnoJogador,textBotaoFinalizar,spriteLinhaertical, textSinalMaisSeguranca, textQuantidadeSeguranca, textSinalMenosSeguranca, spriteLocalizador ]);
+        super(scene,x,y ,[spriteFundoAzul,spriteElipseTurno,spriteElipseSeguranca,spriteBotaoFinalizar,spriteSeguranca,textTurnoJogador,textBotaoFinalizar,spriteLinhaertical, textSinalMaisSeguranca, textQuantidadeSeguranca, textSinalMenosSeguranca ]);
         this.warMatch = warMatch
+
+        
+       
+
+
         spriteBotaoFinalizar.setInteractive({useHandCursor: true})
          
         spriteBotaoFinalizar.on("pointerover", (pointer, objeto)=>{

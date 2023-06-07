@@ -7,7 +7,7 @@ import { Card } from "./Card";
 
 export default class DeckCartas extends Phaser.GameObjects.Container {
     // public spriteFundo: Phaser.GameObjects.Sprite;
-    public slug: string;
+    // public slug: string;
     public warMatch: WarMatch;
     // cardname: any;
     // textName: Phaser.GameObjects.BitmapText;

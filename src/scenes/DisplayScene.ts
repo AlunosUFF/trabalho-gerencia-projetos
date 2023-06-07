@@ -8,6 +8,7 @@ import IconeCarta from "../view/IconeCarta";
 import { playerCOLORS } from "../model/GamePlayer";
 import { ObjetiveCard } from "../view/ObjectiveCard";
 import DeckCartas from "../view/DeckCartas";
+import LocalizadorContinente from "../view/LocalizadorContinente";
 export default class ShowUIScene extends Phaser.Scene {
     public warMatch: WarMatch;
     public isOpen: boolean = false;
@@ -117,6 +118,12 @@ export default class ShowUIScene extends Phaser.Scene {
             color: this.warMatch.getCurrentPlayer().color
           
         }).setVisible(false);
+
+        //Criação dos localizadores de continent com as totalidades
+        // Object.keys(this.warMatch.board.continents).forEach(continentId =>{
+        //     new LocalizadorContinente({scene: this, 
+        //         continent: this.warMatch.board.continents[continentId]})
+        // })
 
     }
 
