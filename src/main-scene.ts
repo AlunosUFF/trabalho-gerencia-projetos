@@ -11,6 +11,7 @@ import ContadorExercitos from "./view/ContadorExercitos";
 import InitGameScene from "./scenes/InitGameScene";
 import Util from "./services/Util";
 import Objective from "./model/Objective";
+import IaPlayer from "./model/IAPlayer";
 
 
 
@@ -59,29 +60,61 @@ export class MainGameScene extends Phaser.Scene {
         })
 
         eventsCenter.on("showModal", (msg:string) => {
-            console.log(msg)
+            // console.log(msg)
         })
 
         this.input.keyboard.on("keydown-Q",()=>{
             this.scene.launch("ShowUIScene",{warMatch: this.warMatch})
         })
 
-        eventsCenter.on(this.warMatch.turn.phasesNames[Phases.MOBILIZAR],(msg: any)=>{
+        eventsCenter.on(this.warMatch.turn.phasesNames[Phases.MOBILIZAR],()=>{
             //Calcular total de exercitos
-            this.warMatch.getTotalArmiesToPlace()
+            if(this.warMatch.getCurrentPlayer()){
+                this.warMatch.getTotalArmiesToPlace()
+            }
 
-                                    
+            if(this.warMatch.getCurrentPlayer().ia){
+                // alert("IA Jogando")
+                this.warMatch.getCurrentPlayer().cardExchange()
+                this.warMatch.getCurrentPlayer().mobilize()
+                if(this.warMatch.hasConditionToNextPhase()){
+                    // eventsCenter.emit("next-phase",this.warMatch.getCurrentPlayer())
+                    // this.warMatch.turn.nextPhase()
+                }
+            }
+                   
         })
 
-        eventsCenter.on(this.warMatch.turn.phasesNames[Phases.ATACAR],(msg: any)=>{
-            
+        eventsCenter.on(this.warMatch.turn.phasesNames[Phases.ATACAR],()=>{
+            if(this.warMatch.getCurrentPlayer().ia){
+                // alert("IA Jogando")
+                this.warMatch.getCurrentPlayer().attack()
+                if(this.warMatch.hasConditionToNextPhase()){
+                    eventsCenter.emit("next-phase",this.warMatch.getCurrentPlayer())
+                    this.warMatch.turn.nextPhase()
+                }
+            }
         })
 
-        eventsCenter.on(this.warMatch.turn.phasesNames[Phases.FORTIFICAR],(msg: any)=>{
-            
+        eventsCenter.on(this.warMatch.turn.phasesNames[Phases.FORTIFICAR],()=>{
+            if(this.warMatch.getCurrentPlayer().ia){
+                // alert("IA Jogando")
+                
+                this.warMatch.getCurrentPlayer().fortify()
+                // this.warMatch.getCurrentPlayer().mobilize()
+                if(this.warMatch.hasConditionToNextPhase()){
+                    eventsCenter.emit("next-phase",this.warMatch.getCurrentPlayer())
+                    this.warMatch.turn.nextPhase()
+                }
+            }
         })
 
         eventsCenter.on("territory-clicked", (territory:Territory) =>{
+            // if(this.warMatch.getCurrentPlayer()?.ia){
+            //     alert("IA Jogando, não é permitida jogada");
+            //     return
+            // }
+
             if(this.warMatch.turn.currentPhase === Phases.MOBILIZAR){
 
                 territory.mobilize(this.warMatch.board.continents)
@@ -91,6 +124,7 @@ export class MainGameScene extends Phaser.Scene {
                 this.warMatch.board.checkAttackCondition(
                     territory, this.warMatch.getCurrentPlayer()
                 )
+
             }else if(this.warMatch.turn.currentPhase === Phases.FORTIFICAR){
 
                 this.warMatch.board.checkFortifyCondition(
@@ -100,13 +134,19 @@ export class MainGameScene extends Phaser.Scene {
         })
 
         eventsCenter.on("next-phase", (player:GamePlayer) =>{
-            player.clearPlaced();
+            if(this.warMatch.getCurrentPlayer()){
+                player.clearPlaced();
+            }
         })
 
         eventsCenter.on("next-turn" , () =>{
             if(this.warMatch.getCurrentPlayer()?.gainedTerritory){
                 this.warMatch.board.drawCard(this.warMatch.getCurrentPlayer())
             }
+        })
+
+        eventsCenter.on("clear-board", ()=>{
+            this.warMatch.board.clearBoard()
         })
 
         eventsCenter.on("check-victory", (data)=>{
@@ -122,15 +162,15 @@ export class MainGameScene extends Phaser.Scene {
 
     
         let players = [
-            {id: 1, name: 'Tiago', ia: 'false', color: 'black'},
-            {id: 2, name: 'Paulo', ia: 'false', color: 'blue'},
-            {id: 3, name: 'Rafa', ia: 'false', color: 'red'},
-            {id: 4,name: "Ygor",ia: false,color: 'green'},
-            {id: 5,name: "Thali",ia: false,color: 'yellow'},
-            {id: 6,name: "Edu",ia: false,color: 'pink'}
+            {id: 1, name: 'Tiago', ia: false, color: 'black'},
+            {id: 2, name: 'Paulo', ia: true, color: 'blue'},
+            {id: 3, name: 'Rafa', ia: true, color: 'red'},
+            {id: 4,name: "Ygor",ia: true,color: 'green'},
+            {id: 5,name: "Thali",ia: true,color: 'yellow'},
+            {id: 6,name: "Edu",ia: true,color: 'pink'}
         ]
 
-        // this.scene.run("InitGameScene")
+        this.scene.run("InitGameScene")
         // eventsCenter.emit('init', players);
 
         if(this.warMatch.init(players)){

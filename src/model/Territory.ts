@@ -53,11 +53,15 @@ export class Territory extends Phaser.GameObjects.Container {
     }
 
     hoverIn(){
-        this.spriteTerritory.setAlpha(0.4)
+        if(!this.isHighlighted){
+            this.spriteTerritory.setAlpha(0.4)
+        }
     }
 
     hoverOut(){
-        this.updateTint();
+        if(!this.isHighlighted){
+            this.updateTint();
+        }
     }
 
     mobilize(continents) {
@@ -65,11 +69,12 @@ export class Territory extends Phaser.GameObjects.Container {
         if(this.owner?.isCurrentPlayer() && this.owner.hasArmiesToPlace()){
             if(this.owner.placeble[continentSlug] > 0){
                 this.placeArmies(1);
-                this.owner.placeArmie(continentSlug , 1)
+                this.owner.placeArmie(continentSlug, 1)
             }else if(this.owner.placeble["all"] > 0){
                 this.placeArmies(1);
-                this.owner.placeArmie("all",1)
+                this.owner.placeArmie("all", 1)
             }
+            eventsCenter.emit("clear-board")
             eventsCenter.emit("check-victory", {acao: Phases.MOBILIZAR})
         }
     }
@@ -100,7 +105,6 @@ export class Territory extends Phaser.GameObjects.Container {
 
     public unselect():void{
         this.isSelected = false;
-        this.armies++
         this.spriteTerritory.setTintFill(0xffffff)
         this.spriteTerritory.clearAlpha()
         this.updateText()
@@ -154,14 +158,19 @@ export class Territory extends Phaser.GameObjects.Container {
     }
 
     placeArmies(quantity: number){
+        // console.log(typeof(this.armies), typeof(quantity))
         this.armies += quantity;
-        this.updateText();
+        
+        // this.updateText();
     }
 
-    unplaceArmies(quantity: number){
+    unplaceArmies(quantity: number){   
+        // console.log(typeof(this.armies), typeof(quantity))
         if(this.armies > quantity){
-            this.armies -= quantity;
-            this.updateText();
+            let newQuantity = this.armies - quantity
+            this.armies = newQuantity;
+            
+            // this.updateText();
         }
     }
 
@@ -193,6 +202,28 @@ export class Territory extends Phaser.GameObjects.Container {
                 }
             })
         };
-        console.log(result)
     }
+
+    unHighlightOwnedNeighbors(territories: Territory[]) {
+        const queue = [this.slug];
+        const result = [];
+        const visited = {};
+        visited[this.slug] = true;
+        let currentVertex;
+        while (queue.length) {
+            currentVertex = queue.shift();
+            result.push(currentVertex);
+            let currentTerritory = territories.find(territory => (territory.slug === currentVertex))
+            currentTerritory.neighbors.forEach(neighborId => {
+                let neighbor = territories.find(territory =>(neighborId === territory.id))
+                if(!visited[neighbor?.slug] && neighbor?.owner === this.owner){
+                    visited[neighbor?.slug] = true;
+                    neighbor?.unhighlight()
+                    queue.push(neighbor.slug)
+                }
+            })
+        };
+    }
+
+
 }

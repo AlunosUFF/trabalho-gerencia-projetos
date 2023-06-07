@@ -30,8 +30,8 @@ export default class InitGameScene extends Phaser.Scene{
                     players.push(player)
                 }
             }
+            this.scene.remove()
             eventsCenter.emit('init', players);
-            this.scene.stop();
         })
 
         this.tweens.add({

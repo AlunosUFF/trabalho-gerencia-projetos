@@ -35,6 +35,7 @@ export class GamePlayer extends Player{
     public playerText: Phaser.GameObjects.Text;
     public armies;
     public destroyed = false;
+    
     public placed: Placeble = {
         "all":0, "south-america":0,    
         "asia": 0,

@@ -74,6 +74,8 @@ export default class ShowUIScene extends Phaser.Scene {
             counter++;
         })
 
+        counter = 6;
+
         this.finishPhaseButton = this.add.text(this.INITIALX, this.INITIALY + (counter * 20), "Finalizar")
         .setOrigin(0).setInteractive({ useHandCursor: true  }).setBackgroundColor("#fcefse")
 
@@ -105,8 +107,6 @@ export default class ShowUIScene extends Phaser.Scene {
                 let playerCardsToExchange = this.cards.filter(c=>c.isSelected).map(c=>c.territory)
                 this.warMatch.board.exchangeCards(currentPlayer, playerCardsToExchange )
                 this.updateArmies()
-                // this.displayMessage.destroy()
-                // this.displayPhase.destroy()
                 this.refresh()
             }
         })

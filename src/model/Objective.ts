@@ -28,24 +28,16 @@ export default class Objective{
     }
 
     static checkVictoryCondition(warMatch: WarMatch, data){
-        let player: GamePlayer = warMatch.getCurrentPlayer()
-        let fnString = `${player.objective.type}`
-        let objective = player.objective
-        Objective[fnString].apply(this, [
-            warMatch,
-            objective, 
-            data
-        ]);
+        let player: GamePlayer | undefined = warMatch.getCurrentPlayer()
+        let fnString = `${player?.objective.type}`
+        let objective = player?.objective
 
-        // if(data.defender){
-        //     if(data.defender.aimer){
-        //         console.log(data.defender.name, data.defender.aimer.name, data.defender.hasBeenDestroyed())
-        //     }
-        // }
-        // if(data.defender && data.defender.aimer && data.defender.aimer !== data.attacker && data.defender.hasBeenDestroyed()){
-        //     warMatch.board.resetObjective(warMatch, data.defender.aimer)
-        //     warMatch.removePlayerFromMatch(data.defender)
-        // }
+        if(player?.objective.type === "conquer"){
+            Objective.conquer(warMatch, objective , data)
+        }else if(player?.objective.type === "destroy"){
+            Objective.destroy(warMatch, objective , data)
+        }
+        
         if(data.defender && data.defender.hasBeenDestroyed()){
             warMatch.removePlayerFromMatch(data.defender)
             if(data.defender.aimer && data.defender.aimer !== data.attacker){
@@ -53,11 +45,10 @@ export default class Objective{
             }
             eventsCenter.emit("player-destroyed", data.defender)
         }
-
     }
 
-    static destroy(warMatch:WarMatch, objective:Objective, data:{attacker: GamePlayer, defender: GamePlayer, }){
-        console.log("rodando destroy")
+    static destroy(warMatch:WarMatch, objective:Objective | undefined, data:{attacker: GamePlayer, defender: GamePlayer, }){
+        // alert("rodando destroy")
         /* Se possui o exército da cor ou tiver sido destruído por outro, muda a condição
         
         */
@@ -74,8 +65,8 @@ export default class Objective{
 
     }    
 
-    static conquer(warMatch:WarMatch, objective:Objective, data:{attacker: GamePlayer, defender: GamePlayer, }){
-        console.log("rodando conquer")
+    static conquer(warMatch:WarMatch, objective:Objective | undefined, data:{attacker: GamePlayer, defender: GamePlayer, }){
+        // alert("rodando conquer")
         let player:GamePlayer | any = warMatch.getCurrentPlayer()
         if(objective.target === "Continent"){
             let condicao1 = warMatch.board.hasTotality(player, objective.condition.continents[0])

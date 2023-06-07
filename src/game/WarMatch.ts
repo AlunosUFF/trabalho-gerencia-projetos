@@ -1,4 +1,5 @@
 import { GamePlayer, playerCOLORS } from "../model/GamePlayer";
+import IaPlayer from "../model/IAPlayer";
 import PlayerType, { Player } from "../model/Player";
 import { Territory } from "../model/Territory";
 import eventsCenter from "../services/EventsCenter";
@@ -44,8 +45,6 @@ export class WarMatch{
         this.turn.playersOrders.splice(indexOrder, 1);
         this.turn.setTotalPlayers()
         defender.destroyPlayerText()
-        console.log(this.players)
-        console.log(this.turn.playersOrders)
     }
 
     getPlayerById(id: number): GamePlayer {
@@ -105,33 +104,36 @@ export class WarMatch{
         }
         
         players.forEach((player: PlayerType) =>{
-            this.addPlayer(new GamePlayer(player, playerCOLORS[player.color], this))
+            if(player.ia){
+                this.addPlayer(new IaPlayer(player, playerCOLORS[player.color], this))
+            }else{
+                this.addPlayer(new GamePlayer(player, playerCOLORS[player.color], this))
+            }
         })
         
         let playersIds = players.map(player => {
             return player.id
         })
 
-        this.turn.init(playersIds);
-
+        
         let territoryIds = this.scene.cache.json.get('territories').territories
-
+        
         .map((territory:Territory) => {
             return territory.id;
         })
         this.board.setTerritories(TerritoryFactory.loadCountries(this.scene))
         this.board.init(territoryIds, this.scene.continentsData, this.scene.cardsData, this.scene.objectiveCardsData)
-
+        
+        this.turn.init(playersIds);
+        
         this.shufflePlayerInBoard()
         this.drawPlayersObjectives()
         this.board.reshuffleDeck()
-        this.getCurrentPlayer()?.hand.push(Math.round(Math.random()*41)+1)
-        this.getCurrentPlayer()?.hand.push(Math.round(Math.random()*41)+1)
-        this.getCurrentPlayer()?.hand.push(Math.round(Math.random()*41)+1)
-        this.getCurrentPlayer()?.hand.push(Math.round(Math.random()*41)+1)
-        this.getCurrentPlayer()?.hand.push(Math.round(Math.random()*41)+1)
-        // console.log(this.getCurrentPlayer().hand)
-
+        // this.getCurrentPlayer()?.hand.push(Math.round(Math.random()*41)+1)
+        // this.getCurrentPlayer()?.hand.push(Math.round(Math.random()*41)+1)
+        // this.getCurrentPlayer()?.hand.push(Math.round(Math.random()*41)+1)
+        // this.getCurrentPlayer()?.hand.push(Math.round(Math.random()*41)+1)
+        // this.getCurrentPlayer()?.hand.push(Math.round(Math.random()*41)+1)
         eventsCenter.emit(this.turn.phasesNames[Phases.MOBILIZAR],this.turn.phasesNames[Phases.MOBILIZAR])
         return true
     }
@@ -161,7 +163,7 @@ export class WarMatch{
         //Mobilizar
         switch (this.turn.currentPhase) {
             case Phases.MOBILIZAR:
-                return true
+                // return true
                  //Mao maior que 5
                 let handSize = this.getCurrentPlayer().hand.length === 5
                 //Existe exercito para alocar
@@ -173,11 +175,13 @@ export class WarMatch{
                 }
                 break;
             case Phases.ATACAR:
-                console.log(this.turn.getCurrentPhaseName())
+                // console.log(this.turn.getCurrentPhaseName())
+
                 return true
                 break;
             case Phases.FORTIFICAR:
-                console.log(this.turn.getCurrentPhaseName())
+                // console.log(this.turn.getCurrentPhaseName())
+
                 return true
                 break;
             default:
