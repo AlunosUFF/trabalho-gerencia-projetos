@@ -6,6 +6,7 @@ import StatusJogador from "../view/StatusJogador";
 import ObjetivoJogador from "../view/ObjetivoJogador";
 import IconeCarta from "../view/IconeCarta";
 import { playerCOLORS } from "../model/GamePlayer";
+import { ObjetiveCard } from "../model/ObjectiveCard";
 export default class ShowUIScene extends Phaser.Scene {
     public warMatch: WarMatch;
     public isOpen: boolean = false;
@@ -15,9 +16,10 @@ export default class ShowUIScene extends Phaser.Scene {
     displayPhase: Phaser.GameObjects.Text;
     displayMessage: Phaser.GameObjects.Text;
     contadores: ContadorExercitos[]=[];
-    statusJogador: ContadorExercitos;
+    statusJogador: StatusJogador;
     objetivo: any;
     iconCarta: any;
+    objetivoCard: ObjetiveCard;
 
 
     constructor() {
@@ -43,6 +45,9 @@ export default class ShowUIScene extends Phaser.Scene {
         if(this.statusJogador){
             this.statusJogador.destroy();
         }
+        if(this.objetivo){
+            this.objetivo.destroy();
+        }
     }
 
     refresh(){
@@ -66,7 +71,6 @@ export default class ShowUIScene extends Phaser.Scene {
         })
 
       
-       
         this.statusJogador = new StatusJogador({
             scene:this,
             x: 250,
@@ -75,15 +79,17 @@ export default class ShowUIScene extends Phaser.Scene {
             warMatch: this.warMatch,
                 
         });
-     
-       
+
+        
         this.objetivo = new ObjetivoJogador({
             scene:this,
-            x: 250,
-            y: 500,
+            x: 0,
+            y: 0,
             fundo: 'ellipse',
-
+            objective: this.warMatch.getCurrentPlayer().objective,
+            color: this.warMatch.getCurrentPlayer().color
         });
+
 
         this.iconCarta = new IconeCarta({
             scene:this,
