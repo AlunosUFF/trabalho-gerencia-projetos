@@ -1,0 +1,68 @@
+{"continents":{
+    "1": {
+        "x":140,
+        "y":120,
+        "textX":110,
+        "textY": 10,
+        "id": 1,
+        "name": "América do Norte",
+        "totality": 5,
+        "color":"#f58e3f",
+        "slug": "north-america"
+    },
+    "2": {
+        "x":500,
+        "y":120,
+        "textX":100,
+        "textY": 10,
+        "id": 2,
+        "name": "Europa",
+        "totality": 5,
+        "color":"#1a54a5",
+        "slug": "europe"
+    },
+    "3": {
+        "x":1100,
+        "y":200,
+        "textX":-20,
+        "textY": 10,
+        "id": 3,
+        "name": "Ásia",
+        "totality": 7,
+        "color":"#fef04a",
+        "slug": "asia"
+    },
+    "4": {
+        "x":250,
+        "y":350,
+        "textX":110,
+        "textY": 10,
+        "id": 4,
+        "name": "América do Sul",
+        "totality": 2,
+        "color":"#03a95e",
+        "slug": "south-america"
+    },
+    "5": {
+        "x":550,
+        "y":300,
+        "textX":110,
+        "textY": 10,
+        "id": 5,
+        "name": "África",
+        "totality": 3,
+        "color":"#de2587",
+        "slug": "africa"
+    },
+    "6": {
+        "x":930,
+        "y":430,
+        "textX":110,
+        "textY": 10,
+        "id": 6,
+        "name": "Oceania",
+        "totality": 2,
+        "color":"#ec3829",
+        "slug": "oceania"
+    }
+}}

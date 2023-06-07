@@ -1,7 +1,8 @@
-import PlayerType from "../model/Player";
+import { GamePlayer } from "../model/GamePlayer";
+import eventsCenter from "../services/EventsCenter";
 import Util from "../services/Util";
 
-enum Phases{
+export enum Phases{
     MOBILIZAR = 0,
     ATACAR = 1,
     FORTIFICAR = 2
@@ -25,7 +26,9 @@ export class Turn{
     
     init(players:number[]) {
         this.shufflePlayerOrder(players);
-        this.currentPhase = Phases.MOBILIZAR;
+        // this.currentPhase = Phases.MOBILIZAR;
+        // this.nextPhase();
+        this.currentPhase++;
         this.setTotalPlayers();
     }
 
@@ -38,12 +41,27 @@ export class Turn{
         return this.playersOrders[this.currentPlayer]
     }
 
+    getCurrentPlayer(players:GamePlayer[]):GamePlayer{
+        return players.find(player =>{
+            return player.id === this.getCurrentPlayerId()
+        })
+    }
+
     getCurrentPhaseName(){
         return this.phasesNames[this.currentPhase]
     }
 
     nextPhase(){
         this.currentPhase++;
+        if(!(this.currentPhase < this.phasesNames.length)){
+            this.nextTurn();
+        }
         this.currentPhase %= this.phasesNames.length
+        eventsCenter.emit(this.getCurrentPhaseName())
+    }
+
+    nextTurn(){
+        eventsCenter.emit("next-turn")
+        this.nextPlayer();
     }
 }

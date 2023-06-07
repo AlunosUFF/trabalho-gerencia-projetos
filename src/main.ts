@@ -8,6 +8,11 @@ import PreloadScene from './scenes/PreloadScene';
 import TurnControllerScene from './scenes/TurnControllerScene';
 import InitGameScene from "./scenes/InitGameScene"
 import ShowUIScene from './scenes/ShowUIScene';
+import DisplayScene from './scenes/DisplayScene';
+import FundoScene from './scenes/FundoScene';
+import MenuScene from './scenes/MenuScene';
+import LobbyScene from './scenes/LobbyScene';
+import ManualScene from './scenes/ManualScene';
 
 const config: Phaser.Types.Core.GameConfig = {
     width: 1227,
@@ -18,10 +23,8 @@ const config: Phaser.Types.Core.GameConfig = {
     dom: {
       createContainer: true,
     },
-    scene: [PreloadScene, MainGameScene,TurnControllerScene, InitGameScene, ShowUIScene]
+    scene: [PreloadScene, FundoScene, MenuScene, LobbyScene, ManualScene, MainGameScene, InitGameScene, ShowUIScene, DisplayScene]
   };
-
-// new Phaser.Game(config);
 
 export class WarGame extends Phaser.Game{
     constructor(config:Phaser.Types.Core.GameConfig) {
@@ -30,11 +33,6 @@ export class WarGame extends Phaser.Game{
 }
 
 new WarGame(config);
-// game.addPlayer(new GamePlayer({id:1, name:'Paulo'}));
-// game.addPlayer(new GamePlayer({id:2, name:'Tiago'}));
-
-// const player1 = new Player()
-// console.log(game.players)
 
 
 
