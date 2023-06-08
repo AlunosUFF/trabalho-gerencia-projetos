@@ -1,18 +1,24 @@
 {
   "version": "0.1.0",
   "homepage": "https://alunosuff.github.io/trabalho-gerencia-projetos/",
+  "type": "commonjs",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "dev": "vite",
-    "build": "tsc && vite build",
-    "serve": "vite preview"
+    "server": "nodemon src/socket-back.js",
+    "build": "vite build",
+    "start": "vite preview",
+    "serve": "node server.js"
   },
   "dependencies": {
-    "phaser": "3.55.2"
+    "express": "^4.18.2",
+    "phaser": "3.55.2",
+    "socket.io": "^4.6.1"
   },
   "devDependencies": {
     "gh-pages": "^5.0.0",
+    "nodemon": "^2.0.22",
     "typescript": "^4.6.2",
     "vite": "^2.8.6"
   }
