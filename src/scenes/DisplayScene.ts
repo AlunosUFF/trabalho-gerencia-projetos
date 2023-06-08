@@ -9,6 +9,7 @@ import { playerCOLORS } from "../model/GamePlayer";
 import { ObjetiveCard } from "../view/ObjectiveCard";
 import DeckCartas from "../view/DeckCartas";
 import LocalizadorContinente from "../view/LocalizadorContinente";
+import IconeSair from "../view/IconeSair";
 export default class ShowUIScene extends Phaser.Scene {
     public warMatch: WarMatch;
     public isOpen: boolean = false;
@@ -23,6 +24,7 @@ export default class ShowUIScene extends Phaser.Scene {
     iconCarta: any;
     objetivoCard: ObjetiveCard;
     deckCartas: DeckCartas;
+    iconSair: any;
 
 
     constructor() {
@@ -62,6 +64,7 @@ export default class ShowUIScene extends Phaser.Scene {
 
     refresh(){
         this.destroy();
+        this.scene.launch('OutScene');
         let count = 0;
         this.warMatch.turn.playersOrders.forEach(playerId =>{
             let player = this.warMatch.getPlayerById(playerId)
@@ -124,7 +127,6 @@ export default class ShowUIScene extends Phaser.Scene {
         //     new LocalizadorContinente({scene: this, 
         //         continent: this.warMatch.board.continents[continentId]})
         // })
-
     }
 
     updateArmies(){
