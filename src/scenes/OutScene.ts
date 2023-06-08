@@ -5,7 +5,7 @@ export default class OutScene extends Phaser.Scene {
     create(){
 
         
-        let spriteIconeSair  = this.add.image(1180,100,'botao_sair').setScale(0.7).setInteractive({useHandCursor:true})
+        let spriteIconeSair  = this.add.image(1180,100,'botao_sair').setScale(0.6).setInteractive({useHandCursor:true})
        
         spriteIconeSair.on('pointerdown',()=>{
             this.scene.stop("MainGameScene")
