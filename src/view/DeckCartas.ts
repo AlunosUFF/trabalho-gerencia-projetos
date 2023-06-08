@@ -20,13 +20,14 @@ export default class DeckCartas extends Phaser.GameObjects.Container {
         let spriteElipseTrocar = new Phaser.GameObjects.Sprite(scene, 10,10, 'ellipse').setOrigin(0);
         let textTrocar = new Phaser.GameObjects.Text(scene,45,45,"✔️",{fontSize:"28px", testString: '✔️'}).setTintFill(0x55dd55);
         let retangulos:Phaser.GameObjects.Rectangle[]=[];
-        let spriteTabelaTroca = new Phaser.GameObjects.Sprite(scene, -240,-330, 'tabela_de_troca').setOrigin(0);
-
+        let retanguloMargemTabelaTroca = new Phaser.GameObjects.Rectangle(scene,-250,-340,250,410,color).setOrigin(0)
+        retanguloMargemTabelaTroca.setVisible(false)
+        let spriteTabelaTroca = new Phaser.GameObjects.Sprite(scene, -240,-330, 'tabela_de_troca').setOrigin(0)
         for(let i = 0; i<5;i++){
             retangulos.push(new Phaser.GameObjects.Rectangle(scene,180+(i*100),60,90,110,0x8794a5));
         }
 
-        super(scene,x,y ,[spriteFundoAzul,spriteElipseFechar,spriteElipseTrocar, textFechar, textTrocar,spriteTabelaTroca]);
+        super(scene,x,y ,[spriteFundoAzul,spriteElipseFechar,spriteElipseTrocar, textFechar, textTrocar,retanguloMargemTabelaTroca,spriteTabelaTroca]);
         retangulos.forEach(retangulo=>{
             this.add(retangulo);
         })
@@ -36,8 +37,15 @@ export default class DeckCartas extends Phaser.GameObjects.Container {
         this.showHand();
         spriteElipseFechar.setInteractive({useHandCursor: true});
         spriteElipseTrocar.setInteractive({useHandCursor: true})
+        spriteTabelaTroca.setInteractive()
 
-
+        spriteTabelaTroca.on("pointerover", (pointer, objeto) =>{
+            retanguloMargemTabelaTroca.setVisible(true)
+        })
+        spriteTabelaTroca.on("pointerout", (pointer, objeto) =>{
+            retanguloMargemTabelaTroca.setVisible(false)
+        })
+        
         spriteElipseFechar.on("pointerdown", (pointer, objeto)=>{
             this.scene.sys.displayList.list.find(o=>o.constructor.name==='DeckCartas').setVisible(false);
             this.scene.sys.displayList.list.filter(o=>o.constructor.name!=='DeckCartas').forEach(object=>{
@@ -46,9 +54,7 @@ export default class DeckCartas extends Phaser.GameObjects.Container {
             })
         })
 
-        spriteElipseTrocar.on("pointerdown", () =>{
-            alert("Trocando cartas!")
-        })
+        
         
         this.scene.add.existing(this);
         
