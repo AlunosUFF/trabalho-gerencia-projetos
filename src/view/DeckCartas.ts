@@ -20,12 +20,13 @@ export default class DeckCartas extends Phaser.GameObjects.Container {
         let spriteElipseTrocar = new Phaser.GameObjects.Sprite(scene, 10,10, 'ellipse').setOrigin(0);
         let textTrocar = new Phaser.GameObjects.Text(scene,45,45,"✔️",{fontSize:"28px", testString: '✔️'}).setTintFill(0x55dd55);
         let retangulos:Phaser.GameObjects.Rectangle[]=[];
+        let spriteTabelaTroca = new Phaser.GameObjects.Sprite(scene, -240,-330, 'tabela_de_troca').setOrigin(0);
 
         for(let i = 0; i<5;i++){
             retangulos.push(new Phaser.GameObjects.Rectangle(scene,180+(i*100),60,90,110,0x8794a5));
         }
 
-        super(scene,x,y ,[spriteFundoAzul,spriteElipseFechar,spriteElipseTrocar, textFechar, textTrocar]);
+        super(scene,x,y ,[spriteFundoAzul,spriteElipseFechar,spriteElipseTrocar, textFechar, textTrocar,spriteTabelaTroca]);
         retangulos.forEach(retangulo=>{
             this.add(retangulo);
         })

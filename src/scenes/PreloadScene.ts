@@ -49,6 +49,7 @@ export default class PreloadScene extends Phaser.Scene{
         this.load.image('botao_x', 'assets/images/botao_x.png');
         this.load.image('botao_voltar', 'assets/images/botao_voltar.png');
         this.load.image('player_container', 'assets/images/player_container.png');
+        this.load.image('tabela_de_troca', 'assets/images/tabela_de_troca.png');
 
     }
 
