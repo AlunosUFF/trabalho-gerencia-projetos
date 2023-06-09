@@ -26,8 +26,6 @@ const config: Phaser.Types.Core.GameConfig = {
     scene: [PreloadScene, FundoScene, MenuScene, LobbyScene, ManualScene, MainGameScene, InitGameScene, ShowUIScene, DisplayScene]
   };
 
-// new Phaser.Game(config);
-
 export class WarGame extends Phaser.Game{
     constructor(config:Phaser.Types.Core.GameConfig) {
       super(config); 
@@ -35,11 +33,6 @@ export class WarGame extends Phaser.Game{
 }
 
 new WarGame(config);
-// game.addPlayer(new GamePlayer({id:1, name:'Paulo'}));
-// game.addPlayer(new GamePlayer({id:2, name:'Tiago'}));
-
-// const player1 = new Player()
-// console.log(game.players)
 
 
 

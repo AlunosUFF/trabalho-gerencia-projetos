@@ -1,4 +1,5 @@
 import { WarMatch } from "../game/WarMatch";
+import Objective from "./Objective";
 import PlayerType, { Player } from "./Player";
 import { Territory } from "./Territory";
 
@@ -12,12 +13,18 @@ export enum playerCOLORS  {
 }
 
 export interface Placeble{
-    "all": number
+    "all": number,
+    "south-america": number,
+    "asia": number,
+    "oceania": number,
+    "africa": number,
+    "north-america": number,
+    "europe": number
 }
 
-export interface Placed {
-    "all": number
-}
+// export interface Placed {
+//     "all": number
+// }
 
 export class GamePlayer extends Player{
     
@@ -26,13 +33,33 @@ export class GamePlayer extends Player{
     public totalArmies: number;
     public totalTerritories: number;
     public playerText: Phaser.GameObjects.Text;
-    public armies
-    public ia:boolean
-    public placed: Placed = {"all":0}
-    public placeble: Placeble = {"all":0}
-    public gainedTerritory = false
-    warMatch: WarMatch;
+    public armies;
+    public destroyed = false;
     
+    public placed: Placeble = {
+        "all":0, "south-america":0,    
+        "asia": 0,
+        "oceania": 0,
+        "africa": 0,
+        "north-america": 0,
+        "europe": 0
+    }
+    public placeble: Placeble = {
+        "all":0, 
+        "south-america":0,    
+        "asia": 0,
+        "oceania": 0,
+        "africa": 0,
+        "north-america": 0,
+        "europe": 0
+    }
+    public gainedTerritory = false;
+    public hand: number[] = []
+    public warMatch: WarMatch;
+    public objective: Objective;
+    public aimer: GamePlayer;
+
+
     // public ia: boolean;
     constructor(data:PlayerType, color: number, warMatch: WarMatch, ia: boolean) {
         super(data);
@@ -67,11 +94,19 @@ export class GamePlayer extends Player{
         this.placeble[type] = quantity;
     }
 
+    addPlaceble(type:string, quantity:number){
+        this.placeble[type] += quantity;
+    }
+
     placeArmie(type:string, quantity:number){
         if(this.hasArmiesToPlace()){
             this.placeble[type] -= quantity;
             this.placed[type] += quantity;
         }
+    }
+
+    updateTotalTerritories(){
+        this.totalTerritories = this.warMatch.getPlayerTerritories(this).length;
     }
 
     unplaceArmie(type:string, quantity:number){
@@ -88,17 +123,26 @@ export class GamePlayer extends Player{
     }
 
     hasArmiesToPlace(){
-        if(this.placeble.all > 0){
-            return true
-        }
-        return false
+        let placesToPlace = Object.keys(this.placeble).filter(key => {
+            return this.placeble[key] > 0
+        }).length
+        
+        return placesToPlace > 0
     }
 
     isOwner(territory: Territory){
         return this.id === territory.owner?.id
     }
 
-    resetPlaced(){
-        this.placed.all = 0
+    hasBeenDestroyed(){
+        return this.totalTerritories === 0
+    }
+
+    // resetPlaced(){
+    //     this.placed.all = 0
+    // }
+
+    resetPlaces(){
+        
     }
 }

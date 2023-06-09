@@ -27,7 +27,8 @@ export class Turn{
     init(players:number[]) {
         this.shufflePlayerOrder(players);
         // this.currentPhase = Phases.MOBILIZAR;
-        this.nextPhase();
+        // this.nextPhase();
+        this.currentPhase++;
         this.setTotalPlayers();
     }
 
@@ -56,10 +57,11 @@ export class Turn{
             this.nextTurn();
         }
         this.currentPhase %= this.phasesNames.length
-        eventsCenter.emit(this.getCurrentPhaseName(), this.getCurrentPhaseName())
+        eventsCenter.emit(this.getCurrentPhaseName())
     }
 
     nextTurn(){
+        eventsCenter.emit("next-turn")
         this.nextPlayer();
     }
 }
