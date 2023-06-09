@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
   "homepage": "https://alunosuff.github.io/trabalho-gerencia-projetos/",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "start": "nodemon server.js",
     "build": "vite build",
