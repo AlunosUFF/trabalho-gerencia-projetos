@@ -14,19 +14,7 @@ export default class LocalizadorContinente extends Phaser.GameObjects.Container{
         console.log(territorio[0])
         localizador.setInteractive({useHandCursor: true})
         localizador.on("pointerdown", (pointer, objeto)=>{
-            // if(continent.id===territorio.continent){
-            //     alert("oi")
-            // }
-
-            territorio.forEach(objectId=>{
-                console.log(objectId.name)
-            })
-
-        //  continent.filter(continent.id===territorio.continent).forEach(object=>{
-        //      object.setVisible(true);
- 
-        //     })
-        //     // console.log(continent.id)
+            console.log(continent.id)
         })
         
         this.scene.add.existing(this)
