@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "start": "nodemon server.js",
-    "build": "vite build",
+    "build": "vite build -w",
     "serve": "node server.js"
   },
   "dependencies": {

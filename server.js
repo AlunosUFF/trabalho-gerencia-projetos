@@ -5,6 +5,7 @@ import path from 'path';
 import fs from 'fs'
 import { fileURLToPath } from 'url'
 
+
 const app = express();
 const server = http.createServer(app);
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -20,18 +21,20 @@ app.get('/', (_, res) => {
 
 const io = new SocketIOServer(server);
 
-const port = process.env.PORT || 3000;
 
-// Configurar o Socket.IO
-io.on('connection', (socket) => {
-  console.log('Novo cliente conectado');
+// const gameSession = new GameServer()
+// gameSession.connect(3000)
+// const port = process.env.PORT || 3000;
+// // Configurar o Socket.IO
+// io.on('connection', (socket) => {
+//   console.log('Novo cliente conectado');
 
-  // Lidar com eventos do Socket.IO aqui
-});
+//   // Lidar com eventos do Socket.IO aqui
+// });
 
-// Inicia o servidor
-server.listen(port, () => {
-  console.log(`Servidor iniciado em http://localhost:${port}`);
-});
+// // Inicia o servidor
+// server.listen(port, () => {
+//   console.log(`Servidor iniciado em http://localhost:${port}`);
+// });
 
-export default app;
+// export default app;

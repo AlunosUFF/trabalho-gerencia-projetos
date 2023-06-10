@@ -1,10 +1,7 @@
-console.log("Server")
-
 // const { PlayerEvent, ServerEvent } =  require("../shared/events.model");
 // const { DomainSocket } = require("../shared/models");
 // // import * as express from "express";
-
-
+import { PlayerEvent, ServerEvent } from "../shared/events.model";
 
 // const express = require('express');
 // console.log(express)
@@ -81,3 +78,17 @@ console.log("Server")
 
 // const gameSession = new GameServer();
 // gameSession.connect(3000)
+
+export default class GameServer {
+    private gameHasStarted:boolean = false;
+
+    constructor() {
+        this.socketEvents();
+    }
+
+    socketEvents()  {
+        io.on(ServerEvent.connected, (socket) => {
+            console.log("Client connected")
+        });
+    }
+}

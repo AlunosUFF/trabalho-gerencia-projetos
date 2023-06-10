@@ -1,8 +1,8 @@
 export class GameEvent {
-    // public static readonly authentication: string = "authentication:successful";
-    // public static readonly end: "game:over";
-    // public static readonly start: "game:start";
-    // public static readonly drop: string = "drop";
+    public static readonly authentication: string = "authentication:successful";
+    public static readonly end: "game:over";
+    public static readonly start: "game:start";
+    public static readonly drop: string = "drop";
 }
 
 export class ServerEvent {
