@@ -257,7 +257,7 @@ export class Board {
             territory.highlightNeighbours(this.territories)
         }else if(territory.isHighlighted){
             let attacker = this.getSelected()
-             this.attack(attacker, territory) 
+            this.attack(attacker, territory) 
         }else if(this.hasSelectedTerritory()){
             alert("Ataque inválido")
         }
