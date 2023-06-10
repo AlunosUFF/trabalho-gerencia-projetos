@@ -41,7 +41,9 @@ export class TerritoryFactory{
         // console.log(scene.continentsData)
         Object.keys(scene.continentsData).forEach(continentId =>{
             new LocalizadorContinente({scene, 
-                continent: scene.continentsData[continentId]})
+                continent: scene.continentsData[continentId],
+                territorio:territorios,
+            })
         })
 
         this.AddLines(scene)
