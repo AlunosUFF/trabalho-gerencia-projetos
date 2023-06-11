@@ -30,8 +30,8 @@ export class GamePlayer extends Player{
     
     // public cards: Array<Car
     public color: number;
-    public totalArmies: number;
-    public totalTerritories: number;
+    public totalArmies: number = 0;
+    public totalTerritories: number = 0;
     public playerText: Phaser.GameObjects.Text;
     public armies;
     public destroyed = false;

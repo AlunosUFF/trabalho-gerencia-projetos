@@ -48,6 +48,8 @@ export default class PreloadScene extends Phaser.Scene{
         this.load.image('tabela_de_troca', 'assets/images/tabela_de_troca.png');
         this.load.image('botao_sair', 'assets/images/botao_sair.png');
 
+        this.load.plugin('rexinputtextplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexinputtextplugin.min.js', true);
+
     }
 
     create(){

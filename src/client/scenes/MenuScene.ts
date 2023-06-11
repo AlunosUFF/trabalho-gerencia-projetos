@@ -9,7 +9,7 @@ export default class MenuScene extends Phaser.Scene {
         let imageBotaoManual = this.add.image(600,450,'botao_manual').setScale(0.7).setInteractive({useHandCursor:true})
         
         imageBotaoJogar.on('pointerdown',()=>{
-            this.scene.start("LobbyScene")
+            this.scene.start("MainGameScene")
         })
         imageBotaoManual.on('pointerdown',()=>{
             this.scene.start("ManualScene")

@@ -25,6 +25,8 @@ export class WarMatch{
         this.board = board;
         this.scene = scene;
     }
+    public hasInitialized: boolean = false;
+    public hasFinished: boolean = false;
 
     getTotalPlayers(): number {
         return this.players.length;
@@ -99,7 +101,6 @@ export class WarMatch{
         if(players.length < 3){
             let msg = "Deve haver pelo menos três jogadores"
             eventsCenter.emit('restart', msg)
-            eventsCenter.emit('showModal', msg)
             return false
         }
         

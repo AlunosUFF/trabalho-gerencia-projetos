@@ -4,6 +4,8 @@ import { Board } from "../game/Board";
 import { Phases, Turn } from "../game/Turn";
 import PlayerType from "../model/Player";
 import eventsCenter from "../services/EventsCenter";
+import io, { Socket } from 'socket.io-client';
+import { GameEvent, InputEvent } from "../../shared/events.model";
 
 const COLORS = {
     'black': 0x4f4f4d,
@@ -20,8 +22,14 @@ export default class MainGameScene extends Phaser.Scene {
     public continentsData: any;
     public cardsData: any;
     public objectiveCardsData: any;
+    public socket: Socket;
+    
     constructor() {
         super('MainGameScene');
+    }
+
+    init(){
+        this.socket = io('http://localhost:3000');
     }
 
     preload():void{
@@ -33,8 +41,21 @@ export default class MainGameScene extends Phaser.Scene {
         this.cardsData = this.cache.json.get('cards').cards;
         this.objectiveCardsData = this.cache.json.get('objectives').objectives
         
-        // this.warMatch = new WarMatch(new Board(), new Turn(), this);
+        this.warMatch = new WarMatch(new Board(), new Turn(), this);
         
+        if(!this.warMatch.hasInitialized){
+            this.scene.launch("LobbyScene")
+        }else{
+            this.scene.launch("DisplayScene")
+        }
+
+        eventsCenter.on(InputEvent.update, (msg:string)=>{
+            this.socket.emit(InputEvent.update, msg)
+        })
+
+        this.socket.on(InputEvent.update, (msg:string)=>{
+            eventsCenter.emit(InputEvent.update, msg);
+        })
       
         //Eventos
         //Busca o evento dos novos jogadores no jogo

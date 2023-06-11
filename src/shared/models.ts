@@ -1,4 +1,5 @@
 import { Socket } from "socket.io";
+import SocketIOClient from "socket.io-client";
 
 export interface Comet {
     id: string;
@@ -35,14 +36,14 @@ export interface Player {
     coors?: Coordinates & playerActions;
 }
 
-// export interface Window {
-//     socket: SocketIOClient.Emitter;
-//     location: {
-//         reload(forceReload: boolean): void;
-//     };
-//     innerHeight: number;
-//     innerWidth: number;
-// }
+export interface Window {
+    socket: SocketIOClient.Emitter;
+    location: {
+        reload(forceReload: boolean): void;
+    };
+    innerHeight: number;
+    innerWidth: number;
+}
 
 export interface DomainSocket extends Socket {
     comet: {
@@ -50,5 +51,7 @@ export interface DomainSocket extends Socket {
     };
     player: Player;
 }
+
+export interface 
 
 export type PlayerTypes = "shooter-sprite-enemy" | "shooter-sprite";
