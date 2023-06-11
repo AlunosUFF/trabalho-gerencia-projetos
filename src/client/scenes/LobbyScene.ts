@@ -1,6 +1,5 @@
 import { playerCOLORS } from "../model/GamePlayer"
 import PlayerContainer from "../view/PlayerContainer"
-import FundoScene from "./FundoScene"
 
 export default class LobbyScene extends Phaser.Scene {
     public playersContainers: PlayerContainer[]=[]
