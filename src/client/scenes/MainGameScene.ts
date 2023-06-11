@@ -1,19 +1,9 @@
 import Phaser from "phaser";
-import { TerritoryFactory } from './services/territory-factory'
-import { WarMatch } from "./game/WarMatch";
-import { Phases, Turn } from "./game/Turn";
-import { GamePlayer } from "./model/GamePlayer";
-import { Territory } from "./model/Territory";
-import { Board } from "./game/Board";
-import eventsCenter from "./services/EventsCenter";
-import PlayerType from "./model/Player";
-import ContadorExercitos from "./view/ContadorExercitos";
-import InitGameScene from "./scenes/InitGameScene";
-import Util from "./services/Util";
-import Objective from "./model/Objective";
-import IaPlayer from "./model/IAPlayer";
-
-
+import { WarMatch } from "../game/WarMatch";
+import { Board } from "../game/Board";
+import { Phases, Turn } from "../game/Turn";
+import PlayerType from "../model/Player";
+import eventsCenter from "../services/EventsCenter";
 
 const COLORS = {
     'black': 0x4f4f4d,
@@ -24,10 +14,9 @@ const COLORS = {
     'red': 0xec3829,
 }
 
-export class MainGameScene extends Phaser.Scene {
+export default class MainGameScene extends Phaser.Scene {
 
     public warMatch!: WarMatch;
-    public inputKeys: object;
     public continentsData: any;
     public cardsData: any;
     public objectiveCardsData: any;

@@ -1,19 +1,17 @@
 // import { FirstGameScene } from './first-scene';
 import Phaser from 'phaser';
 // import './reset.css';
-import './style.css';
-import { MainGameScene } from './main-scene';
-// import { GamePlayer } from './model/GamePlayer';
-import PreloadScene from './scenes/PreloadScene';
-import TurnControllerScene from './scenes/TurnControllerScene';
-import InitGameScene from "./scenes/InitGameScene"
-import ShowUIScene from './scenes/ShowUIScene';
-import DisplayScene from './scenes/DisplayScene';
-import FundoScene from './scenes/FundoScene';
-import MenuScene from './scenes/MenuScene';
-import LobbyScene from './scenes/LobbyScene';
-import ManualScene from './scenes/ManualScene';
-import OutScene from './scenes/OutScene';
+// import  MainGameScene  from './client/scenes/MainGameScene';
+import PreloadScene from './client/scenes/PreloadScene';
+import MainGameScene from './client/scenes/MainGameScene';
+import InitGameScene from './client/scenes/InitGameScene'
+import ShowUIScene from './client/scenes/ShowUIScene';
+import DisplayScene from './client/scenes/DisplayScene';
+import FundoScene from './client/scenes/FundoScene';
+import MenuScene from './client/scenes/MenuScene';
+import LobbyScene from './client/scenes/LobbyScene';
+import ManualScene from './client/scenes/ManualScene';
+import OutScene from './client/scenes/OutScene';
 
 const config: Phaser.Types.Core.GameConfig = {
     width: 1227,
