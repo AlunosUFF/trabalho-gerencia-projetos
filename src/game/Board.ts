@@ -397,5 +397,5 @@ export class Board {
     getPlayerTerritoriesByArmiesNumber(player:GamePlayer, number:number) {
         return this.getPlayerTerritories(player).filter(territory => territory.armies > number)
     }
-
+    
 }
