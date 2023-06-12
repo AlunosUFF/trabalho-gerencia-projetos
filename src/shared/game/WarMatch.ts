@@ -22,8 +22,7 @@ export class WarMatch{
     constructor(board: Board,  turn: Turn) {
         this.turn = turn;
         this.board = board;
-        // this.scene = scene;
-    }
+     }
     public hasInitialized: boolean = false;
     public hasFinished: boolean = false;
 

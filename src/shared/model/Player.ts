@@ -1,10 +1,4 @@
-export default interface PlayerType{
-    id: number,
-    uuid: string,
-    name: string,
-    ia: boolean,
-    color: string
-}
+
 
 export class Player {
     public id: number;

@@ -132,7 +132,10 @@ export interface ExchangeTable{
     "all": number
 }
 
-
-
-
-export type PlayerTypes = "shooter-sprite-enemy" | "shooter-sprite";
+export interface PlayerType{
+    id: number,
+    uuid: string,
+    name: string,
+    ia: boolean,
+    color: string
+}

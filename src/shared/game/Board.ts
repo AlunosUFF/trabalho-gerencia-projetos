@@ -1,13 +1,15 @@
-import { Card } from "../view/Card";
+
+import { Card } from "../../client/view/Card";
+import { ExchangeTable } from "../interfaces/models";
 import { GamePlayer, playerCOLORS } from "../model/GamePlayer";
-import IaPlayer from "../model/IAPlayer";
+
 import Objective from "../model/Objective";
 import { Territory } from "../model/Territory";
 import eventsCenter from "../services/EventsCenter";
 import Util from "../services/Util";
 import { Phases } from "./Turn";
 import { WarMatch } from "./WarMatch";
-import { ExchangeTable } from "../../shared/models";
+
 
 const exchangeTable:ExchangeTable = {
     "1": 4,

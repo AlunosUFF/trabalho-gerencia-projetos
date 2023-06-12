@@ -1,7 +1,9 @@
-import { WarMatch } from "../game/WarMatch";
+
+import { WarMatch } from "../../shared/game/WarMatch";
+import { GamePlayer } from "../../shared/model/GamePlayer";
+import eventsCenter from "../../shared/services/EventsCenter";
 import { Card } from "../view/Card";
-import { playerCOLORS } from "../model/GamePlayer";
-import eventsCenter from "../services/EventsCenter";
+
 export default class ShowUIScene extends Phaser.Scene {
     public warMatch: WarMatch;
     public isOpen: boolean = false;
@@ -127,10 +129,10 @@ export default class ShowUIScene extends Phaser.Scene {
             this.finishPhaseButton.setAlpha(1)
         })
 
-        eventsCenter.on("player-destroyed", (player) =>{
+        eventsCenter.on("player-destroyed", (player:GamePlayer) =>{
             this.refresh()
         })
-        eventsCenter.on("game-finished", (player)=>{
+        eventsCenter.on("game-finished", (player:GamePlayer)=>{
             this.refresh()
         })
 

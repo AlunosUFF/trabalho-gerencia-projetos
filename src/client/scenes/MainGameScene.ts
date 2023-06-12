@@ -1,8 +1,9 @@
 import Phaser from "phaser";
-import { WarMatch } from "../game/WarMatch";
-import { Board } from "../game/Board";
 import io, { Socket } from 'socket.io-client';
-import { Turn } from "../game/Turn";
+import { WarMatch } from "../../shared/game/WarMatch";
+import { Board } from "../../shared/game/Board";
+import { Turn } from "../../shared/game/Turn";
+
 
 const COLORS = {
     'black': 0x4f4f4d,
@@ -38,7 +39,7 @@ export default class MainGameScene extends Phaser.Scene {
         this.cardsData = this.cache.json.get('cards').cards;
         this.objectiveCardsData = this.cache.json.get('objectives').objectives
         
-        this.warMatch = new WarMatch(new Board(), new Turn(), this);
+        this.warMatch = new WarMatch(new Board(), new Turn());
         
         if(!this.warMatch.hasInitialized){
             this.scene.launch("LobbyScene", {warMatch:this.warMatch, socket: this.socket})

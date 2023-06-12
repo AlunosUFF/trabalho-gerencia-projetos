@@ -1,5 +1,5 @@
+import LocalizadorContinente from "../../client/view/LocalizadorContinente";
 import { Territory } from "../model/Territory";
-import LocalizadorContinente from "../view/LocalizadorContinente";
 
 export class TerritoryFactory{
     static loadCountries(scene:Phaser.Scene):Array<Territory>{

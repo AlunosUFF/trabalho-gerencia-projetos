@@ -1,12 +1,11 @@
-import { GameEvent, InputEvent } from "../../shared/interfaces/events.model";
-import { playerCOLORS } from "../model/GamePlayer";
-import eventsCenter from "../services/EventsCenter";
+import {  InputEvent } from "../../shared/interfaces/events.model";
+import eventsCenter from "../../shared/services/EventsCenter";
 
 
 const PLAYER_TYPES: {icone: string}[] = [{icone: "🚫"}, {icone: "🤖"}, {icone: "👩‍💻"}] 
 
 export default class PlayerContainer extends Phaser.GameObjects.Container {
-    public color: string;
+    public color: number;
     public activeType: number = 0;
     public spriteType: Phaser.GameObjects.Text;
     public inputPlayerName: Phaser.GameObjects.DOMElement;
@@ -39,7 +38,7 @@ export default class PlayerContainer extends Phaser.GameObjects.Container {
         let rightButton = new Phaser.GameObjects.Text(scene, 215,40,">",{color: `#${color.toString(16)}`, fontSize: "24px"}).setInteractive({useHandCursor: true})
         
         super(scene,x,y,[spritePlayerContainer, inputPlayerName, leftButton, rightButton, spriteType, displayPlayerName])
-        this.color = playerCOLORS[color]
+        this.color = color
         this.spriteType = spriteType
         this.inputPlayerName = inputPlayerName   
         this.displayPlayerName = displayPlayerName

@@ -1,14 +1,13 @@
+import { WarMatch } from "../../shared/game/WarMatch";
 import { GameEvent } from "../../shared/interfaces/events.model";
-import { DomainSocket } from '../../shared/models';
-import { WarMatch } from "../game/WarMatch";
-import { playerCOLORS } from "../model/GamePlayer"
-import eventsCenter from "../services/EventsCenter";
+import { DomainSocket } from "../../shared/interfaces/models";
+import { playerCOLORS } from "../../shared/model/GamePlayer";
 import PlayerContainer from "../view/PlayerContainer"
 
 export default class LobbyScene extends Phaser.Scene {
     public playersContainers: PlayerContainer[]=[]
-    public warMatch: WarMatch;
-    public socket: DomainSocket;
+    public warMatch?: WarMatch;
+    public socket?: DomainSocket;
     constructor() {
         super("LobbyScene")
     }
@@ -78,9 +77,9 @@ export default class LobbyScene extends Phaser.Scene {
             imageBotaoComecar.setAlpha(1)
         })
 
-        this.socket.emit(GameEvent.lobby, {warMatch:this.warMatch});
+        this.socket?.emit(GameEvent.lobby, {warMatch:this.warMatch});
 
-        this.socket.on(GameEvent.lobby,(data:{hasLobbed:boolean, warMatch: WarMatch})=>{
+        this.socket?.on(GameEvent.lobby,(data:{hasLobbed:boolean, warMatch: WarMatch})=>{
             if(data.hasLobbed){
                 this.warMatch = data.warMatch;
             }

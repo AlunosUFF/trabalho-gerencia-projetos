@@ -1,5 +1,5 @@
-import PlayerType from "../model/Player";
-import eventsCenter from "../services/EventsCenter"
+import { PlayerType } from "../../shared/interfaces/models";
+import eventsCenter from "../../shared/services/EventsCenter";
 
 export default class InitGameScene extends Phaser.Scene{
 
