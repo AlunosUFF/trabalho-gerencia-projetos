@@ -1,4 +1,4 @@
-import { GameEvent, InputEvent } from "../../shared/events.model";
+import { GameEvent, InputEvent } from "../../shared/interfaces/events.model";
 import { playerCOLORS } from "../model/GamePlayer";
 import eventsCenter from "../services/EventsCenter";
 

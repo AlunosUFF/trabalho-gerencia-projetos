@@ -4,7 +4,7 @@ import {  Response } from "express";
 import { Server as SocketIOServer } from 'socket.io';
 import path from 'path';
 import { fileURLToPath } from 'url'
-import { GameEvent, InputEvent, LobbyEvents, PlayerEvent, ServerEvent } from '../shared/events.model';
+import { GameEvent, InputEvent, LobbyEvents, PlayerEvent, ServerEvent } from '../shared/interfaces/events.model';
 import { DomainSocket } from '../shared/models';
 import { v4 as uuidv4 } from 'uuid';
 import { WarMatch } from '../client/game/WarMatch';

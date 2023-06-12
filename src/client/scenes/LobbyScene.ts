@@ -1,4 +1,4 @@
-import { GameEvent } from "../../shared/events.model";
+import { GameEvent } from "../../shared/interfaces/events.model";
 import { DomainSocket } from '../../shared/models';
 import { WarMatch } from "../game/WarMatch";
 import { playerCOLORS } from "../model/GamePlayer"
