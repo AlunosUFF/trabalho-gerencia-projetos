@@ -1,75 +1,193 @@
 import Phaser from "phaser";
-import loadCountries, { TerritoryFactory } from './services/territory-factory'
+import { TerritoryFactory } from './services/territory-factory'
 import { WarMatch } from "./game/WarMatch";
-import { Turn } from "./game/Turn";
+import { Phases, Turn } from "./game/Turn";
 import { GamePlayer } from "./model/GamePlayer";
 import { Territory } from "./model/Territory";
+import { Board } from "./game/Board";
+import eventsCenter from "./services/EventsCenter";
+import PlayerType from "./model/Player";
+import ContadorExercitos from "./view/ContadorExercitos";
+import InitGameScene from "./scenes/InitGameScene";
+import Util from "./services/Util";
+import Objective from "./model/Objective";
+import IaPlayer from "./model/IAPlayer";
 
-// const COLORS = {
-//     'black': 0x000000,
-//     'green': 0xff0000,
-//     'yellow': 0xe9ae02
-// }
+
+
+const COLORS = {
+    'black': 0x4f4f4d,
+    'green': 0x03a95e,
+    'yellow': 0xe9ae02,
+    'blue': 0x1a54a5,
+    'pink': 0xde2587,
+    'red': 0xec3829,
+}
+
 export class MainGameScene extends Phaser.Scene {
 
-    // public warMatch!: WarMatch;
+    public warMatch!: WarMatch;
+    public inputKeys: object;
+    public continentsData: any;
+    public cardsData: any;
+    public objectiveCardsData: any;
     constructor() {
         super('MainGameScene');
-    }
-
-    preload():void{
-        //Carregando os territórios
-        let territorios = this.load.aseprite('territorios', 
-        '../assets/images/mapa_war.png',
-        '../assets/images/mapa_war.json')
-
-        //Carregando a fonte
-        this.load.bitmapFont('pressstart', 'assets/fonts/pressstart.png','assets/fonts/pressstart.fnt') 
-        
-        // //Carregando dados do mapa
-        let data = this.load.json('frame', 'assets/images/mapa_war.json');
-        this.load.json('territories', 'assets/data/territories.json');
-        // console.log(territories)
-        
-        // this.warMatch = new WarMatch(new Turn(2));
-        // this.warMatch.addPlayer(new GamePlayer({id: 1, name: "Paulo"},"black"))
-        // this.warMatch.addPlayer(new GamePlayer({id: 1, name: "Tiago"}, "green"))
-        // this.warMatch.addPlayer(new GamePlayer({id: 1, name: "Rafa"}, "yellow"))
         
     }
     
     create(): void {
+        this.continentsData = this.cache.json.get('continents').continents;
+        this.cardsData = this.cache.json.get('cards').cards;
+        this.objectiveCardsData = this.cache.json.get('objectives').objectives
+        this.warMatch = new WarMatch(new Board(), new Turn(), this);
+        this.add.bitmapText(10,10,'pressstart','WAR')
 
-        TerritoryFactory.loadCountries(this)
 
-        this.input.on('gameobjectover', (pointer:Phaser.Input.Pointer, gameObject:Phaser.GameObjects.Sprite) =>
-        {
-            gameObject.setAlpha(0.5);
-        });
-
-        this.input.on('gameobjectout', (pointer:Phaser.Input.Pointer, gameObject:Phaser.GameObjects.Sprite) =>
-        {
-            gameObject.clearAlpha();
-        });
-
-        this.input.on('gameobjectdown', (pointer:Phaser.Input.Pointer, territory:Territory) =>{
-            // territory.spriteTerritory.setTint(0xe9ae02)
-        })
-
-        this.input.on('gameobjectdown', (pointer:Phaser.Input.Pointer, territory:Territory) =>{
-            if (territory.isSelected){
-                territory.armies++
-                territory.armiesText.setText(territory.armies.toString())
-                territory.flash()
+      
+        //Eventos
+        eventsCenter.on("init", (players: PlayerType[]) => {
+            if(this.warMatch.init(players)){
+                this.scene.stop("InitGameScene")
+                this.scene.run("ShowUIScene",{warMatch: this.warMatch})
             }else{
-                territory.highlight()
+                this.scene.launch("InitGameScene")
             }
-            territory.changeSelected()
         })
 
+        eventsCenter.on("restart", (msg:string) => {
+            this.scene.restart()
+        })
+
+        eventsCenter.on("showModal", (msg:string) => {
+            // console.log(msg)
+        })
+
+        this.input.keyboard.on("keydown-Q",()=>{
+            this.scene.launch("ShowUIScene",{warMatch: this.warMatch})
+        })
+
+        eventsCenter.on(this.warMatch.turn.phasesNames[Phases.MOBILIZAR],()=>{
+            //Calcular total de exercitos
+            if(this.warMatch.getCurrentPlayer()){
+                this.warMatch.getTotalArmiesToPlace()
+            }
+
+            if(this.warMatch.getCurrentPlayer().ia){
+                // alert("IA Jogando")
+                this.warMatch.getCurrentPlayer().cardExchange()
+                this.warMatch.getCurrentPlayer().mobilize()
+                if(this.warMatch.hasConditionToNextPhase()){
+                    // eventsCenter.emit("next-phase",this.warMatch.getCurrentPlayer())
+                    // this.warMatch.turn.nextPhase()
+                }
+            }
+                   
+        })
+
+        eventsCenter.on(this.warMatch.turn.phasesNames[Phases.ATACAR],()=>{
+            if(this.warMatch.getCurrentPlayer().ia){
+                // alert("IA Jogando")
+                this.warMatch.getCurrentPlayer().attack()
+                if(this.warMatch.hasConditionToNextPhase()){
+                    eventsCenter.emit("next-phase",this.warMatch.getCurrentPlayer())
+                    this.warMatch.turn.nextPhase()
+                }
+            }
+        })
+
+        eventsCenter.on(this.warMatch.turn.phasesNames[Phases.FORTIFICAR],()=>{
+            if(this.warMatch.getCurrentPlayer().ia){
+                // alert("IA Jogando")
+                
+                this.warMatch.getCurrentPlayer().fortify()
+                // this.warMatch.getCurrentPlayer().mobilize()
+                if(this.warMatch.hasConditionToNextPhase()){
+                    eventsCenter.emit("next-phase",this.warMatch.getCurrentPlayer())
+                    this.warMatch.turn.nextPhase()
+                }
+            }
+        })
+
+        eventsCenter.on("territory-clicked", (territory:Territory) =>{
+            // if(this.warMatch.getCurrentPlayer()?.ia){
+            //     alert("IA Jogando, não é permitida jogada");
+            //     return
+            // }
+
+            if(this.warMatch.turn.currentPhase === Phases.MOBILIZAR){
+
+                territory.mobilize(this.warMatch.board.continents)
+
+            }else if(this.warMatch.turn.currentPhase === Phases.ATACAR){
+
+                this.warMatch.board.checkAttackCondition(
+                    territory, this.warMatch.getCurrentPlayer()
+                )
+
+            }else if(this.warMatch.turn.currentPhase === Phases.FORTIFICAR){
+
+                this.warMatch.board.checkFortifyCondition(
+                    territory, this.warMatch.getCurrentPlayer()
+                )
+            }
+        })
+
+        eventsCenter.on("next-phase", (player:GamePlayer) =>{
+            if(this.warMatch.getCurrentPlayer()){
+                player.clearPlaced();
+            }
+        })
+
+        eventsCenter.on("next-turn" , () =>{
+            if(this.warMatch.getCurrentPlayer()?.gainedTerritory){
+                this.warMatch.board.drawCard(this.warMatch.getCurrentPlayer())
+            }
+        })
+
+        eventsCenter.on("clear-board", ()=>{
+            this.warMatch.board.clearBoard()
+        })
+
+        eventsCenter.on("check-victory", (data)=>{
+            Objective.checkVictoryCondition(this.warMatch, data)
+        })
+
+        eventsCenter.on("game-finished", (player)=>{
+            // if(this.warMatch.getCurrentPlayer()){
+            this.add.bitmapText(this.game.config.width/2,this.game.config.height/2,"pressstart", `Fim de Jogo \n o player ${player.name} venceu`).setDepth(1000).setOrigin(0.5)
+            // }
+        })
+        
+
+    
+        let players = [
+            {id: 1, name: 'Tiago', ia: false, color: 'black'},
+            {id: 2, name: 'Paulo', ia: true, color: 'blue'},
+            {id: 3, name: 'Rafa', ia: true, color: 'red'},
+            {id: 4,name: "Ygor",ia: true,color: 'green'},
+            {id: 5,name: "Thali",ia: true,color: 'yellow'},
+            {id: 6,name: "Edu",ia: true,color: 'pink'}
+        ]
+
+        this.scene.run("InitGameScene")
+        // eventsCenter.emit('init', players);
+
+        if(this.warMatch.init(players)){
+            // this.scene.run("ShowUIScene",{warMatch: this.warMatch})
+            this.scene.run("DisplayScene",{warMatch: this.warMatch})
+        }
+
+        // this.scene.scene.on("pointerdown",(pointer)=>{
+            // })
+        // this.input.on("pointerdown",(pointer)=>{
+        //     alert(pointer.x +"-"+pointer.y)
+        // })
+
+        
     }
 
-    update(time: number, delta: number): void {
+    update(): void {
 
     }
 }

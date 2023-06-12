@@ -1,7 +1,6 @@
 {
-  "name": "phaser-ts-template",
-  "version": "0.0.0",
-  "homepage": "https://tiamatcod3.github.io/phaser-ts-template",
+  "version": "0.1.0",
+  "homepage": "https://alunosuff.github.io/trabalho-gerencia-projetos/",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
