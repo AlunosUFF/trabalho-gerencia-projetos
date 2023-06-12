@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently --kill-others \"npm run build:dev:client\" \"npm run build:dev:server\" \"nodemon dist/server/server.js\"",
+    "dev:server": "nodemon dist/server/server.js",
+    "dev": "concurrently --kill-others \"npm run build:dev:client\" \"npm run build:dev:server\" \"npm run dev:server\"",
     "build:dev:client": "vite build -w --ssrManifest --outDir dist/client",
     "build:dev:server": "vite build -w --ssr src/server/server.ts --outDir dist/server",
     "build": "npm run build:client && npm run build:server",

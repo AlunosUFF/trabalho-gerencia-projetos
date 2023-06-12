@@ -4,8 +4,10 @@ import {  Response } from "express";
 import { Server as SocketIOServer } from 'socket.io';
 import path from 'path';
 import { fileURLToPath } from 'url'
-import { GameEvent, InputEvent, PlayerEvent, ServerEvent } from '../shared/events.model';
+import { GameEvent, InputEvent, LobbyEvents, PlayerEvent, ServerEvent } from '../shared/events.model';
 import { DomainSocket } from '../shared/models';
+import { v4 as uuidv4 } from 'uuid';
+import { WarMatch } from '../client/game/WarMatch';
 
 const app = express();
 
@@ -24,6 +26,8 @@ app.get('/', (_, res:Response) => {
 
 class GameServer {
 
+  private hasLobby:boolean = false;
+
   constructor() {
     this.socketEvents();
   }
@@ -36,19 +40,26 @@ class GameServer {
 
   private socketEvents(): void {
     io.on(ServerEvent.connected, (socket: DomainSocket) => {
-        console.log('Connected: ', socket.id)
-        this.attachListeners(socket);
+         this.attachListeners(socket);
     });
   }
 
   private attachListeners(socket: DomainSocket): void {
       this.addSignOnListener(socket);
+      this.addLobbyListener(socket);
       // this.addMovementListener(socket);
       // this.addSignOutListener(socket);
       // this.addHitListener(socket);
       // this.addCometHitListener(socket);
       // this.addPickupListener(socket);
   }
+
+  private addLobbyListener(socket: DomainSocket):void{
+    socket.on(GameEvent.lobby, (warMatch:WarMatch)=>{
+      this.gameLobbed();
+      socket.broadcast.emit(GameEvent.lobby, {hasLobbed: true, warMatch})
+    })
+  } 
 
   private addSignOnListener(socket: DomainSocket): void {
     socket.on(
@@ -65,9 +76,15 @@ class GameServer {
         //     this.gameInitialised(socket);
         // }
   }
+
+  private gameLobbed(){
+      if(!this.hasLobby){
+        this.hasLobby = true;
+      }
+  }
 }
 
 
 const port = process.env.PORT || 3000;
 const gameSession = new GameServer();
-gameSession.connect(port);
+gameSession.connect(parseInt(port));

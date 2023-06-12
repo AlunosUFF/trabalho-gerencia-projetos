@@ -14,16 +14,15 @@ enum Status {
 }
 export class WarMatch{
     
-
-    public scene: Phaser.Scene;
     public players: Array<GamePlayer> = [];
     public turn: Turn;
     public board: Board;
     public status: number = Status.SETUP
-    constructor(board: Board,  turn: Turn, scene: Phaser.Scene) {
+
+    constructor(board: Board,  turn: Turn) {
         this.turn = turn;
         this.board = board;
-        this.scene = scene;
+        // this.scene = scene;
     }
     public hasInitialized: boolean = false;
     public hasFinished: boolean = false;
