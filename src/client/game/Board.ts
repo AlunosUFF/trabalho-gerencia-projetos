@@ -7,8 +7,9 @@ import eventsCenter from "../services/EventsCenter";
 import Util from "../services/Util";
 import { Phases } from "./Turn";
 import { WarMatch } from "./WarMatch";
+import { ExchangeTable } from "../../shared/models";
 
-const exchangeTable = {
+const exchangeTable:ExchangeTable = {
     "1": 4,
     "2": 2,
     "3": 2,
@@ -32,16 +33,16 @@ export class Board {
     public exchangeArmies: number = exchangeTable[this.exchangeNumber];
     
 
-    init(territoryIds: number[], continents, cardFigures, objectives) {
+    // init(territoryIds: number[], continents, cardFigures, objectives) {
         
-        this.setInitialTerritoryCards(territoryIds)
-        this.objectives = objectives
-        this.setInitialObjectiveCards()
-        this.shuffleTerritoryCards();
-        this.shuffleObjectiveCards();
-        this.continents = continents
-        this.cardFigures = cardFigures
-    }
+    //     this.setInitialTerritoryCards(territoryIds)
+    //     this.objectives = objectives
+    //     this.setInitialObjectiveCards()
+    //     this.shuffleTerritoryCards();
+    //     this.shuffleObjectiveCards();
+    //     this.continents = continents
+    //     this.cardFigures = cardFigures
+    // }
     
     getTerritoryById(id: number){
         return this.territories.find(territory => territory.id === id);

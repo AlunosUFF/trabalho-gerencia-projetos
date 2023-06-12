@@ -24,13 +24,13 @@ export class Turn{
         this.playersOrders = Util.shuffle(players);
     }
     
-    init(players:number[]) {
-        this.shufflePlayerOrder(players);
-        // this.currentPhase = Phases.MOBILIZAR;
-        // this.nextPhase();
-        this.currentPhase++;
-        this.setTotalPlayers();
-    }
+    // init(players:number[]) {
+    //     this.shufflePlayerOrder(players);
+    //     // this.currentPhase = Phases.MOBILIZAR;
+    //     // this.nextPhase();
+    //     this.currentPhase++;
+    //     this.setTotalPlayers();
+    // }
 
     nextPlayer(): void{
         this.currentPlayer++;

@@ -1,7 +1,6 @@
 import { WarMatch } from "../game/WarMatch";
 import eventsCenter from "../services/EventsCenter";
 import { GamePlayer, playerCOLORS } from "./GamePlayer";
-import { Territory } from "./Territory";
 
 export default class Objective{
     owner: GamePlayer;
@@ -11,7 +10,7 @@ export default class Objective{
     target: "continent" | "gamePlayer" | "territory";
     condition: {}
     type: "conquer" | "destroy";
-    slug: any;
+    slug: string;
 
     constructor(warMatch: WarMatch, owner:GamePlayer, data) {
         let {id, type, description, slug, condition, targetType} = data

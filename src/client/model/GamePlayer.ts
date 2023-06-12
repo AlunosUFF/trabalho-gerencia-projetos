@@ -1,3 +1,4 @@
+import { Placeble } from "../../shared/models";
 import { WarMatch } from "../game/WarMatch";
 import Objective from "./Objective";
 import PlayerType, { Player } from "./Player";
@@ -11,21 +12,6 @@ export enum playerCOLORS  {
     'pink' = 0xde2587,
     'red' = 0xec3829,
 }
-
-export interface Placeble{
-    "all": number,
-    "south-america": number,
-    "asia": number,
-    "oceania": number,
-    "africa": number,
-    "north-america": number,
-    "europe": number
-}
-
-// export interface Placed {
-//     "all": number
-// }
-
 export class GamePlayer extends Player{
     
     // public cards: Array<Car
