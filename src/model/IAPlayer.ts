@@ -1,5 +1,5 @@
 import { WarMatch } from "../game/WarMatch";
-import { GamePlayer } from "./GamePlayer";
+import { GamePlayer, getContinentFromString, getStringFromContinent } from "./GamePlayer";
 import PlayerType from "./Player";
 import { Territory } from "./Territory";
 
@@ -31,17 +31,17 @@ export default class IaPlayer extends GamePlayer{
     }
 
     mobilize(){
-        // alert("IA mobilizando")
+         console.log("alo mundo")
         //Mobilizando de forma aleatória
-        Object.keys(this.placeble).forEach(place =>{
-            let territories = this.warMatch.board.getTerritoriesByContinent(place, this)
-            while(this.placeble[place] > 0){
-                let index = Math.round(Math.random() * (territories.length-1))
-                let territory = territories[index]
-                territory.mobilize(this.warMatch.board.continents)
-                console
+        Object.keys(this.placeble).forEach(key => {
+            const place = getStringFromContinent(Number(key));
+            let territories = this.warMatch.board.getTerritoriesByContinent(place, this);
+            while (this.placeble[Number(key)] > 0) {
+              let index = Math.round(Math.random() * (territories.length - 1));
+              let territory = territories[index];
+              territory.mobilize(this.warMatch.board.continents);
             }
-        })
+          });
         
         //Analisar situação
 

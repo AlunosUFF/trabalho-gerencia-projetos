@@ -48,7 +48,27 @@ export function getContinentFromString(continentString: string): Continent {
     }
   }
   
-
+export function getStringFromContinent(continent: Continent): string {
+    switch (continent) {
+      case Continent.SouthAmerica:
+        return 'south-america';
+      case Continent.Asia:
+        return 'asia';
+      case Continent.Oceania:
+        return 'oceania';
+      case Continent.Africa:
+        return 'africa';
+      case Continent.NorthAmerica:
+        return 'north-america';
+      case Continent.Europe:
+        return 'europe';
+      case Continent.All:
+        return 'all';
+      default:
+        console.error("erro ao converter continent para string");
+        throw new Error(`Continent inválido: ${continent}`);
+    }
+}
 export class GamePlayer extends Player {
 
     // public cards: Array<Car
@@ -120,17 +140,17 @@ export class GamePlayer extends Player {
     }
 
     setPlaceble(type: string, quantity: number) {
-        var continent = getContinentFromString(type)
+        let continent = getContinentFromString(type)
         this.placeble[continent] = quantity;
     }
 
     addPlaceble(type: string, quantity: number) {
-        var continent = getContinentFromString(type)
+        let continent = getContinentFromString(type)
         this.placeble[continent] += quantity;
     }
 
     placeArmie(type: string, quantity: number) {
-        var continent = getContinentFromString(type)
+        let continent = getContinentFromString(type)
         if (this.hasArmiesToPlace()) {
             this.placeble[continent] -= quantity;
             this.placed[continent] += quantity;
@@ -149,14 +169,16 @@ export class GamePlayer extends Player {
 
     clearPlaced() {
         Object.keys(this.placed).forEach(key => {
-            this.placeble[key] = 0;
-            this.placed[key] = 0;
+            const place = Number(key);
+            this.placeble[place] = 0;
+            this.placed[place] = 0;
         })
     }
 
     hasArmiesToPlace() {
         let placesToPlace = Object.keys(this.placeble).filter(key => {
-            return this.placeble[key] > 0
+            const place = Number(key);
+            return this.placeble[place] > 0
         }).length
 
         return placesToPlace > 0
