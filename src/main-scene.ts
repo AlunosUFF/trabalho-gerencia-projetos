@@ -28,7 +28,6 @@ export class MainGameScene extends Phaser.Scene {
     public objectiveCardsData: any;
     constructor() {
         super('MainGameScene');
-        
     }
     
     create(): void {
@@ -39,6 +38,8 @@ export class MainGameScene extends Phaser.Scene {
         this.add.bitmapText(10,10,'pressstart','WAR')
 
 
+        console.log(typeof(this.continentsData))
+        console.log(this.continentsData)
       
         //Eventos
         eventsCenter.on("init", (players: PlayerType[]) => {
@@ -63,6 +64,8 @@ export class MainGameScene extends Phaser.Scene {
             if(this.warMatch.getCurrentPlayer()){
                 this.warMatch.getTotalArmiesToPlace()
             }
+
+            console.log(this.warMatch.getCurrentPlayer().placeble)
 
             if(this.warMatch.getCurrentPlayer().ia){
                 // alert("IA Jogando")
@@ -156,9 +159,9 @@ export class MainGameScene extends Phaser.Scene {
             {id: 1, name: 'Tiago', ia: false, color: 'black'},
             {id: 2, name: 'Paulo', ia: true, color: 'blue'},
             {id: 3, name: 'Rafa', ia: true, color: 'red'},
-            {id: 4,name: "Ygor",ia: true,color: 'green'},
-            {id: 5,name: "Thali",ia: true,color: 'yellow'},
-            {id: 6,name: "Edu",ia: true,color: 'pink'}
+            // {id: 4,name: "Ygor",ia: true,color: 'green'},
+            // {id: 5,name: "Thali",ia: true,color: 'yellow'},
+            // {id: 6,name: "Edu",ia: true,color: 'pink'}
         ]
 
         // this.scene.run("InitGameScene")

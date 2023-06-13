@@ -37,11 +37,11 @@ export default class ShowUIScene extends Phaser.Scene {
         let {warMatch} = data;
         this.warMatch = warMatch;
     }
+
     nextPhase(){
         this.warMatch.turn.nextPhase();
         eventsCenter.emit("next-phase",this.warMatch.getCurrentPlayer());
         this.refresh();
-
     }
 
     destroy(){
@@ -128,6 +128,15 @@ export default class ShowUIScene extends Phaser.Scene {
         //     new LocalizadorContinente({scene: this, 
         //         continent: this.warMatch.board.continents[continentId]})
         // })
+
+        //Evento
+        this.input.keyboard.on("keydown-F",()=>{
+            if(this.warMatch.hasConditionToNextPhase()){
+                eventsCenter.emit("next-phase",this.warMatch.getCurrentPlayer())
+                this.nextPhase()
+            }
+            // this.scene.stop("ShowUIScene");
+        })
         
     }
 

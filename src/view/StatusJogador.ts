@@ -17,8 +17,9 @@ export default class StatusJogador extends Phaser.GameObjects.Container {
         let spriteBotaoFinalizar = new Phaser.GameObjects.Sprite(scene, 270,10, 'ellipse').setOrigin(0);
         // le = new Phaser.GameObjects.Sprite(scene, 270,-150, 'localizador').setOrigin(0);
         let spriteSeguranca = new Phaser.GameObjects.Sprite(scene, 45,30, 'seguranca').setOrigin(0);
-        let textTurnoJogador = new Phaser.GameObjects.BitmapText(scene,160,55,'pressstart', `${warMatch.turn.getCurrentPhaseName()}`, 12, Phaser.GameObjects.BitmapText.ALIGN_CENTER);
-        textTurnoJogador.setTint(0)
+        let textTurnoJogador = new Phaser.GameObjects.BitmapText(scene,160,55,'pressstart', `${warMatch.turn.getCurrentPhaseName()}`, 12, Phaser.GameObjects.BitmapText.ALIGN_CENTER)
+        .setTint(0);
+        
         let textBotaoFinalizar = new Phaser.GameObjects.BitmapText(scene,290,55,'pressstart', `FINALIZAR`, 12, Phaser.GameObjects.BitmapText.ALIGN_CENTER);
         textBotaoFinalizar.setTint(0)
         let textSinalMaisSeguranca = new Phaser.GameObjects.BitmapText(scene,80,80,'pressstart', `+`, 14, Phaser.GameObjects.BitmapText.ALIGN_CENTER)
