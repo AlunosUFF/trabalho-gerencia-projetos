@@ -22,34 +22,9 @@ export interface Placeble{
     "europe": number
 }
 
-export interface Placeble {
-    [key: string]: number;
-}
-
-export function getContinentFromString(continentString: string): Continent {
-    switch (continentString) {
-      case 'south-america':
-        return Continent.SouthAmerica;
-      case 'asia':
-        return Continent.Asia;
-      case 'oceania':
-        return Continent.Oceania;
-      case 'africa':
-        return Continent.Africa;
-      case 'north-america':
-        return Continent.NorthAmerica;
-      case 'europe':
-        return Continent.Europe;
-      case 'all':
-        return Continent.All;
-      default:
-        console.error("erro ao converter string para continent");
-        throw new Error(`Continent inválido: ${continentString}`);
-    }
-  }
-  
-
-export class GamePlayer extends Player {
+// export interface Placed {
+//     "all": number
+// }
 
 export class GamePlayer extends Player{
     
@@ -115,21 +90,18 @@ export class GamePlayer extends Player{
         return this.id === this.warMatch.turn.getCurrentPlayerId()
     }
 
-    setPlaceble(type: string, quantity: number) {
-        var continent = getContinentFromString(type)
-        this.placeble[continent] = quantity;
+    setPlaceble(type:string, quantity:number){
+        this.placeble[type] = quantity;
     }
 
-    addPlaceble(type: string, quantity: number) {
-        var continent = getContinentFromString(type)
-        this.placeble[continent] += quantity;
+    addPlaceble(type:string, quantity:number){
+        this.placeble[type] += quantity;
     }
 
-    placeArmie(type: string, quantity: number) {
-        var continent = getContinentFromString(type)
-        if (this.hasArmiesToPlace()) {
-            this.placeble[continent] -= quantity;
-            this.placed[continent] += quantity;
+    placeArmie(type:string, quantity:number){
+        if(this.hasArmiesToPlace()){
+            this.placeble[type] -= quantity;
+            this.placed[type] += quantity;
         }
     }
 
@@ -144,7 +116,7 @@ export class GamePlayer extends Player{
     }
 
     clearPlaced() {
-        Object.keys(this.placed).forEach(key => {
+        Object.keys(this.placed).forEach(key =>{
             this.placeble[key] = 0;
             this.placed[key] = 0;
         })
