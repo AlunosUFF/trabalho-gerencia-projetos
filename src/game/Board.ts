@@ -72,7 +72,7 @@ export class Board {
     }
 
     drawCard(player: GamePlayer) {
-        console.log(this.deck)
+        // console.log(this.deck)
         if(this.deck.length === 0) {
             this.reshuffleDeck()
         }
@@ -383,7 +383,7 @@ export class Board {
         this.getPlayerTerritories(player).forEach(territory => {
             territory.neighbors.forEach(neighborId => {
                 let neighbor = this.getTerritoryById(neighborId)
-                console.log(neighbor)
+                // console.log(neighbor)
                 if(neighbor.owner !== player && visited.indexOf(neighborId) < 0){
                     visited.push(neighborId)
                     result.push(neighborId)

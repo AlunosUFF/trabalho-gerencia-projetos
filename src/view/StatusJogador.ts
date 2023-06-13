@@ -1,4 +1,5 @@
 import { WarMatch } from "../game/WarMatch";
+import eventsCenter from "../services/EventsCenter";
 import LocalizadorContinente from "./LocalizadorContinente";
 
 export default class StatusJogador extends Phaser.GameObjects.Container {
@@ -47,7 +48,11 @@ export default class StatusJogador extends Phaser.GameObjects.Container {
 
         })
         spriteBotaoFinalizar.on("pointerdown", (pointer, objeto)=>{
-            this.scene.nextPhase();
+            if(this.warMatch.hasConditionToNextPhase()){
+                eventsCenter.emit("next-phaser",this.warMatch.getCurrentPlayer())
+                this.scene.nextPhase();
+            }
+            
         })
         spriteBotaoFinalizar.on("pointerout", (pointer, objeto)=>{
             spriteBotaoFinalizar.setTint(0xffffff);

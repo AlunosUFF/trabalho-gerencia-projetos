@@ -1,5 +1,4 @@
 import Phaser from "phaser";
-import { TerritoryFactory } from './services/territory-factory'
 import { WarMatch } from "./game/WarMatch";
 import { Phases, Turn } from "./game/Turn";
 import { GamePlayer } from "./model/GamePlayer";
@@ -7,11 +6,8 @@ import { Territory } from "./model/Territory";
 import { Board } from "./game/Board";
 import eventsCenter from "./services/EventsCenter";
 import PlayerType from "./model/Player";
-import ContadorExercitos from "./view/ContadorExercitos";
-import InitGameScene from "./scenes/InitGameScene";
-import Util from "./services/Util";
 import Objective from "./model/Objective";
-import IaPlayer from "./model/IAPlayer";
+
 
 
 
@@ -27,7 +23,6 @@ const COLORS = {
 export class MainGameScene extends Phaser.Scene {
 
     public warMatch!: WarMatch;
-    public inputKeys: object;
     public continentsData: any;
     public cardsData: any;
     public objectiveCardsData: any;
@@ -48,10 +43,10 @@ export class MainGameScene extends Phaser.Scene {
         //Eventos
         eventsCenter.on("init", (players: PlayerType[]) => {
             if(this.warMatch.init(players)){
-                this.scene.stop("InitGameScene")
-                this.scene.run("ShowUIScene",{warMatch: this.warMatch})
+                this.scene.stop("LobbyScene")
+                this.scene.run("DisplayScene",{warMatch: this.warMatch})
             }else{
-                this.scene.launch("InitGameScene")
+                this.scene.launch("LobbyScene")
             }
         })
 
@@ -59,13 +54,9 @@ export class MainGameScene extends Phaser.Scene {
             this.scene.restart()
         })
 
-        eventsCenter.on("showModal", (msg:string) => {
-            // console.log(msg)
-        })
-
-        this.input.keyboard.on("keydown-Q",()=>{
-            this.scene.launch("ShowUIScene",{warMatch: this.warMatch})
-        })
+        // this.input.keyboard.on("keydown-Q",()=>{
+        //     this.scene.launch("ShowUIScene",{warMatch: this.warMatch})
+        // })
 
         eventsCenter.on(this.warMatch.turn.phasesNames[Phases.MOBILIZAR],()=>{
             //Calcular total de exercitos
@@ -170,7 +161,7 @@ export class MainGameScene extends Phaser.Scene {
             {id: 6,name: "Edu",ia: true,color: 'pink'}
         ]
 
-        this.scene.run("InitGameScene")
+        // this.scene.run("InitGameScene")
         // eventsCenter.emit('init', players);
 
         if(this.warMatch.init(players)){

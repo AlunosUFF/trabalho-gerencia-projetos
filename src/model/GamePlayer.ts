@@ -142,7 +142,37 @@ export class GamePlayer extends Player{
     //     this.placed.all = 0
     // }
 
-    resetPlaces(){
-        
+    hasConditionToNextPhase() :boolean{
+        //Mobilizar
+        switch (this.turn.currentPhase) {
+            case Phases.MOBILIZAR:
+                // return true
+                 //Mao maior que 5
+                let handSize = this.getCurrentPlayer().hand.length === 5
+                //Existe exercito para alocar
+                let hasArmiesToPlace = this.getCurrentPlayer()?.hasArmiesToPlace()
+                if(handSize || hasArmiesToPlace){
+                    return false
+                }else{
+                    return true
+                }
+                break;
+            case Phases.ATACAR:
+                // console.log(this.turn.getCurrentPhaseName())
+
+                return true
+                break;
+            case Phases.FORTIFICAR:
+                // console.log(this.turn.getCurrentPhaseName())
+
+                return true
+                break;
+            default:
+                break;
+        }
+
+        return false;
+
     }
+
 }
