@@ -1,6 +1,4 @@
 import { Socket } from "socket.io";
-import SocketIOClient from "socket.io-client";
-import { Territory } from '../client/model/Territory';
 
 export interface Comet {
     id: string;
@@ -138,4 +136,13 @@ export interface PlayerType{
     name: string,
     ia: boolean,
     color: string
+}
+
+export interface PlayerContainer{
+    color: number;
+    activeType: number;
+    playerName: string;
+    playerID: number;
+    index: number;
+    isEditing: boolean;
 }

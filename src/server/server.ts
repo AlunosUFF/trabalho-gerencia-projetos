@@ -5,9 +5,11 @@ import { Server as SocketIOServer } from 'socket.io';
 import path from 'path';
 import { fileURLToPath } from 'url'
 import { GameEvent, InputEvent, LobbyEvents, PlayerEvent, ServerEvent } from '../shared/interfaces/events.model';
-import { DomainSocket } from '../shared/models';
+import { DomainSocket, PlayerContainer, WarMatch } from '../shared/interfaces/models';
+
 import { v4 as uuidv4 } from 'uuid';
-import { WarMatch } from '../client/game/WarMatch';
+import { GamePlayer } from '../shared/model/GamePlayer';
+
 
 const app = express();
 
@@ -27,6 +29,14 @@ app.get('/', (_, res:Response) => {
 class GameServer {
 
   private hasLobby:boolean = false;
+  private players: GamePlayer[] = [];
+  private playersContainers: PlayerContainer[] = new Array(6).fill(
+    {
+      color: 0,
+      activeType: 0,
+      playerName: "",
+      isEditing: true
+    })
 
   constructor() {
     this.socketEvents();
@@ -40,41 +50,36 @@ class GameServer {
 
   private socketEvents(): void {
     io.on(ServerEvent.connected, (socket: DomainSocket) => {
+      console.log("Usuário conectado: " + socket.id + uuidv4())
          this.attachListeners(socket);
+         socket.on(ServerEvent.disconnected , (reason)=>{
+            console.log("Usuário desconectado:", reason, socket.id);
+         })
     });
   }
 
   private attachListeners(socket: DomainSocket): void {
       this.addSignOnListener(socket);
       this.addLobbyListener(socket);
-      // this.addMovementListener(socket);
-      // this.addSignOutListener(socket);
-      // this.addHitListener(socket);
-      // this.addCometHitListener(socket);
-      // this.addPickupListener(socket);
   }
 
   private addLobbyListener(socket: DomainSocket):void{
     socket.on(GameEvent.lobby, (warMatch:WarMatch)=>{
-      this.gameLobbed();
-      socket.broadcast.emit(GameEvent.lobby, {hasLobbed: true, warMatch})
+      socket.emit(GameEvent.lobby, {hasLobbed: true, warMatch, containers: this.playersContainers})
     })
+
+    socket.on(InputEvent.update, (playerContainer:PlayerContainer)=>{
+      this.playersContainers[playerContainer.index] = playerContainer
+      socket.broadcast.emit(InputEvent.update, playerContainer);
+    })
+
+    
   } 
 
   private addSignOnListener(socket: DomainSocket): void {
-    socket.on(
-      InputEvent.update,
-        (msg)=>{
-          console.log(socket.id, msg)
-          socket.broadcast.emit(GameEvent.authentication, msg);
-        });
-        // (player: Player, gameSize: Coordinates) => {
-        //     socket.emit(PlayerEvent.players, this.getAllPlayers());
-        //     this.createPlayer(socket, player, gameSize);
-        //     socket.emit(PlayerEvent.protagonist, socket.player);
-        //     socket.broadcast.emit(PlayerEvent.joined, socket.player);
-        //     this.gameInitialised(socket);
-        // }
+    socket.on(GameEvent.authentication, ()=>{
+
+    })
   }
 
   private gameLobbed(){

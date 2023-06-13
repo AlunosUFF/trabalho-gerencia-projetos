@@ -1,7 +1,8 @@
 import { WarMatch } from "../../shared/game/WarMatch";
-import { GameEvent } from "../../shared/interfaces/events.model";
+import { GameEvent, InputEvent } from '../../shared/interfaces/events.model';
 import { DomainSocket } from "../../shared/interfaces/models";
 import { playerCOLORS } from "../../shared/model/GamePlayer";
+import eventsCenter from "../../shared/services/EventsCenter";
 import PlayerContainer from "../view/PlayerContainer"
 
 export default class LobbyScene extends Phaser.Scene {
@@ -77,14 +78,27 @@ export default class LobbyScene extends Phaser.Scene {
             imageBotaoComecar.setAlpha(1)
         })
 
-        this.socket?.emit(GameEvent.lobby, {warMatch:this.warMatch});
-
-        this.socket?.on(GameEvent.lobby,(data:{hasLobbed:boolean, warMatch: WarMatch})=>{
+        this.socket?.on(GameEvent.lobby,(data:{hasLobbed:boolean, warMatch: WarMatch, containers:PlayerContainer[]})=>{
             if(data.hasLobbed){
                 this.warMatch = data.warMatch;
+                console.log(this.warMatch)
             }
-            console.log(this.warMatch)
+            
+            console.log(data.containers)
+            this.playersContainers.forEach((playerContainer:PlayerContainer, index:number) =>{
+                playerContainer.updateDisplay(data.containers[index])
+            })
+            // this.destroy()
         })
 
+        this.socket?.emit(GameEvent.lobby, {warMatch:this.warMatch});
+
+        eventsCenter.on(InputEvent.update, (playerContainer:PlayerContainer)=>{
+            this.socket?.emit(InputEvent.update, playerContainer);
+        })
+
+        this.socket?.on(InputEvent.update, (playerContainer:PlayerContainer)=>{
+            this.playersContainers[playerContainer.index].updateDisplay(playerContainer)
+        })
     }
 }

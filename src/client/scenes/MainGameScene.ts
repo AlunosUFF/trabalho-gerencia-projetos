@@ -24,10 +24,11 @@ export default class MainGameScene extends Phaser.Scene {
     
     constructor() {
         super('MainGameScene');
+        this.socket = io('http://localhost:3000');
     }
     
     init(){
-        this.socket = io('http://localhost:3000');
+        
     }
 
     preload():void{
