@@ -75,7 +75,7 @@ export default class DeckCartas extends Phaser.GameObjects.Container {
                 this.add(card)
             })
         }   
-        console.log(this.warMatch)
+        // console.log(this.warMatch)
         
     }
     
