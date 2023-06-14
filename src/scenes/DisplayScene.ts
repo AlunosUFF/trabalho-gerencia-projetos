@@ -7,6 +7,7 @@ import IconeCarta from "../view/IconeCarta";
 import { ObjetiveCard } from "../view/ObjectiveCard";
 import DeckCartas from "../view/DeckCartas";
 import { GameEvent } from "../shared/events.model";
+import { Phases } from "../game/Turn";
 
 export default class DisplayScene extends Phaser.Scene {
     public warMatch!: WarMatch;
@@ -123,21 +124,6 @@ export default class DisplayScene extends Phaser.Scene {
           
         }).setVisible(false);
 
-        //Criação dos localizadores de continent com as totalidades
-        // Object.keys(this.warMatch.board.continents).forEach(continentId =>{
-        //     new LocalizadorContinente({scene: this, 
-        //         continent: this.warMatch.board.continents[continentId]})
-        // })
-
-        //Evento
-        this.input.keyboard.on("keydown-F",()=>{
-            if(this.warMatch.hasConditionToNextPhase()){
-                eventsCenter.emit(GameEvent.nextPhase,this.warMatch.getCurrentPlayer())
-                this.nextPhase()
-            }
-            // this.scene.stop("ShowUIScene");
-        })
-        
     }
 
     updateArmies(){

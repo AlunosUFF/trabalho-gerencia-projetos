@@ -1,5 +1,6 @@
 import { Phases } from "../game/Turn";
 import eventsCenter from "../services/EventsCenter";
+import { PlayerEvent } from "../shared/events.model";
 import { Continent } from "../shared/models";
 import { GamePlayer } from "./GamePlayer";
 
@@ -69,17 +70,21 @@ export class Territory extends Phaser.GameObjects.Container {
         }
     }
 
-    mobilize(continents) {
+    mobilize(continents, quantity:number) {
         let continentSlug = continents[this.continent].slug
-        // console.log(this.owner?.hasArmiesToPlace())
         if(this.owner?.isCurrentPlayer() && this.owner.hasArmiesToPlace()){
-            if(this.owner.placeble[continentSlug] > 0){
-                this.placeArmies(1);
-                this.owner.placeArmie(continentSlug, 1)
+            if(this.owner.placeble[continentSlug] > 0 && this.owner.placeble[continentSlug] >= quantity){
+                this.placeArmies(quantity);
+                this.owner.placeArmie(continentSlug, quantity)
+                console.log(continentSlug, this.owner.placeble)
+                // eventsCenter.emit(PlayerEvent.mobilized, {continentSlug,  quantity})
             }else if(this.owner.placeble["all"] > 0){
-                this.placeArmies(1);
-                this.owner.placeArmie("all", 1)
+                this.placeArmies(quantity);
+                this.owner.placeArmie("all",quantity)
+                // eventsCenter.emit(PlayerEvent.mobilized,{continentSlug: "all", quantity})
+                console.log("all", this.owner.placeble)
             }
+
             eventsCenter.emit("clear-board")
             eventsCenter.emit("check-victory", {acao: Phases.MOBILIZAR})
         }

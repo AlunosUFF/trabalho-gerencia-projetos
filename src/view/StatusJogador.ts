@@ -3,7 +3,7 @@ import { WarMatch } from "../game/WarMatch";
 import DisplayScene from "../scenes/DisplayScene";
 import eventsCenter from "../services/EventsCenter";
 import { TerritoryFactory } from "../services/territory-factory";
-import { GameEvent } from "../shared/events.model";
+import { GameEvent, PlayerEvent } from "../shared/events.model";
 
 export default class StatusJogador extends Phaser.GameObjects.Container {
     // public spriteFundo: Phaser.GameObjects.Sprite;
@@ -111,16 +111,14 @@ export default class StatusJogador extends Phaser.GameObjects.Container {
             this.atualizarQuantidadeAlocando(-1)
         })
 
-        // eventsCenter.on("next-phase", ()=>{
-        //     this.mode = this.warMatch.turn.currentPhase;
-        //     this.atualizarTexto();
-        // })
+        eventsCenter.on(PlayerEvent.mobilized, (data: {continentSlug: string, quantity: number})=>{
+            this.atualizarTexto()
+        })
 
         this.scene.add.existing(this);
     }
 
     atualizarTexto(){
-        console.log("Atualiza texto", this.warMatch.getCurrentPlayer().placeble)
         this.quantidadeAlocando = 0
         this.quantidadeAlocavel = this.warMatch.getCurrentPlayer().placeble.all
         this.textQuantidadeAlocando.setText(this.quantidadeAlocando.toString())
@@ -128,15 +126,24 @@ export default class StatusJogador extends Phaser.GameObjects.Container {
     }
 
     atualizarQuantidadeAlocando(quantidade:number){
+        this.quantidadeAlocando += quantidade
+        if(this.quantidadeAlocando < 0){
+            this.quantidadeAlocando = 0
+            return
+        }
+
+        this.quantidadeAlocando = (this.quantidadeAlocando < 0) ? 0 : this.quantidadeAlocando
+        this.quantidadeAlocando = (this.quantidadeAlocavel === 0) 
+        ? this.quantidadeAlocando - quantidade : this.quantidadeAlocando
+
         this.quantidadeAlocavel -= quantidade
         this.quantidadeAlocavel = this.quantidadeAlocavel < 0 ? 0 : this.quantidadeAlocavel;
-        // this.quantidadeAlocavel = this.quantidadeAlocavel > this.warMatch.getCurrentPlayer().placeble.all
-        //  ? this.warMatch.getCurrentPlayer().placeble.all : this.quantidadeAlocavel;
+        this.quantidadeAlocavel = this.quantidadeAlocavel > this.warMatch.getCurrentPlayer().placeble.all
+          ? this.warMatch.getCurrentPlayer().placeble.all : this.quantidadeAlocavel;
+        console.log(this.quantidadeAlocavel)
 
-        // this.quantidadeAlocando += quantidade
-        // this.quantidadeAlocando = this.quantidadeAlocando < 0 ? 0 : this.quantidadeAlocando
-        // this.textQuantidadeAlocando.setText(this.quantidadeAlocando.toString())
-        // this.textQuantidadeAlocavel.setText(this.quantidadeAlocavel.toString())
+        this.textQuantidadeAlocando.setText(this.quantidadeAlocando.toString())
+        this.textQuantidadeAlocavel.setText(this.quantidadeAlocavel.toString())
         // (this.scene as DisplayScene).refresh()
     }
     
