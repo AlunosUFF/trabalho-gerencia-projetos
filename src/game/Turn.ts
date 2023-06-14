@@ -62,7 +62,7 @@ export class Turn{
     }
 
     nextTurn(){
-        eventsCenter.emit(GameEvent.nextTurn)
         this.nextPlayer();
+        eventsCenter.emit(GameEvent.nextTurn)
     }
 }

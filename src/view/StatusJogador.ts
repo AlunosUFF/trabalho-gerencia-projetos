@@ -111,9 +111,9 @@ export default class StatusJogador extends Phaser.GameObjects.Container {
             this.atualizarQuantidadeAlocando(-1)
         })
 
-        eventsCenter.on(PlayerEvent.mobilized, (data: {continentSlug: string, quantity: number})=>{
-            this.atualizarTexto()
-        })
+        // eventsCenter.on(PlayerEvent.mobilized, (data: {continentSlug: string, quantity: number})=>{
+        //     // this.atualizarTexto()
+        // })
 
         this.scene.add.existing(this);
     }
@@ -140,7 +140,6 @@ export default class StatusJogador extends Phaser.GameObjects.Container {
         this.quantidadeAlocavel = this.quantidadeAlocavel < 0 ? 0 : this.quantidadeAlocavel;
         this.quantidadeAlocavel = this.quantidadeAlocavel > this.warMatch.getCurrentPlayer().placeble.all
           ? this.warMatch.getCurrentPlayer().placeble.all : this.quantidadeAlocavel;
-        console.log(this.quantidadeAlocavel)
 
         this.textQuantidadeAlocando.setText(this.quantidadeAlocando.toString())
         this.textQuantidadeAlocavel.setText(this.quantidadeAlocavel.toString())

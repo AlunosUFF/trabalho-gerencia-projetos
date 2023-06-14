@@ -8,7 +8,7 @@ import eventsCenter from "./services/EventsCenter";
 import PlayerType from "./model/Player";
 import Objective from "./model/Objective";
 import IaPlayer from "./model/IAPlayer";
-import { GameEvent } from "./shared/events.model";
+import { GameEvent, PlayerEvent } from "./shared/events.model";
 import DisplayScene from "./scenes/DisplayScene";
 
 const COLORS = {
@@ -57,14 +57,19 @@ export class MainGameScene extends Phaser.Scene {
 
         eventsCenter.on("territory-clicked", (territory:Territory) =>{
             if(this.warMatch.turn.currentPhase === Phases.MOBILIZAR){
-                let quantidade = (this.scene.get("DisplayScene") as DisplayScene).statusJogador.quantidadeAlocando
-                // console.log(this.statusJogador.quantidadeAlocando)
+                let quantidade = (this.scene.get("DisplayScene") as DisplayScene)
+                .statusJogador.quantidadeAlocando
+
                 if(quantidade > 0){
                     territory.mobilize(this.warMatch.board.continents, quantidade)
                 }else{
                 territory.mobilize(this.warMatch.board.continents, 1);
                 }
                 (this.scene.get("DisplayScene") as DisplayScene).statusJogador.atualizarTexto()
+                // let continentSlug
+                // console.log(territory, this.continentsData[territory.continent].slug)
+                // console.log(this.warMatch.getCurrentPlayer().placeble[])
+                // eventsCenter.emit(PlayerEvent.mobilized, {territory, })
 
             }else if(this.warMatch.turn.currentPhase === Phases.ATACAR){
                 this.warMatch.board.checkAttackCondition(
@@ -80,10 +85,10 @@ export class MainGameScene extends Phaser.Scene {
 
         eventsCenter.on(this.warMatch.turn.phasesNames[Phases.MOBILIZAR],()=>{
             this.warMatch.getCurrentPlayer().clearPlaced()
-            //Calcular total de exercitos
-            // if(this.warMatch.getCurrentPlayer()
+
             if(this.warMatch.getCurrentPlayer()){
                 this.warMatch.getTotalArmiesToPlace()
+                this.scene.get("DisplayScene")
             }
 
             
@@ -159,9 +164,6 @@ export class MainGameScene extends Phaser.Scene {
             {id: 1, name: 'Tiago', ia: false, color: 'black'},
             {id: 2, name: 'Paulo', ia: false, color: 'blue'},
             {id: 3, name: 'Rafa', ia: false, color: 'red'},
-            // {id: 4,name: "Ygor",ia: true,color: 'green'},
-            // {id: 5,name: "Thali",ia: true,color: 'yellow'},
-            // {id: 6,name: "Edu",ia: true,color: 'pink'}
         ]
 
         // this.scene.run("InitGameScene")

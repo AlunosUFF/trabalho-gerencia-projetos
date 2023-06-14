@@ -45,7 +45,6 @@ export default class DisplayScene extends Phaser.Scene {
     }
 
     destroy(){
-        console.log("Destroy")
         if(this.contadores.length>0){
             this.contadores.forEach(contador=>contador.destroy())
         }

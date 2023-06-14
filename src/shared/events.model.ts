@@ -7,6 +7,12 @@ export class GameEvent {
     public static readonly drop: string = "drop";
 }
 
+
+export class TurnEvent {
+    public static readonly mobilize: string = "Mobilizar"
+    public static readonly mobilizeInitiated: string = "mobilize:initiated"
+}
+
 export class CometEvent {
     public static readonly create: string = "comet:create";
     public static readonly destroy: string = "comet:destroy";
