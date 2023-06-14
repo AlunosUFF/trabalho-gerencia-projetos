@@ -1,6 +1,7 @@
 import { GamePlayer } from "../model/GamePlayer";
 import eventsCenter from "../services/EventsCenter";
 import Util from "../services/Util";
+import { GameEvent } from "../shared/events.model";
 
 export enum Phases{
     MOBILIZAR = 0,
@@ -61,7 +62,7 @@ export class Turn{
     }
 
     nextTurn(){
-        eventsCenter.emit("next-turn")
+        eventsCenter.emit(GameEvent.nextTurn)
         this.nextPlayer();
     }
 }

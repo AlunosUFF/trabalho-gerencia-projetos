@@ -1,30 +1,27 @@
 import { WarMatch } from "../game/WarMatch";
 import eventsCenter from "../services/EventsCenter";
 import ContadorExercitos from "../view/ContadorExercitos";
-import { Player } from "../model/Player";
 import StatusJogador from "../view/StatusJogador";
 import ObjetivoJogador from "../view/ObjetivoJogador";
 import IconeCarta from "../view/IconeCarta";
-import { playerCOLORS } from "../model/GamePlayer";
 import { ObjetiveCard } from "../view/ObjectiveCard";
 import DeckCartas from "../view/DeckCartas";
-import LocalizadorContinente from "../view/LocalizadorContinente";
-import IconeSair from "../view/IconeSair";
+import { GameEvent } from "../shared/events.model";
 
-export default class ShowUIScene extends Phaser.Scene {
-    public warMatch: WarMatch;
+export default class DisplayScene extends Phaser.Scene {
+    public warMatch!: WarMatch;
     public isOpen: boolean = false;
     public INITIALX: number = 20;
     public INITIALY: number = 450;
-    finishPhaseButton: Phaser.GameObjects.Text;
-    displayPhase: Phaser.GameObjects.Text;
-    displayMessage: Phaser.GameObjects.Text;
+    finishPhaseButton!: Phaser.GameObjects.Text;
+    displayPhase!: Phaser.GameObjects.Text;
+    displayMessage!: Phaser.GameObjects.Text;
     contadores: ContadorExercitos[]=[];
-    statusJogador: StatusJogador;
+    statusJogador!: StatusJogador;
     objetivo: any;
     iconCarta: any;
-    objetivoCard: ObjetiveCard;
-    deckCartas: DeckCartas;
+    objetivoCard!: ObjetiveCard;
+    deckCartas!: DeckCartas;
     iconSair: any;
 
 
@@ -36,15 +33,18 @@ export default class ShowUIScene extends Phaser.Scene {
     init(data: { warMatch: WarMatch; }){
         let {warMatch} = data;
         this.warMatch = warMatch;
+
     }
 
     nextPhase(){
         this.warMatch.turn.nextPhase();
-        eventsCenter.emit("next-phase",this.warMatch.getCurrentPlayer());
+        // this.statusJogador.mode = Phases[this.warMatch.turn.getCurrentPhaseName()]
+        eventsCenter.emit(GameEvent.nextPhase,this.warMatch.getCurrentPlayer());
         this.refresh();
     }
 
     destroy(){
+        console.log("Destroy")
         if(this.contadores.length>0){
             this.contadores.forEach(contador=>contador.destroy())
         }
@@ -132,7 +132,7 @@ export default class ShowUIScene extends Phaser.Scene {
         //Evento
         this.input.keyboard.on("keydown-F",()=>{
             if(this.warMatch.hasConditionToNextPhase()){
-                eventsCenter.emit("next-phase",this.warMatch.getCurrentPlayer())
+                eventsCenter.emit(GameEvent.nextPhase,this.warMatch.getCurrentPlayer())
                 this.nextPhase()
             }
             // this.scene.stop("ShowUIScene");

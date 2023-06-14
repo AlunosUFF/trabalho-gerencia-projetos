@@ -2,6 +2,7 @@ import { WarMatch } from "../game/WarMatch";
 import { Card } from "../view/Card";
 import { playerCOLORS } from "../model/GamePlayer";
 import eventsCenter from "../services/EventsCenter";
+import { GameEvent } from "../shared/events.model";
 export default class ShowUIScene extends Phaser.Scene {
     public warMatch: WarMatch;
     public isOpen: boolean = false;
@@ -114,7 +115,7 @@ export default class ShowUIScene extends Phaser.Scene {
         //Eventos
         this.finishPhaseButton.on("pointerdown", () =>{
             if(this.warMatch.hasConditionToNextPhase()){
-                eventsCenter.emit("next-phase",currentPlayer)
+                eventsCenter.emit(GameEvent.nextPhase, currentPlayer)
                 this.nextPhase()
             }
             // this.nextPhase()
@@ -158,7 +159,7 @@ export default class ShowUIScene extends Phaser.Scene {
 
         this.input.keyboard.on("keydown-F",()=>{
             if(this.warMatch.hasConditionToNextPhase()){
-                eventsCenter.emit("next-phase",this.warMatch.getCurrentPlayer())
+                eventsCenter.emit(GameEvent.nextPhase,this.warMatch.getCurrentPlayer())
                 this.nextPhase()
             }
             // this.scene.stop("ShowUIScene");

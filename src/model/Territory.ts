@@ -29,8 +29,8 @@ export class Territory extends Phaser.GameObjects.Container {
         .setDepth(100)
         // let territoryText = new Phaser.GameObjects.BitmapText(scene, textX - 20, textY - 20, 'pressstart', name, 10, Phaser.GameObjects.BitmapText.ALIGN_LEFT)
         // .setDepth(10).setTintFill(0x000)
-        let territoryText = new Phaser.GameObjects.Text(scene, textX - 20, textY - 20, name, {fontFamily:"Arial, sans-serif", fontSize:"12px", stroke:"true", strokeThickness: 10})
-        .setTintFill(0x000).setStroke("#f00cfe", 1).setAlpha(0.9)
+        let territoryText = new Phaser.GameObjects.Text(scene, textX - 20, textY - 20, name, {fontFamily:"Arial, sans-serif", fontSize:"12px", color:"#000", stroke:"true", strokeThickness: 10})
+        .setStroke("#ffffff", 3).setAlpha(1).setDepth(-100)
         // (scene, textX - 20, textY - 20, 'pressstart', name, 10, Phaser.GameObjects.BitmapText.ALIGN_LEFT)
         
 
@@ -71,8 +71,7 @@ export class Territory extends Phaser.GameObjects.Container {
 
     mobilize(continents) {
         let continentSlug = continents[this.continent].slug
-        console.log(this.owner)
-        console.log(this.owner?.hasArmiesToPlace())
+        // console.log(this.owner?.hasArmiesToPlace())
         if(this.owner?.isCurrentPlayer() && this.owner.hasArmiesToPlace()){
             if(this.owner.placeble[continentSlug] > 0){
                 this.placeArmies(1);

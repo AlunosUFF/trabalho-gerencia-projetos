@@ -147,15 +147,11 @@ export class WarMatch{
     getTotalArmiesToPlace() {
         let player = this.getCurrentPlayer()
         this.setPlayerTotalTerritories(player)
-        player?.setPlaceble("all", Math.max(Math.floor(player.totalTerritories/2), 3))
+        player.placeble.all = Math.max(Math.floor(player.totalTerritories/2), 3)
         this.board.checkTotality(player)
-
-
-        // let general = game.getPlayerTerritoriesCount(player)
-        // player.placeble.all = Math.max(Math.floor(general/2), 3)
     }
 
-    getCurrentPlayer():GamePlayer {
+    getCurrentPlayer():GamePlayer | IaPlayer {
         return this.turn.getCurrentPlayer(this.players)
     }
 
@@ -163,7 +159,7 @@ export class WarMatch{
         //Mobilizar
         switch (this.turn.currentPhase) {
             case Phases.MOBILIZAR:
-                return true
+                // return true
                  //Mao maior que 5
                 let handSize = this.getCurrentPlayer().hand.length === 5
                 //Existe exercito para alocar
@@ -187,6 +183,6 @@ export class WarMatch{
             default:
                 break;
         }
-
+        return FontFaceSetLoadEvent
     }
 }

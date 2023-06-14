@@ -30,14 +30,14 @@ export class GamePlayer extends Player{
     
     // public cards: Array<Car
     public color: number;
-    public totalArmies: number;
-    public totalTerritories: number;
-    public playerText: Phaser.GameObjects.Text;
-    public armies;
+    public totalArmies: number = 0;
+    public totalTerritories: number = 0;
+    public playerText!: Phaser.GameObjects.Text;
     public destroyed = false;
     
     public placed: Placeble = {
-        "all":0, "south-america":0,    
+        "all":0, 
+        "south-america":0,    
         "asia": 0,
         "oceania": 0,
         "africa": 0,
@@ -56,8 +56,8 @@ export class GamePlayer extends Player{
     public gainedTerritory = false;
     public hand: number[] = []
     public warMatch: WarMatch;
-    public objective: Objective;
-    public aimer: GamePlayer;
+    public objective!: Objective;
+    public aimer!: GamePlayer;
 
 
     // public ia: boolean;
@@ -137,42 +137,4 @@ export class GamePlayer extends Player{
     hasBeenDestroyed(){
         return this.totalTerritories === 0
     }
-
-    // resetPlaced(){
-    //     this.placed.all = 0
-    // }
-
-    hasConditionToNextPhase() :boolean{
-        //Mobilizar
-        switch (this.turn.currentPhase) {
-            case Phases.MOBILIZAR:
-                // return true
-                 //Mao maior que 5
-                let handSize = this.getCurrentPlayer().hand.length === 5
-                //Existe exercito para alocar
-                let hasArmiesToPlace = this.getCurrentPlayer()?.hasArmiesToPlace()
-                if(handSize || hasArmiesToPlace){
-                    return false
-                }else{
-                    return true
-                }
-                break;
-            case Phases.ATACAR:
-                // console.log(this.turn.getCurrentPhaseName())
-
-                return true
-                break;
-            case Phases.FORTIFICAR:
-                // console.log(this.turn.getCurrentPhaseName())
-
-                return true
-                break;
-            default:
-                break;
-        }
-
-        return false;
-
-    }
-
 }
