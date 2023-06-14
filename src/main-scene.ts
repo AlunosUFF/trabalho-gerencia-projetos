@@ -69,9 +69,17 @@ export class MainGameScene extends Phaser.Scene {
                 (this.scene.get("DisplayScene") as DisplayScene).statusJogador.atualizarTexto()
 
             }else if(this.warMatch.turn.currentPhase === Phases.ATACAR){
-                this.warMatch.board.checkAttackCondition(
-                    territory, this.warMatch.getCurrentPlayer()
-                )
+                if(quantidade > 0){
+                    this.warMatch.board.checkAttackCondition(
+                        territory, this.warMatch.getCurrentPlayer(), quantidade
+                    );
+                }else{
+                    this.warMatch.board.checkAttackCondition(
+                        territory, this.warMatch.getCurrentPlayer(), 3
+                    );
+                }
+                
+            (this.scene.get("DisplayScene") as DisplayScene).statusJogador.atualizarTexto()
 
             }else if(this.warMatch.turn.currentPhase === Phases.FORTIFICAR){
                 if(quantidade > 0){
@@ -167,8 +175,8 @@ export class MainGameScene extends Phaser.Scene {
     
         let players = [
             {id: 1, name: 'Tiago', ia: false, color: 'black'},
-            {id: 2, name: 'Paulo', ia: false, color: 'blue'},
-            {id: 3, name: 'Rafa', ia: false, color: 'red'},
+            {id: 2, name: 'Paulo', ia: true, color: 'blue'},
+            {id: 3, name: 'Rafa', ia: true, color: 'red'},
         ]
 
         // this.scene.run("InitGameScene")

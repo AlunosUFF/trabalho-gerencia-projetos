@@ -27,7 +27,7 @@ export default class StatusJogador extends Phaser.GameObjects.Container {
         .setOrigin(0);
 
         let spriteElipseSeguranca = new Phaser.GameObjects.Sprite(scene, 10,10, 'ellipse')
-        .setOrigin(0);
+        .setOrigin(0).setInteractive({useHandCursor:true});
 
         let spriteBotaoFinalizar = new Phaser.GameObjects.Sprite(scene, 270,10, 'ellipse')
         .setOrigin(0);
@@ -111,6 +111,21 @@ export default class StatusJogador extends Phaser.GameObjects.Container {
             this.atualizarQuantidadeAlocando(-1)
         })
 
+
+        
+        this.textQuantidadeAlocando.on("wheel", (pointer)=>{
+            let wheelPoint = pointer.deltaY > 0 ? -1 : 1
+            this.atualizarQuantidadeAlocando(wheelPoint)
+        })
+
+        spriteElipseSeguranca.on("wheel", (pointer)=>{
+            let wheelPoint = pointer.deltaY > 0 ? -1 : 1
+            this.atualizarQuantidadeAlocando(wheelPoint)
+        })
+
+
+
+
         // eventsCenter.on(PlayerEvent.mobilized, (data: {continentSlug: string, quantity: number})=>{
         //     // this.atualizarTexto()
         // })
@@ -127,10 +142,8 @@ export default class StatusJogador extends Phaser.GameObjects.Container {
         this.setActive(true);
         this.quantidadeAlocando = 0
         this.quantidadeAlocavel = this.warMatch.getCurrentPlayer().placeble.all
-        console.log(this.warMatch.getCurrentPlayer().placeble)
         this.textQuantidadeAlocando.setText(this.quantidadeAlocando.toString())
         this.textQuantidadeAlocavel.setText(this.quantidadeAlocavel.toString())
-        console.log(this.textQuantidadeAlocavel)
     }
 
     atualizarQuantidadeAlocando(quantidade:number){

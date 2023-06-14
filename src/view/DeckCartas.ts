@@ -4,11 +4,13 @@ import { Player } from "../model/Player";
 import eventsCenter from "../services/EventsCenter";
 import { WarMatch } from "../game/WarMatch";
 import { Card } from "./Card";
+import DisplayScene from "../scenes/DisplayScene";
 
 export default class DeckCartas extends Phaser.GameObjects.Container {
     // public spriteFundo: Phaser.GameObjects.Sprite;
     // public slug: string;
     public warMatch: WarMatch;
+    public cards: Card[] = [];
     // cardname: any;
     // textName: Phaser.GameObjects.BitmapText;
 
@@ -23,6 +25,7 @@ export default class DeckCartas extends Phaser.GameObjects.Container {
         let retanguloMargemTabelaTroca = new Phaser.GameObjects.Rectangle(scene,-250,-340,250,410,color).setOrigin(0)
         retanguloMargemTabelaTroca.setVisible(false)
         let spriteTabelaTroca = new Phaser.GameObjects.Sprite(scene, -240,-330, 'tabela_de_troca').setOrigin(0)
+        
         for(let i = 0; i<5;i++){
             retangulos.push(new Phaser.GameObjects.Rectangle(scene,180+(i*100),60,90,110,0x8794a5));
         }
@@ -50,8 +53,20 @@ export default class DeckCartas extends Phaser.GameObjects.Container {
             this.scene.sys.displayList.list.find(o=>o.constructor.name==='DeckCartas').setVisible(false);
             this.scene.sys.displayList.list.filter(o=>o.constructor.name!=='DeckCartas').forEach(object=>{
              object.setVisible(true);
- 
+
             })
+        })
+
+        spriteElipseTrocar.on("pointerdown",()=>{
+            if(this.warMatch.turn.getCurrentPhaseName()==="Mobilizar"){
+                let playerCardsToExchange = this.cards.filter(c=>c.isSelected).map(c=>c.territory);
+                let currentPlayer = (this.scene as DisplayScene).warMatch.getCurrentPlayer();
+
+                this.warMatch.board.exchangeCards(currentPlayer, playerCardsToExchange )
+                console.log(currentPlayer);
+                // (this.scene as DisplayScene).updateArmies();
+                (this.scene as DisplayScene).refresh();
+            }
         })
 
         
@@ -72,6 +87,7 @@ export default class DeckCartas extends Phaser.GameObjects.Container {
                     territory,
                     continent: this.warMatch.board.continents[territory.continent]
                 })
+                this.cards.push(card);
                 this.add(card)
             })
         }   

@@ -126,11 +126,11 @@ export default class DisplayScene extends Phaser.Scene {
     }
 
     updateArmies(){
-        let placedArmies = this.warMatch.turn.getCurrentPlayer(this.warMatch.players)?.placed["all"]
-        let placebleArmies = this.warMatch.turn.getCurrentPlayer(this.warMatch.players)?.placeble["all"]
-        this.displayMessage.setText(
-            `Exércitos Disponíveis: ${placebleArmies} Exércitos alocados: ${placedArmies}`
-        )
+        // let placedArmies = this.warMatch.turn.getCurrentPlayer(this.warMatch.players)?.placed["all"]
+        // let placebleArmies = this.warMatch.turn.getCurrentPlayer(this.warMatch.players)?.placeble["all"]
+        // this.displayMessage.setText(
+        //     `Exércitos Disponíveis: ${placebleArmies} Exércitos alocados: ${placedArmies}`
+        // )
     }
 
     create(){

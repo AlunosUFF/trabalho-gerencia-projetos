@@ -1,5 +1,5 @@
 import { Card } from "../view/Card";
-import { GamePlayer, playerCOLORS } from "../model/GamePlayer";
+import { GamePlayer, playerCOLORS, Placeble } from '../model/GamePlayer';
 import IaPlayer from "../model/IAPlayer";
 import Objective from "../model/Objective";
 import { Territory } from "../model/Territory";
@@ -250,22 +250,24 @@ export class Board {
         return woTerritory.length > 0
     }
 
-    checkAttackCondition(territory: Territory, player?: GamePlayer) {
+    checkAttackCondition(territory: Territory, player?: GamePlayer, quantity: number = 0): void {
         // Checar se é o dono
         if(territory.owner?.id === player?.id){
             this.clearBoard()
             territory.select()
             territory.highlightNeighbours(this.territories)
+            player?.setPlaceble("all", Math.min(territory.armies - 1, 3))
         }else if(territory.isHighlighted){
             let attacker = this.getSelected()
-            this.attack(attacker, territory) 
+            this.attack(attacker, territory, attacker.owner!.placeble.all) 
+            player?.setPlaceble("all", 0)
         }else if(this.hasSelectedTerritory()){
             alert("Ataque inválido")
         }
     }
 
-    attack(attacker: Territory, defender: Territory){
-        let attackQuantity = Math.min(attacker.armies - 1, 3)
+    attack(attacker: Territory, defender: Territory, quantity: number){
+        let attackQuantity = quantity
         let defenseQuantity = Math.min(defender.armies, 3)
         let attackResult = this.playDices(attackQuantity)
         let defenseResult = this.playDices(defenseQuantity)
@@ -280,7 +282,7 @@ export class Board {
             let conquered = defender.owner
             defender.conquer(attacker.owner, transfer)
             conquered?.updateTotalTerritories()
-            attacker.owner.gainedTerritory = true
+            attacker!.owner!.gainedTerritory = true
             eventsCenter.emit("check-victory", {attacker: attacker.owner, defender: conquered, acao: Phases.ATACAR}, )
         }
         this.clearBoard()
