@@ -12,11 +12,15 @@ export default class LocalizadorContinente extends Phaser.GameObjects.Container{
     constructor(data: {scene: Phaser.Scene, continent: any, territorio:Territory}) {
         let {scene, continent} = data;
 
-        let localizador = new Phaser.GameObjects.Sprite(scene,continent.textX,continent.textY,'localizador')
+        let localizador = new Phaser.GameObjects.Sprite(scene,continent.numberX,continent.numberY,'localizador')
         .setTint(0xffc100)
-        let continentText = new Phaser.GameObjects.Text(scene, continent.textX, continent.textY,``,{fontSize:"18px"})
-        .setTint(0xffffff).setText(`${continent.name}`)
-        let continentTotalityDisplay = new Phaser.GameObjects.BitmapText(scene, continent.textX, continent.textY, 
+
+        let continentText = new Phaser.GameObjects.Text(scene, continent.textX, continent.textY,``,
+        {fontSize:"16px", wordWrap:{width:120}})
+        .setTint(0xffffff).setText(`${continent.name} +${continent.totality}`)
+
+        let continentTotalityDisplay = new Phaser.GameObjects.BitmapText(scene, 
+            continent.numberX - 6, continent.numberY + 20, 
             'pressstart',`${0}`,20).setTint(0x000000).setAlpha(0.7)
         
         
@@ -32,7 +36,7 @@ export default class LocalizadorContinente extends Phaser.GameObjects.Container{
 
         this.scene.add.existing(this)
 
-        eventsCenter.on(PlayerEvent.mobilized, (data:{continentSlug: string, quantity: number})=>{
+        eventsCenter.on(PlayerEvent.mobilizing, (data:{continentSlug: string, quantity: number})=>{
             this.atualizaTexto(data)
         })
 
@@ -40,8 +44,6 @@ export default class LocalizadorContinente extends Phaser.GameObjects.Container{
             let quantity = (this.scene as MainGameScene).warMatch.getCurrentPlayer().placeble[this.continent.slug]
             this.atualizaTexto({ quantity: quantity, continentSlug: this.continent.slug})
         })
-
-
     }
 
     atualizaTexto(data:{continentSlug: string, quantity: number}){

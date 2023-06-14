@@ -7,6 +7,7 @@ import eventsCenter from "../services/EventsCenter";
 import Util from "../services/Util";
 import { Phases } from "./Turn";
 import { WarMatch } from "./WarMatch";
+import { PlayerEvent } from "../shared/events.model";
 
 const exchangeTable = {
     "1": 4,
@@ -305,29 +306,30 @@ export class Board {
         return results.sort((a,b)=> b - a)
     }
 
-    checkFortifyCondition(territory: Territory, player: GamePlayer | undefined) {
+    checkFortifyCondition(territory: Territory, player: GamePlayer | undefined, quantidade: number) {
         
         if(territory.isHighlighted){
             let origin = this.getSelected()
-            this.fortify(origin, territory)
+            this.fortify(origin, territory, quantidade)
             eventsCenter.emit("clear-board")
             eventsCenter.emit("check-victory", {acao: Phases.FORTIFICAR})
+            player?.setPlaceble("all", 0)
         }else if(territory.owner?.id === player?.id){
             if(territory.armies === 1){
                 return
             }
-            // this.clearBoard()
             territory.select()
             territory.highlightOwnedNeighbors(this.territories)
+            player?.setPlaceble("all", territory.armies - 1)
         }else if(this.hasSelectedTerritory()){
             alert("Movimento inválido")
         }
     }
 
-    fortify(origin: Territory, destiny: Territory) {
+    fortify(origin: Territory, destiny: Territory, quantidade: number) {
         if(origin.armies > 1){
-            origin.unplaceArmies(1);
-            destiny.placeArmies(1);
+            origin.unplaceArmies(quantidade);
+            destiny.placeArmies(quantidade);
             // this.clearBoard();
             eventsCenter.emit("clear-board")
         }else{

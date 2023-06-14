@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import { WarMatch } from "./game/WarMatch";
 import { Phases, Turn } from "./game/Turn";
 import { GamePlayer } from "./model/GamePlayer";
-import { Territory } from "./model/Territory";
+import { Territory } from './model/Territory';
 import { Board } from "./game/Board";
 import eventsCenter from "./services/EventsCenter";
 import PlayerType from "./model/Player";
@@ -56,20 +56,17 @@ export class MainGameScene extends Phaser.Scene {
         // })
 
         eventsCenter.on("territory-clicked", (territory:Territory) =>{
-            if(this.warMatch.turn.currentPhase === Phases.MOBILIZAR){
-                let quantidade = (this.scene.get("DisplayScene") as DisplayScene)
+            
+            let quantidade = (this.scene.get("DisplayScene") as DisplayScene)
                 .statusJogador.quantidadeAlocando
 
+            if(this.warMatch.turn.currentPhase === Phases.MOBILIZAR){
                 if(quantidade > 0){
                     territory.mobilize(this.warMatch.board.continents, quantidade)
                 }else{
-                territory.mobilize(this.warMatch.board.continents, 1);
+                    territory.mobilize(this.warMatch.board.continents, 1);
                 }
                 (this.scene.get("DisplayScene") as DisplayScene).statusJogador.atualizarTexto()
-                // let continentSlug
-                // console.log(territory, this.continentsData[territory.continent].slug)
-                // console.log(this.warMatch.getCurrentPlayer().placeble[])
-                // eventsCenter.emit(PlayerEvent.mobilized, {territory, })
 
             }else if(this.warMatch.turn.currentPhase === Phases.ATACAR){
                 this.warMatch.board.checkAttackCondition(
@@ -77,9 +74,16 @@ export class MainGameScene extends Phaser.Scene {
                 )
 
             }else if(this.warMatch.turn.currentPhase === Phases.FORTIFICAR){
-                this.warMatch.board.checkFortifyCondition(
-                    territory, this.warMatch.getCurrentPlayer()
-                )
+                if(quantidade > 0){
+                    this.warMatch.board.checkFortifyCondition(
+                        territory, this.warMatch.getCurrentPlayer(), quantidade
+                    )
+                }else{
+                    this.warMatch.board.checkFortifyCondition(
+                        territory, this.warMatch.getCurrentPlayer(), 1
+                    )
+                }
+                (this.scene.get("DisplayScene") as DisplayScene).statusJogador.atualizarTexto()
             }
         })
 
@@ -118,6 +122,7 @@ export class MainGameScene extends Phaser.Scene {
         })
 
         eventsCenter.on(this.warMatch.turn.phasesNames[Phases.FORTIFICAR],()=>{
+            this.warMatch.getCurrentPlayer().clearPlaced()
             if(this.warMatch.getCurrentPlayer().ia){
                 // alert("IA Jogando")
                 

@@ -116,13 +116,21 @@ export default class StatusJogador extends Phaser.GameObjects.Container {
         // })
 
         this.scene.add.existing(this);
+
+        // eventsCenter.on(PlayerEvent.fortifying, (data:{quantity: number})=>{
+        //     // this.atualizarQuantidadeAlocando(0)
+        //     this.atualizarTexto()
+        // })
     }
 
     atualizarTexto(){
+        this.setActive(true);
         this.quantidadeAlocando = 0
         this.quantidadeAlocavel = this.warMatch.getCurrentPlayer().placeble.all
+        console.log(this.warMatch.getCurrentPlayer().placeble)
         this.textQuantidadeAlocando.setText(this.quantidadeAlocando.toString())
         this.textQuantidadeAlocavel.setText(this.quantidadeAlocavel.toString())
+        console.log(this.textQuantidadeAlocavel)
     }
 
     atualizarQuantidadeAlocando(quantidade:number){
@@ -131,7 +139,6 @@ export default class StatusJogador extends Phaser.GameObjects.Container {
             this.quantidadeAlocando = 0
             return
         }
-
         this.quantidadeAlocando = (this.quantidadeAlocando < 0) ? 0 : this.quantidadeAlocando
         this.quantidadeAlocando = (this.quantidadeAlocavel === 0) 
         ? this.quantidadeAlocando - quantidade : this.quantidadeAlocando
@@ -143,7 +150,7 @@ export default class StatusJogador extends Phaser.GameObjects.Container {
 
         this.textQuantidadeAlocando.setText(this.quantidadeAlocando.toString())
         this.textQuantidadeAlocavel.setText(this.quantidadeAlocavel.toString())
-        // (this.scene as DisplayScene).refresh()
+        // // (this.scene as DisplayScene).refresh()
     }
     
 }

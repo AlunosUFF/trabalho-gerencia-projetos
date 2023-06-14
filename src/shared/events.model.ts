@@ -26,7 +26,8 @@ export class ServerEvent {
 }
 
 export class PlayerEvent {
-    public static readonly mobilized: string = "player:mobilized"; 
+    public static readonly mobilizing: string = "player:mobilizing"; 
+    public static readonly fortifying: string = "player:fortifying"; 
     // public static readonly joined: string = "player:joined";
     // public static readonly protagonist: string = "player:protagonist";
     // public static readonly players: string = "actors:collection";

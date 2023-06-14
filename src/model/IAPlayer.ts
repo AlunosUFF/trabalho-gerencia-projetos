@@ -83,7 +83,7 @@ export default class IaPlayer extends GamePlayer{
             territory.select()
             if(highlightedTerritories[index]){
                 this.warMatch.board.checkFortifyCondition(
-                    highlightedTerritories[index], this
+                    highlightedTerritories[index], this, 1
                 )
             }
             // territory.unselect()

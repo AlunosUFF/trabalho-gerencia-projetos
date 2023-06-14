@@ -76,11 +76,11 @@ export class Territory extends Phaser.GameObjects.Container {
             if(this.owner.placeble[continentSlug] > 0 && this.owner.placeble[continentSlug] >= quantity){
                 this.placeArmies(quantity);
                 this.owner.placeArmie(continentSlug, quantity)
-                eventsCenter.emit(PlayerEvent.mobilized, {continentSlug, quantity: this.owner.placeble[continentSlug]})
+                eventsCenter.emit(PlayerEvent.mobilizing, {continentSlug, quantity: this.owner.placeble[continentSlug]})
             }else if(this.owner.placeble["all"] > 0){
                 this.placeArmies(quantity);
                 this.owner.placeArmie("all",quantity)
-                eventsCenter.emit(PlayerEvent.mobilized, {continentSlug, quantity: this.owner.placeble[continentSlug]})
+                eventsCenter.emit(PlayerEvent.mobilizing, {continentSlug, quantity: this.owner.placeble[continentSlug]})
             }
 
             eventsCenter.emit("clear-board")
