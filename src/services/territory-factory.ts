@@ -43,6 +43,7 @@ export class TerritoryFactory{
             new LocalizadorContinente({scene, 
                 continent: scene.continentsData[continentId],
                 territorio:territorios,
+                alocaveis: 0
             })
         })
 

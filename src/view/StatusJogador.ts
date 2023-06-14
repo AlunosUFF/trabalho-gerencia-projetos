@@ -2,6 +2,7 @@ import { Phases } from "../game/Turn";
 import { WarMatch } from "../game/WarMatch";
 import DisplayScene from "../scenes/DisplayScene";
 import eventsCenter from "../services/EventsCenter";
+import { TerritoryFactory } from "../services/territory-factory";
 import { GameEvent } from "../shared/events.model";
 
 export default class StatusJogador extends Phaser.GameObjects.Container {
@@ -61,7 +62,9 @@ export default class StatusJogador extends Phaser.GameObjects.Container {
         .setTint(0)
 
         let spriteLinhaertical = new Phaser.GameObjects.Sprite(scene, 450,5, 'linha_vertical')
-        .setOrigin(0);
+        .setOrigin(0);TerritoryFactory
+
+
         
         // console.log(scene,x,y,fundo)
         super(scene,x,y ,[
