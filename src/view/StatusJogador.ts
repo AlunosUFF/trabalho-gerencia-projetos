@@ -4,6 +4,7 @@ import LocalizadorContinente from "./LocalizadorContinente";
 export default class StatusJogador extends Phaser.GameObjects.Container {
     // public spriteFundo: Phaser.GameObjects.Sprite;
     public warMatch: WarMatch;
+    public textTurnoJogador: Phaser.GameObjects.BitmapText;
     // cardname: any;
     // textName: Phaser.GameObjects.BitmapText;
 
@@ -36,7 +37,7 @@ export default class StatusJogador extends Phaser.GameObjects.Container {
         this.warMatch = warMatch
 
         
-       
+        this.textTurnoJogador = textTurnoJogador
 
 
         spriteBotaoFinalizar.setInteractive({useHandCursor: true})
@@ -47,7 +48,6 @@ export default class StatusJogador extends Phaser.GameObjects.Container {
         })
         spriteBotaoFinalizar.on("pointerdown", (pointer, objeto)=>{
             this.scene.nextPhase();
-            textTurnoJogador.setText(this.warMatch.turn.getCurrentPhaseName());
         })
         spriteBotaoFinalizar.on("pointerout", (pointer, objeto)=>{
             spriteBotaoFinalizar.setTint(0xffffff);
