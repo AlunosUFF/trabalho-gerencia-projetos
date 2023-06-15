@@ -51,7 +51,13 @@ export default class PreloadScene extends Phaser.Scene{
         this.load.image('player_container', 'assets/images/player_container.png');
         this.load.image('tabela_de_troca', 'assets/images/tabela_de_troca.png');
         this.load.image('botao_sair', 'assets/images/botao_sair.png');
-
+        this.load.image('icon_dado_1', 'assets/images/icon_dado_1.png');
+        this.load.image('icon_dado_2', 'assets/images/icon_dado_2.png');
+        this.load.image('icon_dado_3', 'assets/images/icon_dado_3.png');
+        this.load.image('icon_dado_4', 'assets/images/icon_dado_4.png');
+        this.load.image('icon_dado_5', 'assets/images/icon_dado_5.png');
+        this.load.image('icon_dado_6', 'assets/images/icon_dado_6.png');
+        
     }
 
     create(){
