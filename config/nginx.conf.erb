@@ -12,7 +12,12 @@ http {
     gzip_comp_level 2;
     gzip_min_length 512;
     gzip_proxied any; # Heroku router sends Via header
-
+    types {
+        text/html    html;
+        text/css     css;
+        application/javascript     js;
+        
+    }
     server_tokens off;
 
     log_format l2met 'measure#nginx.service=$request_time request_id=$http_x_request_id';
