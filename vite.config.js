@@ -1,7 +1,6 @@
 import { defineConfig } from "vite"
 
 export default defineConfig({
-    base: '/trabalho-gerencia-projetos/',
     server:{
         port:3000
     },
