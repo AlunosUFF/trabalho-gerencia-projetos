@@ -58,7 +58,7 @@ export default class Objective{
                 data.defender.hasBeenDestroyed()){
                 data.defender.destroyed = true;
                 warMatch.removePlayerFromMatch(data.defender)
-                alert(`Player: ${data.attacker.name} ganhou`)
+                eventsCenter.emit("showModal",`Player: ${data.attacker.name} ganhou`)
                 eventsCenter.emit("game-finished", data.attacker)
             }
         }
@@ -78,13 +78,13 @@ export default class Objective{
                 })) > 0
                 if(condicao1 && condicao2 && condicao3){
                     // warMatch.gameOver();
-                    alert(`Player: ${player.name} ganhou`)
+                    eventsCenter.emit("showModal",`Player: ${player.name} ganhou`)
                     eventsCenter.emit("game-finished", player)
                 }
             }else{
                 if(condicao1 && condicao2){
                     // warMatch.gameOver();
-                    alert(`Player: ${player.name} ganhou`)
+                    eventsCenter.emit("showModal",`Player: ${player.name} ganhou`)
                     eventsCenter.emit("game-finished", player)
                 }
             }
@@ -93,7 +93,7 @@ export default class Objective{
                 return (territory.owner === player && territory.armies >= objective.condition.armies)
             }).length
             if(totalTerritories >= objective.condition.territories){
-                alert(`Player: ${player.name} ganhou`)
+                eventsCenter.emit("showModal",`Player: ${player.name} ganhou`)
                 eventsCenter.emit("game-finished", player)
             }
         }

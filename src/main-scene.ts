@@ -47,6 +47,10 @@ export class MainGameScene extends Phaser.Scene {
             }
         })
 
+        eventsCenter.on("showModal", (msg:string) =>{
+            this.scene.launch("ModalScene",{msg})
+        })
+
         eventsCenter.on("restart", (msg:string) => {
             this.scene.restart()
         })

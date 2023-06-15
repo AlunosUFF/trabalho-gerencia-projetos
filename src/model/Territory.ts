@@ -157,12 +157,12 @@ export class Territory extends Phaser.GameObjects.Container {
 
     attack(territory: Territory){
         if(this.armies < 2){
-            alert("Movimento inválido, você não tem exércitos suficientes")
+            eventsCenter.emit("showModal","Movimento inválido, você não tem exércitos suficientes")
             return
         }else{
             let attackArmies = Math.min(this.armies - 1, 3)
             let defenseArmies = Math.min(territory.armies, 3)
-            alert(`${this.name} - ${attackArmies} x ${defenseArmies} - ${territory.name}`)
+            eventsCenter.emit("showModal",`${this.name} - ${attackArmies} x ${defenseArmies} - ${territory.name}`)
         }
     }
 

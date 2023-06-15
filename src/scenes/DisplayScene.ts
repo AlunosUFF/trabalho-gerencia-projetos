@@ -71,6 +71,7 @@ export default class DisplayScene extends Phaser.Scene {
     refresh(){
         this.destroy();
         this.scene.launch('OutScene');
+        
         let count = 0;
         this.warMatch.turn.playersOrders.forEach(playerId =>{
             let player = this.warMatch.getPlayerById(playerId)

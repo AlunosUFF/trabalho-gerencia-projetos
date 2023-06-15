@@ -130,7 +130,7 @@ export class Board {
     exchangeCards(currentPlayer: GamePlayer | undefined, cards: Territory[]) {
         //Checar se tem cards selecionados e se são no máximo 3
         if(!cards || cards.length != 3){
-            alert("Devem ser selecionadas três cartas")
+            eventsCenter.emit("showModal","Devem ser selecionadas três cartas")
             return false
         }else if(this.checkExchangeCondition(cards)){
             currentPlayer?.addPlaceble("all", this.exchangeArmies)
@@ -141,7 +141,11 @@ export class Board {
             }else{
                 this.exchangeArmies += exchangeTable.all
             }
+            eventsCenter.emit("showModal","Cartas trocadas com sucesso")
             return true
+        }else{
+            eventsCenter.emit("showModal","Você deve escolher 3 figuras iguais ou 3 figuras diferentes")
+            return false
         }
     }
 
@@ -264,7 +268,7 @@ export class Board {
             player?.setPlaceble("all", 0)
 
         }else if(this.hasSelectedTerritory()){
-            alert("Ataque inválido")
+            eventsCenter.emit("showModal","Ataque Inválido")
         }
     }
 
@@ -328,7 +332,7 @@ export class Board {
             territory.highlightOwnedNeighbors(this.territories)
             player?.setPlaceble("all", territory.armies - 1)
         }else if(this.hasSelectedTerritory()){
-            alert("Movimento inválido")
+            eventsCenter.emit("showModal","Movimento inválido")
         }
     }
 
@@ -339,7 +343,7 @@ export class Board {
             // this.clearBoard();
             eventsCenter.emit("clear-board")
         }else{
-            alert("Movimento inválido")
+            eventsCenter.emit("showModal","Movimento inválido")
         }
     }
 
