@@ -47,7 +47,7 @@ export default class Objective{
     }
 
     static destroy(warMatch:WarMatch, objective:Objective | undefined, data:{attacker: GamePlayer, defender: GamePlayer, }){
-        console.log("rodando destroy")
+        // console.log("rodando destroy")
         /* Se possui o exército da cor ou tiver sido destruído por outro, muda a condição
         
         */
@@ -65,7 +65,7 @@ export default class Objective{
     }    
 
     static conquer(warMatch:WarMatch, objective?:Objective | undefined, data:{attacker: GamePlayer, defender: GamePlayer, }){
-        console.log("rodando conquer")
+        // console.log("rodando conquer")
         let player:GamePlayer | any = warMatch.getCurrentPlayer()
         if(objective.target === "Continent"){
             let condicao1 = warMatch.board.hasTotality(player, objective.condition.continents[0])

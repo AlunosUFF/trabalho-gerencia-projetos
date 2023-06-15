@@ -90,7 +90,6 @@ export default class StatusJogador extends Phaser.GameObjects.Container {
         spriteBotaoFinalizar.on("pointerdown", (pointer, objeto)=>{
             if(this.warMatch.hasConditionToNextPhase()){
                 (this.scene as DisplayScene).nextPhase();
-                eventsCenter.emit(GameEvent.nextPhase,this.warMatch.getCurrentPlayer());
             }
         })
 

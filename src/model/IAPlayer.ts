@@ -31,14 +31,17 @@ export default class IaPlayer extends GamePlayer{
     }
 
     mobilize(){
-        // alert("IA mobilizando")
-        //Mobilizando de forma aleatória
-        Object.keys(this.placeble).forEach(place =>{
+       Object.keys(this.placeble).forEach(place =>{
             let territories = this.warMatch.board.getTerritoriesByContinent(place, this)
             while(this.placeble[place] > 0){
                 let index = Math.round(Math.random() * (territories.length-1))
                 let territory = territories[index]
-                territory.mobilize(this.warMatch.board.continents, 1)
+                if(territory){
+                    territory.mobilize(this.warMatch.board.continents, 1)
+                }else{
+                    console.log(this,this.placeble, place, territories, this.warMatch.board.continents)
+                    territory.mobilize(this.warMatch.board.continents, 1)
+                }
             }
         })
         
@@ -64,6 +67,7 @@ export default class IaPlayer extends GamePlayer{
             }
             this.warMatch.board.clearBoard()
         })
+
         //Analisar situação
         
         
@@ -89,7 +93,6 @@ export default class IaPlayer extends GamePlayer{
             territory.unHighlightOwnedNeighbors(this.warMatch.board.territories)
             this.warMatch.board.clearBoard()
         })
-
         this.warMatch.board.clearBoard()
 
         //Analisar situação

@@ -42,7 +42,7 @@ export default class DisplayScene extends Phaser.Scene {
     nextPhase(){
         this.warMatch.turn.nextPhase();
         // this.statusJogador.mode = Phases[this.warMatch.turn.getCurrentPhaseName()]
-        eventsCenter.emit(GameEvent.nextPhase,this.warMatch.getCurrentPlayer());
+        // eventsCenter.emit(GameEvent.nextPhase,this.warMatch.getCurrentPlayer());
         this.refresh();
     }
 

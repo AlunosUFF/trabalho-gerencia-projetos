@@ -155,6 +155,7 @@ export class WarMatch{
     }
 
     hasConditionToNextPhase() :boolean{
+        let hasArmiesToPlace
         //Mobilizar
         switch (this.turn.currentPhase) {
             case Phases.MOBILIZAR:
@@ -162,13 +163,13 @@ export class WarMatch{
                  //Mao maior que 5
                 let handSize = this.getCurrentPlayer().hand.length === 5
                 //Existe exercito para alocar
-                let hasArmiesToPlace = this.getCurrentPlayer()?.hasArmiesToPlace()
+                hasArmiesToPlace = this.getCurrentPlayer()?.hasArmiesToPlace()
                 if(handSize || hasArmiesToPlace){
                     if(handSize){
                         eventsCenter.emit("showModal","Você não pode ficar com mais do que 5 cartas na mão")
                     }
                     if(hasArmiesToPlace){
-                        eventsCenter.emit("showModal","Você ainda tem exércitos para posicionar")
+                        eventsCenter.emit("showModal",`Você ainda tem exércitos para posicionar ${this.getCurrentPlayer().placebleToString()}`)
                     }
                     return false
                 }else{
@@ -177,6 +178,11 @@ export class WarMatch{
                 break;
             case Phases.ATACAR:
                 // console.log(this.turn.getCurrentPhaseName())
+                // hasArmiesToPlace = this.getCurrentPlayer()?.hasArmiesToPlace()
+                // if(hasArmiesToPlace){
+                //     eventsCenter.emit("showModal",`Você ainda tem exércitos para posicionar ${this.getCurrentPlayer().placebleToString()}`)
+                //     return false
+                // }
 
                 return true
                 break;
@@ -188,6 +194,6 @@ export class WarMatch{
             default:
                 break;
         }
-        return FontFaceSetLoadEvent
+        return false
     }
 }

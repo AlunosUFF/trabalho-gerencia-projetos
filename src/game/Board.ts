@@ -263,25 +263,37 @@ export class Board {
             territory.select()
             territory.highlightNeighbours(this.territories)
             player?.setPlaceble("all", Math.min(territory.armies - 1, 3))
+            return
         }else if(territory.isHighlighted){
             let attacker = this.getSelected()
             this.attack(attacker, territory, quantity, scene) 
             player?.setPlaceble("all", 0)
+            return
         }else if(this.hasSelectedTerritory()){
             eventsCenter.emit("showModal","Ataque Inválido")
+            player?.setPlaceble("all", 0)
+            return
         }
+        player?.setPlaceble("all", 0)
     }
 
     attack(attacker: Territory, defender: Territory, quantity: number, scene:Phaser.Scene){
+        // console.log(attacker.name, attacker.owner?.placeble, defender.name)
+        // console.log(attacker)
+        if(!attacker){
+            return
+        }
         let attackQuantity = Math.min(attacker.armies - 1, 3)
         let defenseQuantity = Math.min(defender.armies, 3)
         let attackResult = this.playDices(attackQuantity)
         let defenseResult = this.playDices(defenseQuantity)
         eventsCenter.emit(PlayerEvent.dicePlay, {attackResult, defenseResult, scene, defenderColor: defender.owner?.color})
         let combatResult = this.checkAttackResults(attackResult, defenseResult)
-
+        
         attacker.armies -= combatResult[0]
         defender.armies -= combatResult[1]
+
+        
 
         if(defender.armies === 0){
             let transfer = Math.min(quantity, attackQuantity - combatResult[0])
@@ -373,19 +385,23 @@ export class Board {
         return territoriesOwned
     }
 
-    getContinentByName(name:string){
-        let continent = Object.keys(this.continents).find(continentId =>{
-            return this.continents[continentId].name === name
+    getContinentIdBySlug(slug:string):number{
+        let id = 0
+        let continent = Object.keys(this.continents).forEach(continent => {
+            if (this.continents[continent].slug == slug){
+                id = this.continents[continent].id
+            }
+                
         })
-        return continent
+        return id
     }
 
-    getTerritoriesByContinent(name:string, player: GamePlayer){
-        if(name === "all"){
+    getTerritoriesByContinent(slug:string, player: GamePlayer){
+        if(slug === "all"){
             return this.getPlayerTerritories(player)
         }else{
-            let continent = this.getContinentByName(name)
-            return this.getPlayerTerritories(player).filter(territory => territory.continent === continent)
+            let continentId = this.getContinentIdBySlug(slug)
+            return this.getPlayerTerritories(player).filter(territory => territory.continent === continentId)
         }
     }
 

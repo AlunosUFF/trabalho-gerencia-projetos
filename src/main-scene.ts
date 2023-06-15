@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { WarMatch } from "./game/WarMatch";
+import { WarMatch } from './game/WarMatch';
 import { Phases, Turn } from "./game/Turn";
 import { GamePlayer } from "./model/GamePlayer";
 import { Territory } from './model/Territory';
@@ -49,6 +49,9 @@ export class MainGameScene extends Phaser.Scene {
 
         eventsCenter.on("showModal", (msg:string) =>{
             this.scene.launch("ModalScene",{msg})
+            if(this.warMatch.getCurrentPlayer().ia){
+                this.scene.stop("ModalScene",{msg})
+            }
         })
 
         eventsCenter.on("restart", (msg:string) => {
@@ -105,6 +108,9 @@ export class MainGameScene extends Phaser.Scene {
 
         //Eventos de turno
         eventsCenter.on(this.warMatch.turn.phasesNames[Phases.MOBILIZAR],()=>{
+            console.log("Hand", this.warMatch.getCurrentPlayer().hand)
+            console.log("Deck",this.warMatch.board.deck)
+            console.log("Discard", this.warMatch.board.discard)
             this.warMatch.getCurrentPlayer().clearPlaced()
 
             if(this.warMatch.getCurrentPlayer()){
@@ -117,7 +123,8 @@ export class MainGameScene extends Phaser.Scene {
                 (this.warMatch.getCurrentPlayer() as IaPlayer).cardExchange();
                 (this.warMatch.getCurrentPlayer() as IaPlayer).mobilize()
                 if(this.warMatch.hasConditionToNextPhase()){
-                    // eventsCenter.emit("next-phase",this.warMatch.getCurrentPlayer())
+                    eventsCenter.emit("next-phase",this.warMatch.getCurrentPlayer())
+                    // setTimeout(this.warMatch.turn.nextPhase.bind(this), 1000)
                     // this.warMatch.turn.nextPhase()
                 }
             }
@@ -130,7 +137,8 @@ export class MainGameScene extends Phaser.Scene {
                 // alert("IA Jogando")
                 (this.warMatch.getCurrentPlayer() as IaPlayer).attack()
                 if(this.warMatch.hasConditionToNextPhase()){
-                    eventsCenter.emit(GameEvent.nextPhase,this.warMatch.getCurrentPlayer())
+                    eventsCenter.emit("next-phase",this.warMatch.getCurrentPlayer())
+
                     this.warMatch.turn.nextPhase()
                 }
             }
@@ -141,11 +149,13 @@ export class MainGameScene extends Phaser.Scene {
             if(this.warMatch.getCurrentPlayer().ia){
                 // alert("IA Jogando")
                 
-                (this.warMatch.getCurrentPlayer() as IaPlayer).fortify()
-                // this.warMatch.getCurrentPlayer().mobilize()
+                (this.warMatch.getCurrentPlayer() as IaPlayer).fortify();
+                (this.warMatch.getCurrentPlayer() as IaPlayer).mobilize();
                 if(this.warMatch.hasConditionToNextPhase()){
-                    eventsCenter.emit(GameEvent.nextPhase,this.warMatch.getCurrentPlayer())
-                    this.warMatch.turn.nextPhase()
+                //     setTimeout(this.warMatch.turn.nextPhase, 100)
+                    eventsCenter.emit("next-phase",this.warMatch.getCurrentPlayer())
+
+                    this.warMatch.turn.nextPhase();
                 }
             }
         })
@@ -183,7 +193,7 @@ export class MainGameScene extends Phaser.Scene {
         
 
         let players = [
-            {id: 1, name: 'Tiago', ia: false, color: 'black'},
+            {id: 1, name: 'Tiago', ia: true, color: 'black'},
             {id: 2, name: 'Paulo', ia: true, color: 'blue'},
             {id: 3, name: 'Rafa', ia: true, color: 'red'},
             {id: 4, name: 'Edu', ia: true, color: 'yellow'},

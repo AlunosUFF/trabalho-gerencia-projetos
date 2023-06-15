@@ -138,4 +138,13 @@ export class GamePlayer extends Player{
     hasBeenDestroyed(){
         return this.totalTerritories === 0
     }
+
+    placebleToString(){
+        let placebleString = ""
+        Object.keys(this.placeble).forEach(place =>{
+            placebleString += place + ":"
+            placebleString += this.placeble[place] + "\n"
+        })
+        return placebleString
+    }
 }
