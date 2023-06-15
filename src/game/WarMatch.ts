@@ -159,7 +159,7 @@ export class WarMatch{
         //Mobilizar
         switch (this.turn.currentPhase) {
             case Phases.MOBILIZAR:
-                // return true
+                return true
                  //Mao maior que 5
                 let handSize = this.getCurrentPlayer().hand.length === 5
                 //Existe exercito para alocar

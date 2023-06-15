@@ -109,6 +109,9 @@ export class MainGameScene extends Phaser.Scene {
         //Eventos de turno
         eventsCenter.on(this.warMatch.turn.phasesNames[Phases.MOBILIZAR],()=>{
             console.log("Hand", this.warMatch.getCurrentPlayer().hand)
+            this.warMatch.players.forEach(player =>{
+                console.log("Player", player.hand)
+            })
             console.log("Deck",this.warMatch.board.deck)
             console.log("Discard", this.warMatch.board.discard)
             this.warMatch.getCurrentPlayer().clearPlaced()

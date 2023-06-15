@@ -129,7 +129,7 @@ export class Board {
         return hand
     }
 
-    exchangeCards(currentPlayer: GamePlayer | undefined, cards: Territory[]) {
+    exchangeCards(currentPlayer: GamePlayer | undefined, cards: number[]) {
         //Checar se tem cards selecionados e se são no máximo 3
         if(!cards || cards.length != 3){
             eventsCenter.emit("showModal","Devem ser selecionadas três cartas")
@@ -177,8 +177,10 @@ export class Board {
         return result;
     }
 
-    dropCards(player: GamePlayer, cards: Territory[]){
-        cards.forEach(card => this.discard.push(card.id));
+    dropCards(player: GamePlayer, cards: number[]){
+        cards.forEach(card => {
+            this.discard.push(card)
+        });
         // this.discard = cards
         cards.forEach(card => {
             if(card.owner === player){
