@@ -1,7 +1,3 @@
-import { Turn } from "../game/Turn";
-import { GamePlayer } from "../model/GamePlayer";
-import { Player } from "../model/Player";
-import eventsCenter from "../services/EventsCenter";
 import { WarMatch } from "../game/WarMatch";
 import { Card } from "./Card";
 import DisplayScene from "../scenes/DisplayScene";

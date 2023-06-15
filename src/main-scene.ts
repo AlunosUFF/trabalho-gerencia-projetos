@@ -71,14 +71,14 @@ export class MainGameScene extends Phaser.Scene {
             }else if(this.warMatch.turn.currentPhase === Phases.ATACAR){
                 if(quantidade > 0){
                     this.warMatch.board.checkAttackCondition(
-                        territory, this.warMatch.getCurrentPlayer(), quantidade
+                        territory, this.warMatch.getCurrentPlayer(), quantidade, this
                     );
                 }else{
                     this.warMatch.board.checkAttackCondition(
-                        territory, this.warMatch.getCurrentPlayer(), 3
+                        territory, this.warMatch.getCurrentPlayer(), 3, this
                     );
                 }
-                
+
             (this.scene.get("DisplayScene") as DisplayScene).statusJogador.atualizarTexto()
 
             }else if(this.warMatch.turn.currentPhase === Phases.FORTIFICAR){
@@ -95,15 +95,14 @@ export class MainGameScene extends Phaser.Scene {
             }
         })
 
+        //Eventos de turno
         eventsCenter.on(this.warMatch.turn.phasesNames[Phases.MOBILIZAR],()=>{
             this.warMatch.getCurrentPlayer().clearPlaced()
 
             if(this.warMatch.getCurrentPlayer()){
                 this.warMatch.getTotalArmiesToPlace()
-                this.scene.get("DisplayScene")
+                // this.scene.get("DisplayScene")
             }
-
-            
 
             if(this.warMatch.getCurrentPlayer().ia){
                 // alert("IA Jogando")
@@ -143,13 +142,6 @@ export class MainGameScene extends Phaser.Scene {
             }
         })
 
-        
-
-        // eventsCenter.on(GameEvent.nextPhase, (player:GamePlayer) =>{
-        //     if(this.warMatch.getCurrentPlayer()){
-        //         player.clearPlaced();
-        //     }
-        // })
 
         eventsCenter.on(GameEvent.nextTurn , () =>{
             if(this.warMatch.getCurrentPlayer()?.gainedTerritory){
@@ -170,13 +162,26 @@ export class MainGameScene extends Phaser.Scene {
             this.add.bitmapText((this.game.config.width as number)/2,(this.game.config.height as number)/2,"pressstart", `Fim de Jogo \n o player ${player.name} venceu`).setDepth(1000).setOrigin(0.5)
             // }
         })
+
+        eventsCenter.on(PlayerEvent.dicePlay, function(data:{attackResult: number[], defenseResult: number[], scene: Phaser.Scene}){
+            let displayScene: DisplayScene = data.scene.scene.get("DisplayScene")
+            console.log(displayScene)
+            displayScene.dicePlay.setVisible(true);
+            displayScene.dicePlay.playDice(data.attackResult, data.defenseResult);
+            
+            // (scene.get("DiplayScene") as DisplayScene).dicePlay.setVisible(true);
+            // (scene.get("DiplayScene") as DisplayScene).dicePlay.playDice(data.attackResult, data.defenseResult);
+        })
+
         
 
-    
         let players = [
             {id: 1, name: 'Tiago', ia: false, color: 'black'},
             {id: 2, name: 'Paulo', ia: true, color: 'blue'},
-            {id: 3, name: 'Rafa', ia: true, color: 'red'},
+            {id: 3, name: 'Rafa', ia: false, color: 'red'},
+            {id: 4, name: 'Edu', ia: false, color: 'yellow'},
+            {id: 5, name: 'Thali', ia: false, color: 'pink'},
+            {id: 6, name: 'Ygor', ia: false, color: 'green'},
         ]
 
         // this.scene.run("InitGameScene")
@@ -186,13 +191,6 @@ export class MainGameScene extends Phaser.Scene {
             // this.scene.run("ShowUIScene",{warMatch: this.warMatch})
             this.scene.run("DisplayScene",{warMatch: this.warMatch})
         }
-
-        // this.scene.scene.on("pointerdown",(pointer)=>{
-            // })
-        // this.input.on("pointerdown",(pointer)=>{
-        //     alert(pointer.x +"-"+pointer.y)
-        // })
-
         
     }
 

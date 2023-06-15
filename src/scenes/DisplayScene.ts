@@ -6,8 +6,9 @@ import ObjetivoJogador from "../view/ObjetivoJogador";
 import IconeCarta from "../view/IconeCarta";
 import { ObjetiveCard } from "../view/ObjectiveCard";
 import DeckCartas from "../view/DeckCartas";
-import { GameEvent } from "../shared/events.model";
+import { GameEvent, PlayerEvent } from "../shared/events.model";
 import { Phases } from "../game/Turn";
+import DicePlay from "../view/DicePlay";
 
 export default class DisplayScene extends Phaser.Scene {
     public warMatch!: WarMatch;
@@ -24,6 +25,7 @@ export default class DisplayScene extends Phaser.Scene {
     objetivoCard!: ObjetiveCard;
     deckCartas!: DeckCartas;
     iconSair: any;
+    dicePlay: DicePlay;
 
 
     constructor() {
@@ -59,6 +61,9 @@ export default class DisplayScene extends Phaser.Scene {
         }
         if(this.deckCartas){
             this.deckCartas.destroy();
+        }
+        if(this.dicePlay){
+            this.dicePlay.destroy();
         }
 
     }
@@ -122,6 +127,18 @@ export default class DisplayScene extends Phaser.Scene {
             color: this.warMatch.getCurrentPlayer().color
           
         }).setVisible(false);
+
+        this.dicePlay = new DicePlay({
+            x: 1100,
+            y: 560,
+            scene: this
+        }).setVisible(false)
+
+        // eventsCenter.on(PlayerEvent.dicePlay, function(data:{attackResult: number[], defenseResult: number[], scene:Phaser.Scene}){
+            
+        //     // this.dicePlay.setVisible(true);
+        //     // (scene.get("DiplayScene") as DisplayScene).dicePlay.playDice(data.attackResult, data.defenseResult);
+        // })
 
     }
 

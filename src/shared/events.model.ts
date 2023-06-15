@@ -26,6 +26,7 @@ export class ServerEvent {
 }
 
 export class PlayerEvent {
+    public static readonly dicePlay: string = "player:playDice";
     public static readonly mobilizing: string = "player:mobilizing"; 
     public static readonly fortifying: string = "player:fortifying"; 
     // public static readonly joined: string = "player:joined";

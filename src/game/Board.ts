@@ -250,27 +250,31 @@ export class Board {
         return woTerritory.length > 0
     }
 
-    checkAttackCondition(territory: Territory, player?: GamePlayer, quantity: number = 0): void {
+    checkAttackCondition(territory: Territory, player?: GamePlayer, quantity: number = 0, scene: Phaser.Scene): void {
         // Checar se é o dono
         if(territory.owner?.id === player?.id){
             this.clearBoard()
             territory.select()
             territory.highlightNeighbours(this.territories)
             player?.setPlaceble("all", Math.min(territory.armies - 1, 3))
+
         }else if(territory.isHighlighted){
             let attacker = this.getSelected()
-            this.attack(attacker, territory, attacker.owner!.placeble.all) 
+            this.attack(attacker, territory, quantity, scene) 
             player?.setPlaceble("all", 0)
+
         }else if(this.hasSelectedTerritory()){
             alert("Ataque inválido")
         }
     }
 
-    attack(attacker: Territory, defender: Territory, quantity: number){
+    attack(attacker: Territory, defender: Territory, quantity: number, scene:Phaser.Scene){
+        console.log(quantity)
         let attackQuantity = quantity
         let defenseQuantity = Math.min(defender.armies, 3)
         let attackResult = this.playDices(attackQuantity)
         let defenseResult = this.playDices(defenseQuantity)
+        eventsCenter.emit(PlayerEvent.dicePlay, {attackResult, defenseResult, scene})
         let combatResult = this.checkAttackResults(attackResult, defenseResult)
 
         attacker.armies -= combatResult[0]

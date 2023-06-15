@@ -16,6 +16,7 @@ export default class PlayerContainer extends Phaser.GameObjects.Container {
             color: `#${color.toString(16)}`,
             textAlign: "center",
         }
+        
         const input = `<input style="outline: none; border: 3px solid rgb(233, 174, 2); z-index: 0; display: block; position: absolute; opacity: 1; pointer-events: auto; mix-blend-mode: normal; transform: matrix(1, 0, 0, 1, 260, 340) skew(0rad, 0rad) rotate3d(0, 0, 0, 0deg); transform-origin: 0% 0%;">`
         let spritePlayerContainer  = new Phaser.GameObjects.Sprite(scene, 0 ,0, 'player_container').setOrigin(0).setScale(0.8)
 
