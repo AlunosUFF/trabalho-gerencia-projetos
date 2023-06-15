@@ -167,11 +167,10 @@ export class MainGameScene extends Phaser.Scene {
             // }
         })
 
-        eventsCenter.on(PlayerEvent.dicePlay, function(data:{attackResult: number[], defenseResult: number[], scene: Phaser.Scene}){
+        eventsCenter.on(PlayerEvent.dicePlay, function(data:{attackResult: number[], defenseResult: number[], scene: Phaser.Scene, defenderColor: number}){
             let displayScene: DisplayScene = data.scene.scene.get("DisplayScene")
-            console.log(displayScene)
             displayScene.dicePlay.setVisible(true);
-            displayScene.dicePlay.playDice(data.attackResult, data.defenseResult);
+            displayScene.dicePlay.playDice(data.attackResult, data.defenseResult, data.defenderColor);
             
             // (scene.get("DiplayScene") as DisplayScene).dicePlay.setVisible(true);
             // (scene.get("DiplayScene") as DisplayScene).dicePlay.playDice(data.attackResult, data.defenseResult);
@@ -181,11 +180,11 @@ export class MainGameScene extends Phaser.Scene {
 
         let players = [
             {id: 1, name: 'Tiago', ia: false, color: 'black'},
-            {id: 2, name: 'Paulo', ia: true, color: 'blue'},
+            {id: 2, name: 'Paulo', ia: false, color: 'blue'},
             {id: 3, name: 'Rafa', ia: false, color: 'red'},
-            {id: 4, name: 'Edu', ia: false, color: 'yellow'},
-            {id: 5, name: 'Thali', ia: false, color: 'pink'},
-            {id: 6, name: 'Ygor', ia: false, color: 'green'},
+            // {id: 4, name: 'Edu', ia: false, color: 'yellow'},
+            // {id: 5, name: 'Thali', ia: false, color: 'pink'},
+            // {id: 6, name: 'Ygor', ia: false, color: 'green'},
         ]
 
         // this.scene.run("InitGameScene")
@@ -199,6 +198,6 @@ export class MainGameScene extends Phaser.Scene {
     }
 
     update(): void {
-
+        
     }
 }

@@ -261,31 +261,28 @@ export class Board {
             territory.select()
             territory.highlightNeighbours(this.territories)
             player?.setPlaceble("all", Math.min(territory.armies - 1, 3))
-
         }else if(territory.isHighlighted){
             let attacker = this.getSelected()
             this.attack(attacker, territory, quantity, scene) 
             player?.setPlaceble("all", 0)
-
         }else if(this.hasSelectedTerritory()){
             eventsCenter.emit("showModal","Ataque Inválido")
         }
     }
 
     attack(attacker: Territory, defender: Territory, quantity: number, scene:Phaser.Scene){
-        console.log(quantity)
-        let attackQuantity = quantity
+        let attackQuantity = Math.min(attacker.armies - 1, 3)
         let defenseQuantity = Math.min(defender.armies, 3)
         let attackResult = this.playDices(attackQuantity)
         let defenseResult = this.playDices(defenseQuantity)
-        eventsCenter.emit(PlayerEvent.dicePlay, {attackResult, defenseResult, scene})
+        eventsCenter.emit(PlayerEvent.dicePlay, {attackResult, defenseResult, scene, defenderColor: defender.owner?.color})
         let combatResult = this.checkAttackResults(attackResult, defenseResult)
 
         attacker.armies -= combatResult[0]
         defender.armies -= combatResult[1]
 
         if(defender.armies === 0){
-            let transfer = attackQuantity - combatResult[0]
+            let transfer = Math.min(quantity, attackQuantity - combatResult[0])
             attacker.armies -= transfer
             let conquered = defender.owner
             defender.conquer(attacker.owner, transfer)

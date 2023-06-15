@@ -15,6 +15,7 @@ const dadosValor = {
 export default class DicePlay extends Phaser.GameObjects.Container{
     diceAttack: Phaser.GameObjects.Sprite[] = [];
     diceDefense: Phaser.GameObjects.Sprite[] = [];
+    backgroundDefense: Phaser.GameObjects.Rectangle;
 
 
     constructor(data:{scene:Phaser.Scene, x:number, y:number}){
@@ -34,6 +35,7 @@ export default class DicePlay extends Phaser.GameObjects.Container{
 
         super(scene, x, y, [backgroundAttack, backgroundDefense, textAttack, textDefense]);
         this.scene = scene
+        this.backgroundDefense = backgroundDefense
         for(let i=0; i < 3; i++){
             let x = -30 + (40 * (i % 3))
             let y = -20  + (50 * (Math.floor(i / 3)))
@@ -55,7 +57,8 @@ export default class DicePlay extends Phaser.GameObjects.Container{
         this.scene.add.existing(this)
     }
 
-    playDice(attackResults: number[], defenseResults:number []){
+    playDice(attackResults: number[], defenseResults:number [], defenderColor:number){
+        this.clearDices()
         attackResults.forEach((attackResult, index) =>{
             (this.diceAttack[index] as Phaser.GameObjects.Sprite).setTexture(`icon_dado_${attackResult}`)
             .setVisible(true)
@@ -63,6 +66,16 @@ export default class DicePlay extends Phaser.GameObjects.Container{
         defenseResults.forEach((defenseResult, index) =>{
             (this.diceDefense[index] as Phaser.GameObjects.Sprite).setTexture(`icon_dado_${defenseResult}`)
             .setVisible(true)
+            this.backgroundDefense.fillColor = defenderColor
+        })
+    }
+
+    clearDices(){
+        this.diceAttack.forEach(dice=>{
+            dice.setVisible(false)
+        })
+        this.diceDefense.forEach(dice=>{
+            dice.setVisible(false)
         })
     }
 }

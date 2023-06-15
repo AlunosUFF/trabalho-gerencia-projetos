@@ -34,6 +34,7 @@ export class GamePlayer extends Player{
     public totalTerritories: number = 0;
     public playerText!: Phaser.GameObjects.Text;
     public destroyed = false;
+    public firstTurn = true;
     
     public placed: Placeble = {
         "all":0, 

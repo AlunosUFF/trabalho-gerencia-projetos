@@ -15,6 +15,7 @@ export class Turn{
     public playersOrders: number[] = [];
     public currentPhase: number = -1;
     public phasesNames: string[] = ["Mobilizar","Atacar","Fortificar"];
+    public counter = 0;
     
     setTotalPlayers(){
         this.totalPlayers = this.playersOrders.length;
@@ -53,15 +54,23 @@ export class Turn{
     }
 
     nextPhase(){
+        
         this.currentPhase++;
+        if(this.counter < this.playersOrders.length && this.currentPhase === 1){
+            this.currentPhase+=2;
+        }
         if(!(this.currentPhase < this.phasesNames.length)){
             this.nextTurn();
         }
         this.currentPhase %= this.phasesNames.length
+        
+
         eventsCenter.emit(this.getCurrentPhaseName())
+        
     }
 
     nextTurn(){
+        this.counter++;
         this.nextPlayer();
         eventsCenter.emit(GameEvent.nextTurn)
     }
