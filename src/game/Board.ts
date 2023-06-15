@@ -83,6 +83,8 @@ export class Board {
 
     drawObjective(player: GamePlayer, warMatch: WarMatch) {
         let objectiveCardId = this.objectiveCards.pop()
+        // let objectiveCardId = this.objectiveCards.splice(9,1)[0]     
+
         let objectiveColor = playerCOLORS[this.objectives[objectiveCardId].condition.color]
         let samePlayerObjective = player.color === objectiveColor
         let withoutColorInPlay = false
@@ -288,6 +290,7 @@ export class Board {
             defender.conquer(attacker.owner, transfer)
             conquered?.updateTotalTerritories()
             attacker!.owner!.gainedTerritory = true
+            eventsCenter.emit("clear-board")
             eventsCenter.emit("check-victory", {attacker: attacker.owner, defender: conquered, acao: Phases.ATACAR}, )
         }
         this.clearBoard()

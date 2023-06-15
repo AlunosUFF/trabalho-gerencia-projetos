@@ -12,7 +12,7 @@ export default class IaPlayer extends GamePlayer{
     public objectiveWeight = 1;
 
     constructor(data:PlayerType, color: number, warMatch: WarMatch) {
-        super(data, color, warMatch);
+        super(data, color, warMatch, true);
     }
 
     cardExchange(){
@@ -38,8 +38,7 @@ export default class IaPlayer extends GamePlayer{
             while(this.placeble[place] > 0){
                 let index = Math.round(Math.random() * (territories.length-1))
                 let territory = territories[index]
-                territory.mobilize(this.warMatch.board.continents)
-                console
+                territory.mobilize(this.warMatch.board.continents, 1)
             }
         })
         
@@ -55,11 +54,11 @@ export default class IaPlayer extends GamePlayer{
         let attackerTerritories = this.warMatch.board.getPlayerTerritoriesByArmiesNumber(this,1)
         attackerTerritories.forEach(attacker =>{
             attacker.highlightNeighbours(this.warMatch.board.territories)
-            while(this.warMatch.board.hasHighlightedTerritory(attacker) && attacker.armies > 1){
+            while(this.warMatch.board.hasHighlightedTerritory() && attacker.armies > 1){
                 attacker.select()
                 let highlightedTerritories = this.warMatch.board.getHighlighted()
                 let index = Math.round(Math.random() * (highlightedTerritories.length-1))
-                this.warMatch.board.checkAttackCondition(highlightedTerritories[index], attacker.owner)
+                this.warMatch.board.checkAttackCondition(highlightedTerritories[index], attacker.owner, 3, this.warMatch.scene)
                 attacker.unhighlightNeighbours(this.warMatch.board.territories)
                 attacker.highlightNeighbours(this.warMatch.board.territories)
             }

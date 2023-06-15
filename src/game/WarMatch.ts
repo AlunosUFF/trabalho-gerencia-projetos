@@ -44,7 +44,6 @@ export class WarMatch{
         this.players.splice(indexPlayers, 1);
         this.turn.playersOrders.splice(indexOrder, 1);
         this.turn.setTotalPlayers()
-        defender.destroyPlayerText()
     }
 
     getPlayerById(id: number): GamePlayer {
@@ -129,11 +128,11 @@ export class WarMatch{
         this.shufflePlayerInBoard()
         this.drawPlayersObjectives()
         this.board.reshuffleDeck()
-        this.getCurrentPlayer()?.hand.push(Math.round(Math.random()*41)+1)
-        this.getCurrentPlayer()?.hand.push(Math.round(Math.random()*41)+1)
-        this.getCurrentPlayer()?.hand.push(Math.round(Math.random()*41)+1)
-        this.getCurrentPlayer()?.hand.push(Math.round(Math.random()*41)+1)
-        this.getCurrentPlayer()?.hand.push(Math.round(Math.random()*41)+1)
+        // this.getCurrentPlayer()?.hand.push(Math.round(Math.random()*41)+1)
+        // this.getCurrentPlayer()?.hand.push(Math.round(Math.random()*41)+1)
+        // this.getCurrentPlayer()?.hand.push(Math.round(Math.random()*41)+1)
+        // this.getCurrentPlayer()?.hand.push(Math.round(Math.random()*41)+1)
+        // this.getCurrentPlayer()?.hand.push(Math.round(Math.random()*41)+1)
         eventsCenter.emit(this.turn.phasesNames[Phases.MOBILIZAR],this.turn.phasesNames[Phases.MOBILIZAR])
         return true
     }

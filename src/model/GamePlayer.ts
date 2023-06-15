@@ -69,9 +69,9 @@ export class GamePlayer extends Player{
         this.ia = data.ia;
     }
 
-    destroyPlayerText(){
-        this.playerText.destroy()
-    }
+    // destroyPlayerText(){
+    //     // this.playerText.destroy()
+    // }
 
     showGamePlayer(x: number, y: number, currentPlayerId:number, scene:Phaser.Scene) {
         let isCurrentPlayer = currentPlayerId === this.id;

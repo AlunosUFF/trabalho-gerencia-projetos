@@ -61,6 +61,10 @@ export class MainGameScene extends Phaser.Scene {
 
         eventsCenter.on("territory-clicked", (territory:Territory) =>{
             
+            // if(this.warMatch.getCurrentPlayer().ia){
+            //     eventsCenter.emit("showModal", "Não é permitido jogar pela IA")
+            // }
+
             let quantidade = (this.scene.get("DisplayScene") as DisplayScene)
                 .statusJogador.quantidadeAlocando
 
@@ -180,11 +184,11 @@ export class MainGameScene extends Phaser.Scene {
 
         let players = [
             {id: 1, name: 'Tiago', ia: false, color: 'black'},
-            {id: 2, name: 'Paulo', ia: false, color: 'blue'},
-            {id: 3, name: 'Rafa', ia: false, color: 'red'},
-            // {id: 4, name: 'Edu', ia: false, color: 'yellow'},
-            // {id: 5, name: 'Thali', ia: false, color: 'pink'},
-            // {id: 6, name: 'Ygor', ia: false, color: 'green'},
+            {id: 2, name: 'Paulo', ia: true, color: 'blue'},
+            {id: 3, name: 'Rafa', ia: true, color: 'red'},
+            {id: 4, name: 'Edu', ia: true, color: 'yellow'},
+            // {id: 5, name: 'Thali', ia: true, color: 'pink'},
+            // {id: 6, name: 'Ygor', ia: true, color: 'green'},
         ]
 
         // this.scene.run("InitGameScene")
