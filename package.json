@@ -5,9 +5,9 @@
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "dev": "vite",
+    "start": "nodemon server.js",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "node server.js"
   },
   "dependencies": {
     "phaser": "3.55.2",
