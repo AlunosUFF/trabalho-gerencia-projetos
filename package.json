@@ -7,14 +7,14 @@
     "deploy": "gh-pages -d dist",
     "dev": "vite",
     "build": "vite build",
-    "serve": "node index.html"
+    "serve": "vite preview"
   },
   "dependencies": {
-    "phaser": "3.55.2"
+    "phaser": "3.55.2",
+    "vite": "^2.8.6"
   },
   "devDependencies": {
     "gh-pages": "^5.0.0",
-    "typescript": "^4.6.2",
-    "vite": "^2.8.6"
+    "typescript": "^4.6.2"
   }
 }
