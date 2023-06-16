@@ -196,7 +196,7 @@ export class MainGameScene extends Phaser.Scene {
         
 
         let players = [
-            {id: 1, name: 'Tiago', ia: true, color: 'black'},
+            {id: 1, name: 'Tiago', ia: false, color: 'black'},
             {id: 2, name: 'Paulo', ia: true, color: 'blue'},
             {id: 3, name: 'Rafa', ia: true, color: 'red'},
             {id: 4, name: 'Edu', ia: true, color: 'yellow'},
