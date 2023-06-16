@@ -29,7 +29,6 @@ export default class Objective{
 
     static checkVictoryCondition(warMatch: WarMatch, data){
         let player: GamePlayer | undefined = warMatch.getCurrentPlayer()
-        let fnString = `${player?.objective.type}`
         let objective = player?.objective
 
         if(player?.objective.type === "conquer"){
@@ -48,7 +47,7 @@ export default class Objective{
     }
 
     static destroy(warMatch:WarMatch, objective:Objective | undefined, data:{attacker: GamePlayer, defender: GamePlayer, }){
-        // alert("rodando destroy")
+        // console.log("rodando destroy")
         /* Se possui o exército da cor ou tiver sido destruído por outro, muda a condição
         
         */
@@ -58,15 +57,15 @@ export default class Objective{
                 data.defender.hasBeenDestroyed()){
                 data.defender.destroyed = true;
                 warMatch.removePlayerFromMatch(data.defender)
-                alert(`Player: ${data.attacker.name} ganhou`)
+                eventsCenter.emit("showModal",`Player: ${data.attacker.name} ganhou`)
                 eventsCenter.emit("game-finished", data.attacker)
             }
         }
 
     }    
 
-    static conquer(warMatch:WarMatch, objective:Objective | undefined, data:{attacker: GamePlayer, defender: GamePlayer, }){
-        // alert("rodando conquer")
+    static conquer(warMatch:WarMatch, objective?:Objective | undefined, data:{attacker: GamePlayer, defender: GamePlayer, }){
+        // console.log("rodando conquer")
         let player:GamePlayer | any = warMatch.getCurrentPlayer()
         if(objective.target === "Continent"){
             let condicao1 = warMatch.board.hasTotality(player, objective.condition.continents[0])
@@ -78,13 +77,13 @@ export default class Objective{
                 })) > 0
                 if(condicao1 && condicao2 && condicao3){
                     // warMatch.gameOver();
-                    alert(`Player: ${player.name} ganhou`)
+                    eventsCenter.emit("showModal",`Player: ${player.name} ganhou`)
                     eventsCenter.emit("game-finished", player)
                 }
             }else{
                 if(condicao1 && condicao2){
                     // warMatch.gameOver();
-                    alert(`Player: ${player.name} ganhou`)
+                    eventsCenter.emit("showModal",`Player: ${player.name} ganhou`)
                     eventsCenter.emit("game-finished", player)
                 }
             }
@@ -93,7 +92,7 @@ export default class Objective{
                 return (territory.owner === player && territory.armies >= objective.condition.armies)
             }).length
             if(totalTerritories >= objective.condition.territories){
-                alert(`Player: ${player.name} ganhou`)
+                eventsCenter.emit("showModal",`Player: ${player.name} ganhou`)
                 eventsCenter.emit("game-finished", player)
             }
         }

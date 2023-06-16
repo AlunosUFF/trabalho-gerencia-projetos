@@ -42,7 +42,7 @@ export class TerritoryFactory{
         Object.keys(scene.continentsData).forEach(continentId =>{
             new LocalizadorContinente({scene, 
                 continent: scene.continentsData[continentId],
-                territorio:territorios,
+                territorio:territorios
             })
         })
 

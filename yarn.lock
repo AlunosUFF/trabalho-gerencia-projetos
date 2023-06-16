@@ -388,17 +388,17 @@
   "resolved" "https://registry.npmjs.org/find-cache-dir/-/find-cache-dir-3.3.2.tgz"
   "version" "3.3.2"
   dependencies:
-    "commondir" "^1.0.1"
-    "make-dir" "^3.0.2"
-    "pkg-dir" "^4.1.0"
+    commondir "^1.0.1"
+    make-dir "^3.0.2"
+    pkg-dir "^4.1.0"
 
-"find-up@^4.0.0":
-  "integrity" "sha512-PpOwAdQ/YlXQ2vj8a3h8IipDuYRi3wceVQQGYWxNINccq40Anw7BlsEXCMbt1Zt+OLA6Fq9suIpIWD0OsnISlw=="
-  "resolved" "https://registry.npmjs.org/find-up/-/find-up-4.1.0.tgz"
-  "version" "4.1.0"
+find-up@^4.0.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/find-up/-/find-up-4.1.0.tgz#97afe7d6cdc0bc5928584b7c8d7b16e8a9aa5d19"
+  integrity sha512-PpOwAdQ/YlXQ2vj8a3h8IipDuYRi3wceVQQGYWxNINccq40Anw7BlsEXCMbt1Zt+OLA6Fq9suIpIWD0OsnISlw==
   dependencies:
-    "locate-path" "^5.0.0"
-    "path-exists" "^4.0.0"
+    locate-path "^5.0.0"
+    path-exists "^4.0.0"
 
 "forwarded@0.2.0":
   "integrity" "sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow=="
@@ -464,17 +464,17 @@
   "resolved" "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz"
   "version" "7.2.3"
   dependencies:
-    "fs.realpath" "^1.0.0"
-    "inflight" "^1.0.4"
-    "inherits" "2"
-    "minimatch" "^3.1.1"
-    "once" "^1.3.0"
-    "path-is-absolute" "^1.0.0"
+    fs.realpath "^1.0.0"
+    inflight "^1.0.4"
+    inherits "2"
+    minimatch "^3.1.1"
+    once "^1.3.0"
+    path-is-absolute "^1.0.0"
 
-"globby@^6.1.0":
-  "integrity" "sha512-KVbFv2TQtbzCoxAnfD6JcHZTYCzyliEaaeM/gH8qQdkKr5s0OP9scEgvdcngyk7AVdY6YVW/TJHd+lQ/Df3Daw=="
-  "resolved" "https://registry.npmjs.org/globby/-/globby-6.1.0.tgz"
-  "version" "6.1.0"
+globby@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/globby/-/globby-6.1.0.tgz#f5a6d70e8395e21c858fb0489d64df02424d506c"
+  integrity sha512-KVbFv2TQtbzCoxAnfD6JcHZTYCzyliEaaeM/gH8qQdkKr5s0OP9scEgvdcngyk7AVdY6YVW/TJHd+lQ/Df3Daw==
   dependencies:
     "array-union" "^1.0.1"
     "glob" "^7.0.3"
@@ -507,7 +507,7 @@
   "resolved" "https://registry.npmjs.org/has/-/has-1.0.3.tgz"
   "version" "1.0.3"
   dependencies:
-    "function-bind" "^1.1.1"
+    function-bind "^1.1.1"
 
 "http-errors@2.0.0":
   "integrity" "sha512-FtwrG/euBzaEjYeRqOgly7G0qviiXoJWnvEH2Z1plBdXgbyjv34pHTSb9zoeHMyDy33+DWy5Wt9Wo+TURtOYSQ=="
@@ -565,7 +565,7 @@
 "is-core-module@^2.11.0":
   "version" "2.12.0"
   dependencies:
-    "has" "^1.0.3"
+    has "^1.0.3"
 
 "is-extglob@^2.1.1":
   "integrity" "sha512-SbKbANkN603Vi4jEZv49LeVJMn4yGwsbzZworEoyEiutsN3nJYdbO36zfhGJ6QEDpOZIFkDtnq5JRxmvl3jsoQ=="
@@ -589,21 +589,21 @@
   "resolved" "https://registry.npmjs.org/jsonfile/-/jsonfile-4.0.0.tgz"
   "version" "4.0.0"
   optionalDependencies:
-    "graceful-fs" "^4.1.6"
+    graceful-fs "^4.1.6"
 
-"locate-path@^5.0.0":
-  "integrity" "sha512-t7hw9pI+WvuwNJXwk5zVHpyhIqzg2qTlklJOf0mVxGSbe3Fp2VieZcduNYjaLDoy6p9uGpQEGWG87WpMKlNq8g=="
-  "resolved" "https://registry.npmjs.org/locate-path/-/locate-path-5.0.0.tgz"
-  "version" "5.0.0"
+locate-path@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/locate-path/-/locate-path-5.0.0.tgz#1afba396afd676a6d42504d0a67a3a7eb9f62aa0"
+  integrity sha512-t7hw9pI+WvuwNJXwk5zVHpyhIqzg2qTlklJOf0mVxGSbe3Fp2VieZcduNYjaLDoy6p9uGpQEGWG87WpMKlNq8g==
   dependencies:
-    "p-locate" "^4.1.0"
+    p-locate "^4.1.0"
 
-"make-dir@^3.0.2":
-  "integrity" "sha512-g3FeP20LNwhALb/6Cz6Dd4F2ngze0jz7tbzrD2wAV+o9FeNHe4rL+yK2md0J/fiSf1sa1ADhXqi5+oVwOM/eGw=="
-  "resolved" "https://registry.npmjs.org/make-dir/-/make-dir-3.1.0.tgz"
-  "version" "3.1.0"
+make-dir@^3.0.2:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/make-dir/-/make-dir-3.1.0.tgz#415e967046b3a7f1d185277d84aa58203726a13f"
+  integrity sha512-g3FeP20LNwhALb/6Cz6Dd4F2ngze0jz7tbzrD2wAV+o9FeNHe4rL+yK2md0J/fiSf1sa1ADhXqi5+oVwOM/eGw==
   dependencies:
-    "semver" "^6.0.0"
+    semver "^6.0.0"
 
 "media-typer@0.3.0":
   "integrity" "sha512-dq+qelQ9akHpcOl/gUVRTxVIOkAJ1wR3QAvb4RsVjS8oVoFjDGTc679wJYmUmknUF5HwMLOgb5O+a3KxfWapPQ=="
@@ -722,19 +722,19 @@
   "resolved" "https://registry.npmjs.org/once/-/once-1.4.0.tgz"
   "version" "1.4.0"
   dependencies:
-    "wrappy" "1"
+    wrappy "1"
 
-"p-limit@^2.2.0":
-  "integrity" "sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w=="
-  "resolved" "https://registry.npmjs.org/p-limit/-/p-limit-2.3.0.tgz"
-  "version" "2.3.0"
+p-limit@^2.2.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-2.3.0.tgz#3dd33c647a214fdfffd835933eb086da0dc21db1"
+  integrity sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w==
   dependencies:
-    "p-try" "^2.0.0"
+    p-try "^2.0.0"
 
-"p-locate@^4.1.0":
-  "integrity" "sha512-R79ZZ/0wAxKGu3oYMlz8jy/kbhsNrS7SKZ7PxEHBgJ5+F2mtFW2fK2cOtBh1cHYkQsbzFV7I+EoRKe6Yt0oK7A=="
-  "resolved" "https://registry.npmjs.org/p-locate/-/p-locate-4.1.0.tgz"
-  "version" "4.1.0"
+p-locate@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/p-locate/-/p-locate-4.1.0.tgz#a3428bb7088b3a60292f66919278b7c297ad4f07"
+  integrity sha512-R79ZZ/0wAxKGu3oYMlz8jy/kbhsNrS7SKZ7PxEHBgJ5+F2mtFW2fK2cOtBh1cHYkQsbzFV7I+EoRKe6Yt0oK7A==
   dependencies:
     "p-limit" "^2.2.0"
 
@@ -771,13 +771,13 @@
   "resolved" "https://registry.npmjs.org/path/-/path-0.12.7.tgz"
   "version" "0.12.7"
   dependencies:
-    "process" "^0.11.1"
-    "util" "^0.10.3"
+    process "^0.11.1"
+    util "^0.10.3"
 
-"phaser@3.55.2":
-  "integrity" "sha512-amKXsbb2Ht29dGPKvt1edq3yGGYKtq8373GpJYGKPNPnneYY6MtVTOgjHDuZwtmUyK4v86FugkT3hzW/N4tjxQ=="
-  "resolved" "https://registry.npmjs.org/phaser/-/phaser-3.55.2.tgz"
-  "version" "3.55.2"
+phaser@3.55.2:
+  version "3.55.2"
+  resolved "https://registry.yarnpkg.com/phaser/-/phaser-3.55.2.tgz#c1e2e9e70de7085502885e06f46b7eb4bd95e29a"
+  integrity sha512-amKXsbb2Ht29dGPKvt1edq3yGGYKtq8373GpJYGKPNPnneYY6MtVTOgjHDuZwtmUyK4v86FugkT3hzW/N4tjxQ==
   dependencies:
     "eventemitter3" "^4.0.7"
     "path" "^0.12.7"
@@ -800,22 +800,24 @@
   "resolved" "https://registry.npmjs.org/pinkie-promise/-/pinkie-promise-2.0.1.tgz"
   "version" "2.0.1"
   dependencies:
-    "pinkie" "^2.0.0"
+    pinkie "^2.0.0"
 
-"pinkie@^2.0.0":
-  "integrity" "sha512-MnUuEycAemtSaeFSjXKW/aroV7akBbY+Sv+RkyqFjgAe73F+MR0TBWKBRDkmfWq/HiFmdavfZ1G7h4SPZXaCSg=="
-  "resolved" "https://registry.npmjs.org/pinkie/-/pinkie-2.0.4.tgz"
-  "version" "2.0.4"
+pinkie@^2.0.0:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/pinkie/-/pinkie-2.0.4.tgz#72556b80cfa0d48a974e80e77248e80ed4f7f870"
+  integrity sha512-MnUuEycAemtSaeFSjXKW/aroV7akBbY+Sv+RkyqFjgAe73F+MR0TBWKBRDkmfWq/HiFmdavfZ1G7h4SPZXaCSg==
 
-"pkg-dir@^4.1.0":
-  "integrity" "sha512-HRDzbaKjC+AOWVXxAU/x54COGeIv9eb+6CkDSQoNTt4XyWoIJvuPsXizxu/Fr23EiekbtZwmh1IcIG/l/a10GQ=="
-  "resolved" "https://registry.npmjs.org/pkg-dir/-/pkg-dir-4.2.0.tgz"
-  "version" "4.2.0"
+pkg-dir@^4.1.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/pkg-dir/-/pkg-dir-4.2.0.tgz#f099133df7ede422e81d1d8448270eeb3e4261f3"
+  integrity sha512-HRDzbaKjC+AOWVXxAU/x54COGeIv9eb+6CkDSQoNTt4XyWoIJvuPsXizxu/Fr23EiekbtZwmh1IcIG/l/a10GQ==
   dependencies:
-    "find-up" "^4.0.0"
+    find-up "^4.0.0"
 
-"postcss@^8.4.13":
-  "version" "8.4.23"
+postcss@^8.4.13:
+  version "8.4.24"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.24.tgz#f714dba9b2284be3cc07dbd2fc57ee4dc972d2df"
+  integrity sha512-M0RzbcI0sO/XJNucsGjvWU9ERWxb/ytp1w6dKtxTKgixdtQDq4rmx/g8W1hnaheq9jgwL/oyEdH5Bc4WwJKMqg==
   dependencies:
     "nanoid" "^3.3.6"
     "picocolors" "^1.0.0"
@@ -871,12 +873,14 @@
 "resolve@^1.22.0":
   "version" "1.22.2"
   dependencies:
-    "is-core-module" "^2.11.0"
-    "path-parse" "^1.0.7"
-    "supports-preserve-symlinks-flag" "^1.0.0"
+    is-core-module "^2.11.0"
+    path-parse "^1.0.7"
+    supports-preserve-symlinks-flag "^1.0.0"
 
 "rollup@>=2.59.0 <2.78.0":
-  "version" "2.77.3"
+  version "2.77.3"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.77.3.tgz#8f00418d3a2740036e15deb653bed1a90ee0cc12"
+  integrity sha512-/qxNTG7FbmefJWoeeYJFbHehJ2HNWnjkAFRKzWN/45eNBBF/r8lo992CwcJXEzyVxs5FmfId+vTSTQDb+bxA+g==
   optionalDependencies:
     "fsevents" "~2.3.2"
 
@@ -995,7 +999,7 @@
   "resolved" "https://registry.npmjs.org/strip-outer/-/strip-outer-1.0.1.tgz"
   "version" "1.0.1"
   dependencies:
-    "escape-string-regexp" "^1.0.2"
+    escape-string-regexp "^1.0.2"
 
 "supports-color@^5.5.0":
   "integrity" "sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow=="
@@ -1064,7 +1068,7 @@
   "resolved" "https://registry.npmjs.org/util/-/util-0.10.4.tgz"
   "version" "0.10.4"
   dependencies:
-    "inherits" "2.0.3"
+    inherits "2.0.3"
 
 "utils-merge@1.0.1":
   "integrity" "sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA=="
@@ -1079,12 +1083,12 @@
 "vite@^2.8.6":
   "version" "2.9.15"
   dependencies:
-    "esbuild" "^0.14.27"
-    "postcss" "^8.4.13"
-    "resolve" "^1.22.0"
-    "rollup" ">=2.59.0 <2.78.0"
+    esbuild "^0.14.27"
+    postcss "^8.4.13"
+    resolve "^1.22.0"
+    rollup ">=2.59.0 <2.78.0"
   optionalDependencies:
-    "fsevents" "~2.3.2"
+    fsevents "~2.3.2"
 
 "wrappy@1":
   "integrity" "sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ=="

@@ -1,5 +1,5 @@
 import { Card } from "../view/Card";
-import { GamePlayer, playerCOLORS } from "../model/GamePlayer";
+import { GamePlayer, playerCOLORS, Placeble } from '../model/GamePlayer';
 import IaPlayer from "../model/IAPlayer";
 import Objective from "../model/Objective";
 import { Territory } from "../model/Territory";
@@ -7,6 +7,7 @@ import eventsCenter from "../services/EventsCenter";
 import Util from "../services/Util";
 import { Phases } from "./Turn";
 import { WarMatch } from "./WarMatch";
+import { PlayerEvent } from "../shared/events.model";
 
 const exchangeTable = {
     "1": 4,
@@ -72,7 +73,7 @@ export class Board {
     }
 
     drawCard(player: GamePlayer) {
-        console.log(this.deck)
+        // console.log(this.deck)
         if(this.deck.length === 0) {
             this.reshuffleDeck()
         }
@@ -82,6 +83,8 @@ export class Board {
 
     drawObjective(player: GamePlayer, warMatch: WarMatch) {
         let objectiveCardId = this.objectiveCards.pop()
+        // let objectiveCardId = this.objectiveCards.splice(9,1)[0]     
+
         let objectiveColor = playerCOLORS[this.objectives[objectiveCardId].condition.color]
         let samePlayerObjective = player.color === objectiveColor
         let withoutColorInPlay = false
@@ -126,10 +129,10 @@ export class Board {
         return hand
     }
 
-    exchangeCards(currentPlayer: GamePlayer | undefined, cards: Territory[]) {
+    exchangeCards(currentPlayer: GamePlayer | undefined, cards: number[]) {
         //Checar se tem cards selecionados e se são no máximo 3
         if(!cards || cards.length != 3){
-            alert("Devem ser selecionadas três cartas")
+            eventsCenter.emit("showModal","Devem ser selecionadas três cartas")
             return false
         }else if(this.checkExchangeCondition(cards)){
             currentPlayer?.addPlaceble("all", this.exchangeArmies)
@@ -140,7 +143,11 @@ export class Board {
             }else{
                 this.exchangeArmies += exchangeTable.all
             }
+            eventsCenter.emit("showModal","Cartas trocadas com sucesso")
             return true
+        }else{
+            eventsCenter.emit("showModal","Você deve escolher 3 figuras iguais ou 3 figuras diferentes")
+            return false
         }
     }
 
@@ -170,8 +177,10 @@ export class Board {
         return result;
     }
 
-    dropCards(player: GamePlayer, cards: Territory[]){
-        cards.forEach(card => this.discard.push(card.id));
+    dropCards(player: GamePlayer, cards: number[]){
+        cards.forEach(card => {
+            this.discard.push(card)
+        });
         // this.discard = cards
         cards.forEach(card => {
             if(card.owner === player){
@@ -249,37 +258,53 @@ export class Board {
         return woTerritory.length > 0
     }
 
-    checkAttackCondition(territory: Territory, player?: GamePlayer) {
+    checkAttackCondition(territory: Territory, player?: GamePlayer, quantity: number = 0, scene: Phaser.Scene): void {
         // Checar se é o dono
         if(territory.owner?.id === player?.id){
             this.clearBoard()
             territory.select()
             territory.highlightNeighbours(this.territories)
+            player?.setPlaceble("all", Math.min(territory.armies - 1, 3))
+            return
         }else if(territory.isHighlighted){
             let attacker = this.getSelected()
-            this.attack(attacker, territory) 
+            this.attack(attacker, territory, quantity, scene) 
+            player?.setPlaceble("all", 0)
+            return
         }else if(this.hasSelectedTerritory()){
-            alert("Ataque inválido")
+            eventsCenter.emit("showModal","Ataque Inválido")
+            player?.setPlaceble("all", 0)
+            return
         }
+        player?.setPlaceble("all", 0)
     }
 
-    attack(attacker: Territory, defender: Territory){
+    attack(attacker: Territory, defender: Territory, quantity: number, scene:Phaser.Scene){
+        // console.log(attacker.name, attacker.owner?.placeble, defender.name)
+        // console.log(attacker)
+        if(!attacker){
+            return
+        }
         let attackQuantity = Math.min(attacker.armies - 1, 3)
         let defenseQuantity = Math.min(defender.armies, 3)
         let attackResult = this.playDices(attackQuantity)
         let defenseResult = this.playDices(defenseQuantity)
+        eventsCenter.emit(PlayerEvent.dicePlay, {attackResult, defenseResult, scene, defenderColor: defender.owner?.color})
         let combatResult = this.checkAttackResults(attackResult, defenseResult)
-
+        
         attacker.armies -= combatResult[0]
         defender.armies -= combatResult[1]
 
+        
+
         if(defender.armies === 0){
-            let transfer = attackQuantity - combatResult[0]
+            let transfer = Math.min(quantity, attackQuantity - combatResult[0])
             attacker.armies -= transfer
             let conquered = defender.owner
             defender.conquer(attacker.owner, transfer)
             conquered?.updateTotalTerritories()
-            attacker.owner.gainedTerritory = true
+            attacker!.owner!.gainedTerritory = true
+            eventsCenter.emit("clear-board")
             eventsCenter.emit("check-victory", {attacker: attacker.owner, defender: conquered, acao: Phases.ATACAR}, )
         }
         this.clearBoard()
@@ -305,33 +330,34 @@ export class Board {
         return results.sort((a,b)=> b - a)
     }
 
-    checkFortifyCondition(territory: Territory, player: GamePlayer | undefined) {
+    checkFortifyCondition(territory: Territory, player: GamePlayer | undefined, quantidade: number) {
         
         if(territory.isHighlighted){
             let origin = this.getSelected()
-            this.fortify(origin, territory)
+            this.fortify(origin, territory, quantidade)
             eventsCenter.emit("clear-board")
             eventsCenter.emit("check-victory", {acao: Phases.FORTIFICAR})
+            player?.setPlaceble("all", 0)
         }else if(territory.owner?.id === player?.id){
             if(territory.armies === 1){
                 return
             }
-            // this.clearBoard()
             territory.select()
             territory.highlightOwnedNeighbors(this.territories)
+            player?.setPlaceble("all", territory.armies - 1)
         }else if(this.hasSelectedTerritory()){
-            alert("Movimento inválido")
+            eventsCenter.emit("showModal","Movimento inválido")
         }
     }
 
-    fortify(origin: Territory, destiny: Territory) {
+    fortify(origin: Territory, destiny: Territory, quantidade: number) {
         if(origin.armies > 1){
-            origin.unplaceArmies(1);
-            destiny.placeArmies(1);
+            origin.unplaceArmies(quantidade);
+            destiny.placeArmies(quantidade);
             // this.clearBoard();
             eventsCenter.emit("clear-board")
         }else{
-            alert("Movimento inválido")
+            eventsCenter.emit("showModal","Movimento inválido")
         }
     }
 
@@ -361,19 +387,23 @@ export class Board {
         return territoriesOwned
     }
 
-    getContinentByName(name:string){
-        let continent = Object.keys(this.continents).find(continentId =>{
-            return this.continents[continentId].name === name
+    getContinentIdBySlug(slug:string):number{
+        let id = 0
+        let continent = Object.keys(this.continents).forEach(continent => {
+            if (this.continents[continent].slug == slug){
+                id = this.continents[continent].id
+            }
+                
         })
-        return continent
+        return id
     }
 
-    getTerritoriesByContinent(name:string, player: GamePlayer){
-        if(name === "all"){
+    getTerritoriesByContinent(slug:string, player: GamePlayer){
+        if(slug === "all"){
             return this.getPlayerTerritories(player)
         }else{
-            let continent = this.getContinentByName(name)
-            return this.getPlayerTerritories(player).filter(territory => territory.continent === continent)
+            let continentId = this.getContinentIdBySlug(slug)
+            return this.getPlayerTerritories(player).filter(territory => territory.continent === continentId)
         }
     }
 
@@ -383,7 +413,7 @@ export class Board {
         this.getPlayerTerritories(player).forEach(territory => {
             territory.neighbors.forEach(neighborId => {
                 let neighbor = this.getTerritoryById(neighborId)
-                console.log(neighbor)
+                // console.log(neighbor)
                 if(neighbor.owner !== player && visited.indexOf(neighborId) < 0){
                     visited.push(neighborId)
                     result.push(neighborId)

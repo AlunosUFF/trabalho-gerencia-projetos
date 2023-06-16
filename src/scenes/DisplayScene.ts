@@ -1,31 +1,31 @@
 import { WarMatch } from "../game/WarMatch";
 import eventsCenter from "../services/EventsCenter";
 import ContadorExercitos from "../view/ContadorExercitos";
-import { Player } from "../model/Player";
 import StatusJogador from "../view/StatusJogador";
 import ObjetivoJogador from "../view/ObjetivoJogador";
 import IconeCarta from "../view/IconeCarta";
-import { playerCOLORS } from "../model/GamePlayer";
 import { ObjetiveCard } from "../view/ObjectiveCard";
 import DeckCartas from "../view/DeckCartas";
-import LocalizadorContinente from "../view/LocalizadorContinente";
-import IconeSair from "../view/IconeSair";
+import { GameEvent, PlayerEvent } from "../shared/events.model";
+import { Phases } from "../game/Turn";
+import DicePlay from "../view/DicePlay";
 
-export default class ShowUIScene extends Phaser.Scene {
-    public warMatch: WarMatch;
+export default class DisplayScene extends Phaser.Scene {
+    public warMatch!: WarMatch;
     public isOpen: boolean = false;
     public INITIALX: number = 20;
     public INITIALY: number = 450;
-    finishPhaseButton: Phaser.GameObjects.Text;
-    displayPhase: Phaser.GameObjects.Text;
-    displayMessage: Phaser.GameObjects.Text;
+    finishPhaseButton!: Phaser.GameObjects.Text;
+    displayPhase!: Phaser.GameObjects.Text;
+    displayMessage!: Phaser.GameObjects.Text;
     contadores: ContadorExercitos[]=[];
-    statusJogador: StatusJogador;
+    statusJogador!: StatusJogador;
     objetivo: any;
     iconCarta: any;
-    objetivoCard: ObjetiveCard;
-    deckCartas: DeckCartas;
+    objetivoCard!: ObjetiveCard;
+    deckCartas!: DeckCartas;
     iconSair: any;
+    dicePlay: DicePlay;
 
 
     constructor() {
@@ -36,12 +36,14 @@ export default class ShowUIScene extends Phaser.Scene {
     init(data: { warMatch: WarMatch; }){
         let {warMatch} = data;
         this.warMatch = warMatch;
+
     }
+
     nextPhase(){
         this.warMatch.turn.nextPhase();
-        eventsCenter.emit("next-phase",this.warMatch.getCurrentPlayer());
+        // this.statusJogador.mode = Phases[this.warMatch.turn.getCurrentPhaseName()]
+        // eventsCenter.emit(GameEvent.nextPhase,this.warMatch.getCurrentPlayer());
         this.refresh();
-
     }
 
     destroy(){
@@ -60,12 +62,16 @@ export default class ShowUIScene extends Phaser.Scene {
         if(this.deckCartas){
             this.deckCartas.destroy();
         }
+        if(this.dicePlay){
+            this.dicePlay.destroy();
+        }
 
     }
 
     refresh(){
         this.destroy();
         this.scene.launch('OutScene');
+        
         let count = 0;
         this.warMatch.turn.playersOrders.forEach(playerId =>{
             let player = this.warMatch.getPlayerById(playerId)
@@ -123,20 +129,26 @@ export default class ShowUIScene extends Phaser.Scene {
           
         }).setVisible(false);
 
-        //Criação dos localizadores de continent com as totalidades
-        // Object.keys(this.warMatch.board.continents).forEach(continentId =>{
-        //     new LocalizadorContinente({scene: this, 
-        //         continent: this.warMatch.board.continents[continentId]})
+        this.dicePlay = new DicePlay({
+            x: 1100,
+            y: 560,
+            scene: this
+        }).setVisible(false)
+
+        // eventsCenter.on(PlayerEvent.dicePlay, function(data:{attackResult: number[], defenseResult: number[], scene:Phaser.Scene}){
+            
+        //     // this.dicePlay.setVisible(true);
+        //     // (scene.get("DiplayScene") as DisplayScene).dicePlay.playDice(data.attackResult, data.defenseResult);
         // })
-        
+
     }
 
     updateArmies(){
-        let placedArmies = this.warMatch.turn.getCurrentPlayer(this.warMatch.players)?.placed["all"]
-        let placebleArmies = this.warMatch.turn.getCurrentPlayer(this.warMatch.players)?.placeble["all"]
-        this.displayMessage.setText(
-            `Exércitos Disponíveis: ${placebleArmies} Exércitos alocados: ${placedArmies}`
-        )
+        // let placedArmies = this.warMatch.turn.getCurrentPlayer(this.warMatch.players)?.placed["all"]
+        // let placebleArmies = this.warMatch.turn.getCurrentPlayer(this.warMatch.players)?.placeble["all"]
+        // this.displayMessage.setText(
+        //     `Exércitos Disponíveis: ${placebleArmies} Exércitos alocados: ${placedArmies}`
+        // )
     }
 
     create(){

@@ -12,7 +12,7 @@ export default class IaPlayer extends GamePlayer{
     public objectiveWeight = 1;
 
     constructor(data:PlayerType, color: number, warMatch: WarMatch) {
-        super(data, color, warMatch);
+        super(data, color, warMatch, true);
     }
 
     cardExchange(){
@@ -31,15 +31,17 @@ export default class IaPlayer extends GamePlayer{
     }
 
     mobilize(){
-        // alert("IA mobilizando")
-        //Mobilizando de forma aleatória
-        Object.keys(this.placeble).forEach(place =>{
+       Object.keys(this.placeble).forEach(place =>{
             let territories = this.warMatch.board.getTerritoriesByContinent(place, this)
             while(this.placeble[place] > 0){
                 let index = Math.round(Math.random() * (territories.length-1))
                 let territory = territories[index]
-                territory.mobilize(this.warMatch.board.continents)
-                console
+                if(territory){
+                    territory.mobilize(this.warMatch.board.continents, 1)
+                }else{
+                    console.log(this,this.placeble, place, territories, this.warMatch.board.continents)
+                    territory.mobilize(this.warMatch.board.continents, 1)
+                }
             }
         })
         
@@ -55,16 +57,17 @@ export default class IaPlayer extends GamePlayer{
         let attackerTerritories = this.warMatch.board.getPlayerTerritoriesByArmiesNumber(this,1)
         attackerTerritories.forEach(attacker =>{
             attacker.highlightNeighbours(this.warMatch.board.territories)
-            while(this.warMatch.board.hasHighlightedTerritory(attacker) && attacker.armies > 1){
+            while(this.warMatch.board.hasHighlightedTerritory() && attacker.armies > 1){
                 attacker.select()
                 let highlightedTerritories = this.warMatch.board.getHighlighted()
                 let index = Math.round(Math.random() * (highlightedTerritories.length-1))
-                this.warMatch.board.checkAttackCondition(highlightedTerritories[index], attacker.owner)
+                this.warMatch.board.checkAttackCondition(highlightedTerritories[index], attacker.owner, 3, this.warMatch.scene)
                 attacker.unhighlightNeighbours(this.warMatch.board.territories)
                 attacker.highlightNeighbours(this.warMatch.board.territories)
             }
             this.warMatch.board.clearBoard()
         })
+
         //Analisar situação
         
         
@@ -83,14 +86,13 @@ export default class IaPlayer extends GamePlayer{
             territory.select()
             if(highlightedTerritories[index]){
                 this.warMatch.board.checkFortifyCondition(
-                    highlightedTerritories[index], this
+                    highlightedTerritories[index], this, 1
                 )
             }
             // territory.unselect()
             territory.unHighlightOwnedNeighbors(this.warMatch.board.territories)
             this.warMatch.board.clearBoard()
         })
-
         this.warMatch.board.clearBoard()
 
         //Analisar situação

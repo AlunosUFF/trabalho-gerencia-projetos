@@ -1,0 +1,28 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - hml
+
+jobs:
+  deploy:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+        
+    - name: Install dependencies
+      run: npm install
+    
+    - name : Install Esbuild
+      run: npm install esbuild
+
+    - name: Build and deploy
+      run: npm run deploy

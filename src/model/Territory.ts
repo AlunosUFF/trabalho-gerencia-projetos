@@ -1,5 +1,7 @@
 import { Phases } from "../game/Turn";
 import eventsCenter from "../services/EventsCenter";
+import { PlayerEvent } from "../shared/events.model";
+import { Continent } from "../shared/models";
 import { GamePlayer } from "./GamePlayer";
 
 export class Territory extends Phaser.GameObjects.Container {
@@ -26,13 +28,16 @@ export class Territory extends Phaser.GameObjects.Container {
         let textY = spriteSource['y'] + spriteSource['h']/2
         let armiesText = new Phaser.GameObjects.BitmapText(scene, textX, textY, 'pressstart', armies, 16, Phaser.GameObjects.BitmapText.ALIGN_CENTER)
         .setDepth(100)
-        let territoryText = new Phaser.GameObjects.BitmapText(scene, textX - 20, textY - 20, 'pressstart', name, 10, Phaser.GameObjects.BitmapText.ALIGN_LEFT)
-        .setDepth(10).setTintFill(0x000)
+        // let territoryText = new Phaser.GameObjects.BitmapText(scene, textX - 20, textY - 20, 'pressstart', name, 10, Phaser.GameObjects.BitmapText.ALIGN_LEFT)
+        // .setDepth(10).setTintFill(0x000)
+        let territoryText = new Phaser.GameObjects.Text(scene, textX - 20, textY - 20, name, {fontFamily:"Arial, sans-serif", fontSize:"12px", color:"#000", stroke:"true", strokeThickness: 10})
+        .setStroke("#ffffff", 3).setAlpha(1).setDepth(-100)
+        // (scene, textX - 20, textY - 20, 'pressstart', name, 10, Phaser.GameObjects.BitmapText.ALIGN_LEFT)
+        
 
         super(scene, x, y, [spriteTerritory, armiesText, territoryText]);
 
         this.setScale(0.8).setX(x+200)
-        this.setInteractive(new Phaser.Geom.Circle(textX, textY, 45), Phaser.Geom.Circle.Contains)
         this.spriteTerritory = spriteTerritory;
         this.armiesText = armiesText;
         this.neighbors = neighbors;
@@ -43,6 +48,7 @@ export class Territory extends Phaser.GameObjects.Container {
         this.name = name;
         this.scene = scene;
         this.card = card;
+        this.setInteractive(new Phaser.Geom.Circle(textX, textY, 45), Phaser.Geom.Circle.Contains)
         this.scene.add.existing(this);
         this.on("pointerdown", (pointer)=>{
             
@@ -64,16 +70,19 @@ export class Territory extends Phaser.GameObjects.Container {
         }
     }
 
-    mobilize(continents) {
+    mobilize(continents, quantity:number) {
         let continentSlug = continents[this.continent].slug
         if(this.owner?.isCurrentPlayer() && this.owner.hasArmiesToPlace()){
-            if(this.owner.placeble[continentSlug] > 0){
-                this.placeArmies(1);
-                this.owner.placeArmie(continentSlug, 1)
+            if(this.owner.placeble[continentSlug] > 0 && this.owner.placeble[continentSlug] >= quantity){
+                this.placeArmies(quantity);
+                this.owner.placeArmie(continentSlug, quantity)
+                eventsCenter.emit(PlayerEvent.mobilizing, {continentSlug, quantity: this.owner.placeble[continentSlug]})
             }else if(this.owner.placeble["all"] > 0){
-                this.placeArmies(1);
-                this.owner.placeArmie("all", 1)
+                this.placeArmies(quantity);
+                this.owner.placeArmie("all",quantity)
+                eventsCenter.emit(PlayerEvent.mobilizing, {continentSlug, quantity: this.owner.placeble[continentSlug]})
             }
+
             eventsCenter.emit("clear-board")
             eventsCenter.emit("check-victory", {acao: Phases.MOBILIZAR})
         }
@@ -148,12 +157,12 @@ export class Territory extends Phaser.GameObjects.Container {
 
     attack(territory: Territory){
         if(this.armies < 2){
-            alert("Movimento inválido, você não tem exércitos suficientes")
+            eventsCenter.emit("showModal","Movimento inválido, você não tem exércitos suficientes")
             return
         }else{
             let attackArmies = Math.min(this.armies - 1, 3)
             let defenseArmies = Math.min(territory.armies, 3)
-            alert(`${this.name} - ${attackArmies} x ${defenseArmies} - ${territory.name}`)
+            eventsCenter.emit("showModal",`${this.name} - ${attackArmies} x ${defenseArmies} - ${territory.name}`)
         }
     }
 

@@ -1,6 +1,7 @@
 import { GamePlayer } from "../model/GamePlayer";
 import eventsCenter from "../services/EventsCenter";
 import Util from "../services/Util";
+import { GameEvent } from "../shared/events.model";
 
 export enum Phases{
     MOBILIZAR = 0,
@@ -14,6 +15,7 @@ export class Turn{
     public playersOrders: number[] = [];
     public currentPhase: number = -1;
     public phasesNames: string[] = ["Mobilizar","Atacar","Fortificar"];
+    public counter = 0;
     
     setTotalPlayers(){
         this.totalPlayers = this.playersOrders.length;
@@ -52,16 +54,24 @@ export class Turn{
     }
 
     nextPhase(){
+        
         this.currentPhase++;
+        if(this.counter < this.playersOrders.length && this.currentPhase === 1){
+            this.currentPhase+=2;
+        }
         if(!(this.currentPhase < this.phasesNames.length)){
             this.nextTurn();
         }
         this.currentPhase %= this.phasesNames.length
+        
+
         eventsCenter.emit(this.getCurrentPhaseName())
+        
     }
 
     nextTurn(){
-        eventsCenter.emit("next-turn")
+        this.counter++;
         this.nextPlayer();
+        eventsCenter.emit(GameEvent.nextTurn)
     }
 }

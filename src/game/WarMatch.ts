@@ -44,7 +44,6 @@ export class WarMatch{
         this.players.splice(indexPlayers, 1);
         this.turn.playersOrders.splice(indexOrder, 1);
         this.turn.setTotalPlayers()
-        defender.destroyPlayerText()
     }
 
     getPlayerById(id: number): GamePlayer {
@@ -147,19 +146,16 @@ export class WarMatch{
     getTotalArmiesToPlace() {
         let player = this.getCurrentPlayer()
         this.setPlayerTotalTerritories(player)
-        player?.setPlaceble("all", Math.max(Math.floor(player.totalTerritories/2), 3))
+        player.placeble.all = Math.max(Math.floor(player.totalTerritories/2), 3)
         this.board.checkTotality(player)
-
-
-        // let general = game.getPlayerTerritoriesCount(player)
-        // player.placeble.all = Math.max(Math.floor(general/2), 3)
     }
 
-    getCurrentPlayer():GamePlayer {
+    getCurrentPlayer():GamePlayer | IaPlayer {
         return this.turn.getCurrentPlayer(this.players)
     }
 
     hasConditionToNextPhase() :boolean{
+        let hasArmiesToPlace
         //Mobilizar
         switch (this.turn.currentPhase) {
             case Phases.MOBILIZAR:
@@ -167,8 +163,14 @@ export class WarMatch{
                  //Mao maior que 5
                 let handSize = this.getCurrentPlayer().hand.length === 5
                 //Existe exercito para alocar
-                let hasArmiesToPlace = this.getCurrentPlayer()?.hasArmiesToPlace()
+                hasArmiesToPlace = this.getCurrentPlayer()?.hasArmiesToPlace()
                 if(handSize || hasArmiesToPlace){
+                    if(handSize){
+                        eventsCenter.emit("showModal","Você não pode ficar com mais do que 5 cartas na mão")
+                    }
+                    if(hasArmiesToPlace){
+                        eventsCenter.emit("showModal",`Você ainda tem exércitos para posicionar ${this.getCurrentPlayer().placebleToString()}`)
+                    }
                     return false
                 }else{
                     return true
@@ -176,6 +178,11 @@ export class WarMatch{
                 break;
             case Phases.ATACAR:
                 // console.log(this.turn.getCurrentPhaseName())
+                // hasArmiesToPlace = this.getCurrentPlayer()?.hasArmiesToPlace()
+                // if(hasArmiesToPlace){
+                //     eventsCenter.emit("showModal",`Você ainda tem exércitos para posicionar ${this.getCurrentPlayer().placebleToString()}`)
+                //     return false
+                // }
 
                 return true
                 break;
@@ -187,6 +194,6 @@ export class WarMatch{
             default:
                 break;
         }
-
+        return false
     }
 }

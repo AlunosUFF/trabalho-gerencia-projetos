@@ -30,14 +30,15 @@ export class GamePlayer extends Player{
     
     // public cards: Array<Car
     public color: number;
-    public totalArmies: number;
-    public totalTerritories: number;
-    public playerText: Phaser.GameObjects.Text;
-    public armies;
+    public totalArmies: number = 0;
+    public totalTerritories: number = 0;
+    public playerText!: Phaser.GameObjects.Text;
     public destroyed = false;
+    public firstTurn = true;
     
     public placed: Placeble = {
-        "all":0, "south-america":0,    
+        "all":0, 
+        "south-america":0,    
         "asia": 0,
         "oceania": 0,
         "africa": 0,
@@ -56,8 +57,8 @@ export class GamePlayer extends Player{
     public gainedTerritory = false;
     public hand: number[] = []
     public warMatch: WarMatch;
-    public objective: Objective;
-    public aimer: GamePlayer;
+    public objective!: Objective;
+    public aimer!: GamePlayer;
 
 
     // public ia: boolean;
@@ -68,9 +69,9 @@ export class GamePlayer extends Player{
         this.ia = data.ia;
     }
 
-    destroyPlayerText(){
-        this.playerText.destroy()
-    }
+    // destroyPlayerText(){
+    //     // this.playerText.destroy()
+    // }
 
     showGamePlayer(x: number, y: number, currentPlayerId:number, scene:Phaser.Scene) {
         let isCurrentPlayer = currentPlayerId === this.id;
@@ -138,11 +139,12 @@ export class GamePlayer extends Player{
         return this.totalTerritories === 0
     }
 
-    // resetPlaced(){
-    //     this.placed.all = 0
-    // }
-
-    resetPlaces(){
-        
+    placebleToString(){
+        let placebleString = ""
+        Object.keys(this.placeble).forEach(place =>{
+            placebleString += place + ":"
+            placebleString += this.placeble[place] + "\n"
+        })
+        return placebleString
     }
 }

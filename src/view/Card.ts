@@ -27,32 +27,32 @@ export class Card extends Phaser.GameObjects.Container {
         this.id = territory.id
 
         cardRectangle.setInteractive({ useHandCursor: true  })
-        cardRectangle.on("pointerover",(pointer, object)=>{
-            this.scene.tweens.add({
-                targets: this,
-                props: {
-                    scale: 2,
-                    x: x - 120 - 50,
-                    y: y - 250,
-                    depth: 10
-                },
-                duration: 2000,
-                ease: 'Power3'
-            })
-        })
-        cardRectangle.on("pointerout",()=>{
-            this.scene.tweens.add({
-                targets: this,
-                props: {
-                    scale: 1,
-                    x: x,
-                    y: y,
-                    depth: 1
-                },
-                duration: 2000,
-                ease: 'Power3'
-            })
-        })
+        // cardRectangle.on("pointerover",(pointer, object)=>{
+        //     this.scene.tweens.add({
+        //         targets: this,
+        //         props: {
+        //             scale: 2,
+        //             x: x - 120 - 50,
+        //             y: y - 250,
+        //             depth: 10
+        //         },
+        //         duration: 2000,
+        //         ease: 'Power3'
+        //     })
+        // })
+        // cardRectangle.on("pointerout",()=>{
+        //     this.scene.tweens.add({
+        //         targets: this,
+        //         props: {
+        //             scale: 1,
+        //             x: x,
+        //             y: y,
+        //             depth: 1
+        //         },
+        //         duration: 2000,
+        //         ease: 'Power3'
+        //     })
+        // })
         cardRectangle.on("pointerdown", ()=>{
             this.select()
         })
