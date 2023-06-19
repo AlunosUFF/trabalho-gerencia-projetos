@@ -8,8 +8,15 @@ import Util from "../services/Util";
 import { Phases } from "./Turn";
 import { WarMatch } from "./WarMatch";
 import { PlayerEvent } from "../shared/events.model";
+import { Continent } from "../shared/models";
+import Graph from "../services/Graph";
 
-const exchangeTable = {
+
+interface exchangeTable{
+    [index:string]:number;
+}
+
+const exchangeTable:exchangeTable = {
     "1": 4,
     "2": 2,
     "3": 2,
@@ -30,11 +37,12 @@ export class Board {
     public deck: number[] = [];
     public discard: number[] = [];
     public exchangeNumber: number = 1;
-    public exchangeArmies: number = exchangeTable[this.exchangeNumber];
+    public exchangeArmies: exchangeTable = exchangeTable[this.exchangeNumber];
     
 
-    init(territoryIds: number[], continents, cardFigures, objectives) {
+    init(territoryIds: number[], continents:Continent, cardFigures, objectives) {
         
+        this.setTerritoriesDistance()
         this.setInitialTerritoryCards(territoryIds)
         this.objectives = objectives
         this.setInitialObjectiveCards()
@@ -42,6 +50,12 @@ export class Board {
         this.shuffleObjectiveCards();
         this.continents = continents
         this.cardFigures = cardFigures
+    }
+
+    setTerritoriesDistance(){
+        this.territories.forEach( territory =>{
+            Graph.setDistance(territory, this.territories)
+        })
     }
     
     getTerritoryById(id: number){

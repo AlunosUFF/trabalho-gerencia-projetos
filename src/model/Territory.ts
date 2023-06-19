@@ -1,8 +1,9 @@
 import { Phases } from "../game/Turn";
 import eventsCenter from "../services/EventsCenter";
 import { PlayerEvent } from "../shared/events.model";
-import { Continent } from "../shared/models";
-import { GamePlayer } from "./GamePlayer";
+import { Continent, Distance, Visited } from "../shared/models";
+import { GamePlayer, Placeble } from "./GamePlayer";
+
 
 export class Territory extends Phaser.GameObjects.Container {
 
@@ -19,9 +20,10 @@ export class Territory extends Phaser.GameObjects.Container {
     public isHighlighted:boolean = false;
     public continent: number;
     public card: number;
+    public distance?: Distance;
 
     constructor(data: any) {
-        let {id, name, slug, armies, scene, x, y, spriteSource, neighbors, continent, card} = data;
+        let {id, distance, name, slug, armies, scene, x, y, spriteSource, neighbors, continent, card} = data;
         let spriteTerritory = new Phaser.GameObjects.Sprite(scene, 0, 0, 'territorios', slug).setOrigin(0)
         .setDepth(-1)
         let textX = spriteSource['x'] + spriteSource['w']/2
@@ -48,9 +50,10 @@ export class Territory extends Phaser.GameObjects.Container {
         this.name = name;
         this.scene = scene;
         this.card = card;
+        this.distance = distance;
         this.setInteractive(new Phaser.Geom.Circle(textX, textY, 45), Phaser.Geom.Circle.Contains)
         this.scene.add.existing(this);
-        this.on("pointerdown", (pointer)=>{
+        this.on("pointerdown", ()=>{
             
             eventsCenter.emit("territory-clicked", this)
         });
@@ -70,17 +73,17 @@ export class Territory extends Phaser.GameObjects.Container {
         }
     }
 
-    mobilize(continents, quantity:number) {
+    mobilize(continents: Continent[], quantity:number) {
         let continentSlug = continents[this.continent].slug
         if(this.owner?.isCurrentPlayer() && this.owner.hasArmiesToPlace()){
-            if(this.owner.placeble[continentSlug] > 0 && this.owner.placeble[continentSlug] >= quantity){
+            if(this.owner.placeble[continentSlug as keyof Placeble] > 0 && this.owner.placeble[continentSlug as keyof Placeble] >= quantity){
                 this.placeArmies(quantity);
                 this.owner.placeArmie(continentSlug, quantity)
-                eventsCenter.emit(PlayerEvent.mobilizing, {continentSlug, quantity: this.owner.placeble[continentSlug]})
+                eventsCenter.emit(PlayerEvent.mobilizing, {continentSlug, quantity: this.owner.placeble[continentSlug as keyof Placeble]})
             }else if(this.owner.placeble["all"] > 0){
                 this.placeArmies(quantity);
                 this.owner.placeArmie("all",quantity)
-                eventsCenter.emit(PlayerEvent.mobilizing, {continentSlug, quantity: this.owner.placeble[continentSlug]})
+                eventsCenter.emit(PlayerEvent.mobilizing, {continentSlug, quantity: this.owner.placeble[continentSlug as keyof Placeble]})
             }
 
             eventsCenter.emit("clear-board")
@@ -195,19 +198,21 @@ export class Territory extends Phaser.GameObjects.Container {
     highlightOwnedNeighbors(territories: Territory[]) {
         const queue = [this.slug];
         const result = [];
-        const visited = {};
+        const visited:Visited = {};
         visited[this.slug] = true;
-        let currentVertex;
+        let currentVertex:string | undefined;
         while (queue.length) {
             currentVertex = queue.shift();
             result.push(currentVertex);
             let currentTerritory = territories.find(territory => (territory.slug === currentVertex))
-            currentTerritory.neighbors.forEach(neighborId => {
+            currentTerritory?.neighbors.forEach(neighborId => {
                 let neighbor = territories.find(territory =>(neighborId === territory.id))
-                if(!visited[neighbor?.slug] && neighbor?.owner === this.owner){
-                    visited[neighbor?.slug] = true;
+                if(!visited[neighbor?.slug as keyof Visited] && neighbor?.owner === this.owner){
+                    visited[neighbor?.slug as keyof Visited] = true;
                     neighbor?.highlight()
-                    queue.push(neighbor.slug)
+                    if(neighbor){
+                        queue.push(neighbor.slug)
+                    }
                 }
             })
         };
@@ -216,19 +221,21 @@ export class Territory extends Phaser.GameObjects.Container {
     unHighlightOwnedNeighbors(territories: Territory[]) {
         const queue = [this.slug];
         const result = [];
-        const visited = {};
+        const visited:Visited = {};
         visited[this.slug] = true;
-        let currentVertex;
+        let currentVertex:string | undefined;
         while (queue.length) {
             currentVertex = queue.shift();
             result.push(currentVertex);
             let currentTerritory = territories.find(territory => (territory.slug === currentVertex))
-            currentTerritory.neighbors.forEach(neighborId => {
-                let neighbor = territories.find(territory =>(neighborId === territory.id))
-                if(!visited[neighbor?.slug] && neighbor?.owner === this.owner){
-                    visited[neighbor?.slug] = true;
+            currentTerritory?.neighbors.forEach(neighborId => {
+                let neighbor: Territory | undefined = territories.find(territory =>(neighborId === territory.id))
+                if(!visited[neighbor?.slug as keyof Visited] && neighbor?.owner === this.owner){
+                    visited[neighbor?.slug as keyof Visited] = true;
                     neighbor?.unhighlight()
-                    queue.push(neighbor.slug)
+                    if(neighbor){
+                        queue.push(neighbor.slug)
+                    }
                 }
             })
         };

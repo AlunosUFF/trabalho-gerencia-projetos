@@ -9,3 +9,11 @@ export interface Continent{
     color:string,
     slug:string
 }
+
+export interface Distance{
+    [index:number]: number
+}
+
+export interface Visited{
+    [index:string | number]: boolean
+}

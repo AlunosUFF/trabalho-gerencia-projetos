@@ -1,72 +1,102 @@
 export default class Graph {
-    adjacencyList: {};
-    constructor() {
-      this.adjacencyList = {};
-    }
-    addVertex(vertex: string | number) {
-      if (!this.adjacencyList[vertex]) {
-        this.adjacencyList[vertex] = [];
-      }
-    }
-    addEdge(source: string | number, destination: string | number) {
-      if (!this.adjacencyList[source]) {
-        this.addVertex(source);
-      }
-      if (!this.adjacencyList[destination]) {
-        this.addVertex(destination);
-      }
-      this.adjacencyList[source].push(destination);
-      this.adjacencyList[destination].push(source);
-    }
-    removeEdge(source: string | number, destination: string | number) {
-      this.adjacencyList[source] = this.adjacencyList[source].filter(vertex => vertex !== destination);
-      this.adjacencyList[destination] = this.adjacencyList[destination].filter(vertex => vertex !== source);
-    }
-    removeVertex(vertex: string | number) {
-      while (this.adjacencyList[vertex]) {
-        const adjacentVertex = this.adjacencyList[vertex].pop();
-        this.removeEdge(vertex, adjacentVertex);
-      }
-      delete this.adjacencyList[vertex];
-    } 
-    
-    bfs(start: string | number) {
-      const queue = [start];
-      const result = [];
-      const visited = {};
-      visited[start] = true;
-      let currentVertex;
-      while (queue.length) {
-        currentVertex = queue.shift();
-        result.push(currentVertex);
-        this.adjacencyList[currentVertex].forEach(neighbor => {
-          if (!visited[neighbor]) {
-            visited[neighbor] = true;
-            queue.push(neighbor);
-          }
-        });
-      }
-      return result;
-  }
-}
 
-//   Graph.prototype.bfs = function
-// Graph.prototype.dfsRecursive = function
-// Graph.prototype.dfsIterative = function(start) {
-//     const result = [];
-//     const stack = [start];
-//     const visited = {};
-//     visited[start] = true;
-//     let currentVertex;
-//     while (stack.length) {
-//       currentVertex = stack.pop();
-//       result.push(currentVertex);
-//       this.adjacencyList[currentVertex].forEach(neighbor => {
-//         if (!visited[neighbor]) {
-//           visited[neighbor] = true;
-//           stack.push(neighbor);
-//         }
-//       });
-//     }
-//     return result;
-// }
+    static setDistance(territory:Territory, territories:(Territory | undefined)[]) {
+        let queue = [territory]
+        let visited: {[index:number]:boolean} = {}
+        visited[territory.id] = true
+        let currentVertex:Territory | undefined;
+        while (queue.length) {
+            currentVertex = queue.shift();
+            currentVertex?.neighbors.forEach(neighborId => {
+                let neighbor = territories[neighborId];
+                if (!visited[neighborId]) {
+                    if(territory.distance && currentVertex){
+                        territory.distance[neighborId as keyof Distance]++;
+                        territory.distance[neighborId] += territory.distance[currentVertex.id];
+                        visited[neighborId] = true;
+                        if(neighbor){
+                            queue.push(neighbor);
+                        }
+                    }
+                }
+            })
+        }
+    }
+
+    static getMaxContinuosTerritories(owner: GamePlayer, territories: Territory[]):(Territory | undefined)[][]{
+        let maxContinuosTerritories:(Territory | undefined)[][] = [];
+        let territoriesOwned =  territories.filter((territory:Territory) =>{
+            return territory?.owner?.id === owner.id
+        })
+        let visited:Visited = {}
+        territoriesOwned.forEach((territory:Territory) =>{
+            if(visited[territory.id]){
+                return;
+            }
+            const queue = [territory];
+            let result = [];
+            visited[territory.id] = true;
+            let currentVertex:Territory | undefined;
+            while (queue.length) {
+                currentVertex = queue.shift();
+                result.push(currentVertex);
+                // let currentTerritory = territories.find(territory => (territory.slug === currentVertex))
+                currentVertex?.neighbors.forEach(neighborId => {
+                    let neighbor = territories.find(territory =>(neighborId === territory.id))
+                    if(!visited[neighbor?.id as keyof Visited] && neighbor?.owner === owner){
+                        visited[neighbor?.id as keyof Visited] = true;
+                        if(neighbor){
+                            queue.push(neighbor)
+                        }
+                    }
+                })
+            };
+            if(maxContinuosTerritories[0] && result.length > maxContinuosTerritories[0].length){
+                maxContinuosTerritories = []
+                maxContinuosTerritories.push(result)
+            }else if(maxContinuosTerritories[0] && (result.length === maxContinuosTerritories[0].length)){
+                maxContinuosTerritories.push(result)
+            }else if(maxContinuosTerritories.length === 0){
+                maxContinuosTerritories.push(result)
+            }
+           
+        })
+        return maxContinuosTerritories
+    }
+
+    static getBorderNeighbors(owner: GamePlayer, territories: Territory[]):Territory[]{
+        const borderNeighbors:Territory[] = []
+        const territoriesOwned =  territories.filter((territory:Territory) =>{
+            return territory?.owner?.id === owner.id
+        })
+
+        const ownedVisited:Visited = {};
+        territoriesOwned.forEach((territory:Territory) =>{
+            if(ownedVisited[territory.id]){
+                return
+            }
+            const neighborVisited:Visited = {};
+            const queue: Territory[] = [territory];
+            ownedVisited[territory.id] = true
+            let currentVertex:Territory | undefined;
+            while(queue.length){
+                currentVertex = queue.shift();
+                currentVertex?.neighbors.forEach(neighborId=>{
+                    let neighbor = territories[neighborId];
+                    if(!owner || !neighbor) return
+                    if(neighbor.owner === owner && !ownedVisited[neighborId]){
+                        queue.push(neighbor);
+                        ownedVisited[neighborId] = true;
+                    }else if(neighbor.owner !== owner && !neighborVisited[neighborId]){
+                        borderNeighbors.push(neighbor);
+                        neighborVisited[neighborId] = true;
+                    }
+                })
+            }
+        })
+        return borderNeighbors
+    }
+
+    
+
+}

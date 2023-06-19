@@ -10,6 +10,7 @@ import Objective from "./model/Objective";
 import IaPlayer from "./model/IAPlayer";
 import { GameEvent, PlayerEvent } from "./shared/events.model";
 import DisplayScene from "./scenes/DisplayScene";
+import Graph from "./services/Graph";
 
 const COLORS = {
     'black': 0x4f4f4d,
@@ -108,12 +109,7 @@ export class MainGameScene extends Phaser.Scene {
 
         //Eventos de turno
         eventsCenter.on(this.warMatch.turn.phasesNames[Phases.MOBILIZAR],()=>{
-            console.log("Hand", this.warMatch.getCurrentPlayer().hand)
-            this.warMatch.players.forEach(player =>{
-                console.log("Player", player.hand)
-            })
-            console.log("Deck",this.warMatch.board.deck)
-            console.log("Discard", this.warMatch.board.discard)
+            
             this.warMatch.getCurrentPlayer().clearPlaced()
 
             if(this.warMatch.getCurrentPlayer()){

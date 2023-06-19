@@ -1,5 +1,6 @@
 import { Territory } from "../model/Territory";
 import LocalizadorContinente from "../view/LocalizadorContinente";
+import { Distance } from '../shared/models';
 
 export class TerritoryFactory{
     static loadCountries(scene:Phaser.Scene):Array<Territory>{
@@ -16,6 +17,7 @@ export class TerritoryFactory{
         neighbors: number[];
         continent: number,
         card: number
+        distance: Distance
         }) => {
             let territorio = new Territory(
                 {
@@ -29,7 +31,8 @@ export class TerritoryFactory{
                     spriteSource: territoriosData[territory.slug].spriteSourceSize,
                     neighbors: territory.neighbors,
                     name: territory.name,
-                    slug: territory.slug    
+                    slug: territory.slug, 
+                    distance: territory.distance 
                 }
             ) 
             territorios.push(territorio)
